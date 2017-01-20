@@ -42,5 +42,5 @@ the cost to input to a card reader and mark that the transaction was paid for by
 * Paypal Here integration
 
 ### Android Application Programmers ###
-* Joshua Renwick
+* Josh Renwick
 * Paul Quigley

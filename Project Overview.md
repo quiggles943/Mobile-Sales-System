@@ -26,6 +26,29 @@ the cost to input to a card reader and mark that the transaction was paid for by
 > be possible to utilise the paypal here SDK (https://github.com/paypal/paypal-here-sdk-android-distribution) and the SDK Guide (https://developer.paypal.com/docs/integration/paypal-here/android-dev/overview/)
 > to streamline the card payment process and to be able to send the transaction details to the card reader for a faster and more convenient system.
 
+### Implementation ###
+
+##### QR Reader #####
+//To be added
+
+##### Item Confirmation / Stock Selection #####
+// To be added
+
+##### Transaction Screen #####
+// To be added
+
+##### Sub-Total Screen #####
+// To be added
+
+##### Payment Selection #####
+// To be added
+
+##### Testing #####
+To facilitate changes to the app while in the testing phase and while being in use it will be necessary to implement a backdoor method of data upload to the app to allow the contents of the device's internal
+database to be reuploaded if the app needed to be changed and re-installed. This is due to the main database being inaccessable due to a lack of a data connection at the event. This backdoor would allow for
+changes to the application to be made while at the event and still being able to use the application for the remainder of the event.
+
+
 ### Main Development Targets ###
 * Ease of use by the client
 * Fully working stock management
@@ -44,3 +67,9 @@ the cost to input to a card reader and mark that the transaction was paid for by
 ### Android Application Programmers ###
 * Josh Renwick
 * Paul Quigley
+
+### Testing the Application ###
+If possible, a working prototype of the app could be used at the Edinburgh Comic Con (April 15-16) to test the design and implementation.
+In order to test this app, all of the main development targets would need to be met and checked to ensure they are in a working state before April the 14th.
+
+

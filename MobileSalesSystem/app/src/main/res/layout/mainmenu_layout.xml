@@ -19,8 +19,9 @@
             <ImageView
                 android:src="@drawable/logo"
                 android:layout_width="wrap_content"
-                android:layout_height="494dp"
-                android:id="@+id/imageView3" />
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout

@@ -17,11 +17,10 @@
             android:gravity="center">
 
             <ImageView
-                android:src="@drawable/HW_QR"
+                android:src="@drawable/logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
-                android:layout_weight="1" />
+                android:layout_height="494dp"
+                android:id="@+id/imageView3" />
         </LinearLayout>
 
         <LinearLayout

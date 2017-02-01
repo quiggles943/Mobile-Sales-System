@@ -1,13 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mss.mobilesalessystem">
 
-    <uses-sdk android:minSdkVersion="14"
+    <uses-sdk android:minSdkVersion="21"
         android:targetSdkVersion="23" />
 
     <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
     <application android:allowBackup="true"
         android:icon="@mipmap/ic_launcher">
-        <uses-permission android:name="android.permission.CAMERA" />
+
 
         <activity
             android:name=".MainMenu"
@@ -19,7 +22,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
+        <activity
+            android:name=".qrReader"
+            android:label="Mobile Sales System"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".qrScanner"
+            android:label="Mobile Sales System"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
 
     </application>
+
+
 
 </manifest>

@@ -25,19 +25,19 @@ public class qrReader extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            Bitmap myQRCode = BitmapFactory.decodeResource(this.getResources(),R.drawable.hw_qr);
+            //Bitmap myQRCode = BitmapFactory.decodeResource(this.getResources(),R.drawable.hw_qr);
             BarcodeDetector barcodeDetector =
                     new BarcodeDetector.Builder(this)
                             .setBarcodeFormats(Barcode.QR_CODE)
                             .build();
-            Frame myFrame = new Frame.Builder()
-                    .setBitmap(myQRCode)
-                    .build();
-            SparseArray<Barcode> barcodes = barcodeDetector.detect(myFrame);
-            if(barcodes.size() != 0)
-            {
-                Log.d("QR Code data",barcodes.valueAt(0).displayValue);
-            }
+            //Frame myFrame = new Frame.Builder()
+            //        .setBitmap(myQRCode)
+            //        .build();
+            //SparseArray<Barcode> barcodes = barcodeDetector.detect(myFrame);
+            //if(barcodes.size() != 0)
+            //{
+            //    Log.d("QR Code data",barcodes.valueAt(0).displayValue);
+            //}
         } catch (Exception e) {
             e.printStackTrace();
         }

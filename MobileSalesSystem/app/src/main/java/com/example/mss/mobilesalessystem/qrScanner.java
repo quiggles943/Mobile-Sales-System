@@ -112,10 +112,13 @@ public class qrScanner extends Activity {
 
     public void processBarcode(SparseArray<Barcode> barcodes){
         Log.d("Barcode", barcodes.valueAt(0).displayValue);
-        barcodeDetector.release();
+        if(barcodes.valueAt(0).displayValue.contains("http://janinevanmoosel.co.uk/product/"))
+        {
+            barcodeDetector.release();
+            Intent intent = new Intent(context, Transaction.class);
+            intent.putExtra("barcode", barcodes.valueAt(0).displayValue);
+            startActivity(intent);
+        }
 
-        Intent intent = new Intent(context, Transaction.class);
-        intent.putExtra("barcode", barcodes.valueAt(0).displayValue);
-        startActivity(intent);
     }
 }

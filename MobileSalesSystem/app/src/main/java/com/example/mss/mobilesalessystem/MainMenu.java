@@ -43,10 +43,25 @@ public class MainMenu extends Activity {
 
     private void initDatabase(){
         try {
-            String tableName = "";
-            String tableColumns = "";
+            String [] tableName = new String[5];
+            String [] tableColumns = new String[5];
+
+            tableName[2] = "product";
+            tableColumns[2] = "Format text, ImageID text, ProdDesc text, Price REAL";
+
+            tableName[1] = "image";
+            tableColumns[1] = "ImageID text, ImageDesc text, ImgFilePath text";
+
+            tableName[0] = "format";
+            tableColumns[0] = "Format text, FormatDesc text";
+
             pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
-            pDB.execSQL("CREATE TABLE IF NOT EXISTS "+ tableName + " " + tableColumns);
+
+            if(tableName.length == tableColumns.length) {
+                for (int i = 0; i < tableName.length; i++) {
+                    pDB.execSQL("CREATE TABLE IF NOT EXISTS " + tableName[i] + " (" + tableColumns[i] + ");");
+                }
+            }
 
         }catch(Exception e){
 

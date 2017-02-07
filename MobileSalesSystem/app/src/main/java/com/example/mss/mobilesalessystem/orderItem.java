@@ -5,7 +5,7 @@ package com.example.mss.mobilesalessystem;
  */
 public class orderItem {
 
-    private int itemID;                         //int to hold the item ID, used for database lookup
+    private String itemID;                         //String to hold the item ID, used for database lookup
     private String itemDescription;             //String to hold the description of the item
     private String itemSize;                    //String to hold the size of the item, i.e. A4, A5, Keyring
     private Float itemPrice;                    //Float to hold the price of the item, due to decimal place acceptance
@@ -14,7 +14,7 @@ public class orderItem {
         //standard constructor
     }
 
-    public orderItem (int itemID, String itemDescription, String itemSize, Float itemPrice)
+    public orderItem (String itemID, String itemDescription, String itemSize, Float itemPrice)
     {
         this.itemID = itemID;
         this.itemDescription = itemDescription;
@@ -22,11 +22,11 @@ public class orderItem {
         this.itemPrice = itemPrice;
     }
 
-    public int getItemID() {
+    public String getItemID() {
         return itemID;
     }
 
-    public void setItemID(int itemID) {
+    public void setItemID(String itemID) {
         this.itemID = itemID;
     }
 

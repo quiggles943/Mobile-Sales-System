@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.pm.ActivityInfoCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import java.util.logging.*;
 
 /**
  * Created by Kriss on 30/01/2017.
@@ -70,7 +72,7 @@ public class MainMenu extends Activity {
             }
 
         }catch(Exception e){
-
+            Log.e("Database Creation Error", e.getMessage().toString());
         }
     }
 

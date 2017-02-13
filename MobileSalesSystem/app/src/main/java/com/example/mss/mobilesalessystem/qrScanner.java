@@ -3,15 +3,12 @@ package com.example.mss.mobilesalessystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Camera;
-import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -112,7 +109,7 @@ public class qrScanner extends Activity {
 
     public void processBarcode(SparseArray<Barcode> barcodes){
         Log.d("Barcode", barcodes.valueAt(0).displayValue);
-        if(barcodes.valueAt(0).displayValue.contains("http://janinevanmoosel.co.uk/product/"))
+        if(barcodes.valueAt(0).displayValue.contains(getString(R.string.website)))
         {
             barcodeDetector.release();
             Intent intent = new Intent(context, Transaction.class);

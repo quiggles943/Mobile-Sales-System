@@ -1,17 +1,8 @@
 package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.util.SparseArray;
-
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 

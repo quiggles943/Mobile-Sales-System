@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Mobile Sales System</string>
     <string name="website">http://janinevanmoosel.co.uk/product/</string>
-    <string name="serverurl">jdbc:mysql://192.168.0.1:3306/dbname</string>
+    <string name="serverurl">jdbc:mysql://146.176.224.118:3306/jvanm</string>
 </resources>

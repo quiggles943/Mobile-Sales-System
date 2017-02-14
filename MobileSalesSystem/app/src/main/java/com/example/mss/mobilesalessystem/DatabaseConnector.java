@@ -25,7 +25,9 @@ public class DatabaseConnector extends AsyncTask<String, Boolean, Void> {
 
     private Context thisContext;
 
-    public void DatabaseConnector (Context context, String url, String username, String password)
+
+
+    public DatabaseConnector (Context context, String url, String username, String password)
     {
         thisContext = context;
         String[] array = {url,username,password};
@@ -52,12 +54,13 @@ public class DatabaseConnector extends AsyncTask<String, Boolean, Void> {
                 result += rsmd.getColumnName(3) + ": " + rs.getString(3) + "\n";
                 result += rsmd.getColumnName(4) + ": " + rs.getString(4) + "\n";
             }
+            Log.d("Data", result);
 
             SQLiteDatabase pDB = null;
 
             pDB = thisContext.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
 
-            String SQLInsertStatement = "INSERT ON CONFLICT IGNORE";
+            String SQLInsertStatement = "INSERT ON CONFLICT IGNORE product (Format, ImageID, ProdDesc, Price) VALUES();";
 
         }
         catch (Exception ex)

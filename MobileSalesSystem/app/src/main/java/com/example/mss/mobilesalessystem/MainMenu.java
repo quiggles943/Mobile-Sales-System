@@ -70,7 +70,10 @@ public class MainMenu extends Activity {
                     pDB.execSQL("CREATE TABLE IF NOT EXISTS " + tableName[i] + " (" + tableColumns[i] + ");");
                 }
             }
-
+            String username = "root";
+            String password = "";
+            DatabaseConnector connector = new DatabaseConnector(context, this.getString(R.string.serverurl), username, password);
+            connector.execute();
         }catch(Exception e){
             Log.e("Database Creation Error", e.getMessage().toString());
         }

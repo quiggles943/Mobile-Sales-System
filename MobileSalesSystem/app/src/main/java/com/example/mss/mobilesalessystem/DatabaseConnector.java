@@ -41,7 +41,7 @@ public class DatabaseConnector extends AsyncTask<String, Boolean, Void> {
             user = strings[1];
             password = strings[2];
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.26:80/jvanm?user=root@password=");
 
             String result = "Database Connection Success \n";
             Statement st = con.createStatement();
@@ -65,7 +65,7 @@ public class DatabaseConnector extends AsyncTask<String, Boolean, Void> {
         }
         catch (Exception ex)
         {
-            Log.e("Database ASYNC Error:", ex.getMessage());
+            Log.e("Database ASYNC Error", ex.getMessage());
         }
 
         return null;

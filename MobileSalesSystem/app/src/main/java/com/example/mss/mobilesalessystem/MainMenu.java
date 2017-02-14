@@ -72,7 +72,7 @@ public class MainMenu extends Activity {
             }
             String username = "root";
             String password = "";
-            DatabaseConnector connector = new DatabaseConnector(context, this.getString(R.string.serverurl), username, password);
+            DatabaseConnector connector = new DatabaseConnector(context, "192.168.0.26:80", username, password);
             connector.execute();
         }catch(Exception e){
             Log.e("Database Creation Error", e.getMessage().toString());

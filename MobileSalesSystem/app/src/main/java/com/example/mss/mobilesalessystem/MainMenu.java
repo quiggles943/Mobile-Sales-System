@@ -82,10 +82,14 @@ public class MainMenu extends Activity {
                     pDB.execSQL("CREATE TABLE IF NOT EXISTS " + tableName[i] + " (" + tableColumns[i] + ");");
                 }
             }
-            String username = "root";
-            String password = "";
-            DatabaseConnector connector = new DatabaseConnector(context, "192.168.0.26:80", username, password);
-            connector.execute();
+
+            DatabaseConnector connector = new DatabaseConnector();      //creating a new database connector
+
+            SharedPreferences sharedP = this.getPreferences(Context.MODE_PRIVATE);      //oppening up shared preferences
+            String token = sharedP.getString("token","");                               //gaining the token
+
+            connector.execute(token);                                                   //running the database connector with the token
+
         }catch(Exception e){
             Log.e("Database Creation Error", e.getMessage().toString());
         }

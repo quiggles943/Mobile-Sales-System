@@ -4,7 +4,19 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.StringBuilderPrinter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,61 +30,59 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Paul on 13/02/2017.
  */
 //returned type required
-public class DatabaseConnector extends AsyncTask<String, Boolean, Void> {
-    private static String url;
-    private static String user;
-    private static String password;
+public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
-    private Context thisContext;
+    JSONArray jsonArr;
+    Context context;
 
 
+    @Override
+    protected Void doInBackground(String... strings) {
+        String token = strings[0];
 
-    public DatabaseConnector (Context context, String url, String username, String password)
-    {
-        thisContext = context;
-        String[] array = {url,username,password};
-        doInBackground(array);
-    }
+        try {
 
-    //returned type required
-    protected Void doInBackground(String... strings){
-        try{
-            url = strings[0];
-            user = strings[1];
-            password = strings[2];
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.26:80/jvanm?user=root@password=");
+            String link = "http://quigleyserver.ddns.net/Group/database_test.php";
+            String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
 
-            String result = "Database Connection Success \n";
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM product");
-            ResultSetMetaData rsmd = rs.getMetaData();
-            // returns all of the data in the columns
-            while(rs.next()){
-                result += rsmd.getColumnName(1) + ": " + rs.getString(1) + "\n";
-                result += rsmd.getColumnName(2) + ": " + rs.getString(2) + "\n";
-                result += rsmd.getColumnName(3) + ": " + rs.getString(3) + "\n";
-                result += rsmd.getColumnName(4) + ": " + rs.getString(4) + "\n";
+            URL url = new URL(link);
+            URLConnection conn = url.openConnection();
+
+            conn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+            wr.write(data);
+            wr.flush();
+            BufferedReader bR = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            StringBuilder sB = new StringBuilder();
+            String line = null;
+
+            while((line = bR.readLine()) != null)
+            {
+                sB.append(line);
+                break;
             }
-            Log.d("Data", result);
 
-            SQLiteDatabase pDB = null;
+            bR.close();
 
-            pDB = thisContext.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
+            jsonArr = new JSONArray(line);
 
-            String SQLInsertStatement = "INSERT ON CONFLICT IGNORE product (Format, ImageID, ProdDesc, Price) VALUES();";
+            for (int i = 0; i<jsonArr.length(); i++)
+            {
+                JSONObject row;
+                try {
+                    row = jsonArr.getJSONObject(i);
 
-        }
-        catch (Exception ex)
-        {
-            Log.e("Database ASYNC Error", ex.getMessage());
+                } catch (JSONException e) {
+                    Log.e("JSON error : ", e.getMessage().toString());
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e("ASYNC Error :", e.getMessage().toString());
         }
 
         return null;
-
     }
-
-//    protected void onPostExecute( result) {
-//        //Data to be returned to the program
-//    }
 }

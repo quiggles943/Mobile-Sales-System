@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -33,6 +34,17 @@ public class MainMenu extends Activity {
         /*if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }*/
+
+        SharedPreferences sharedP = this.getPreferences(Context.MODE_PRIVATE);      //oppening up shared preferences
+        SharedPreferences.Editor editor = sharedP.edit();                           //openning up an editor to write to shared preferences
+
+        String checkToken = sharedP.getString("token", "");                         //string to check if token is already there
+
+        if(checkToken == "") {                                                      //if the token isn't there
+            editor.putString("token", "bTe>(AQSs(Au9?9sS%&H6Pgke!LMm9,A?ZM9x");         //writing the token string to the shared preferences
+            editor.commit();
+        }
+
         initDatabase();
         transactionBtn.setOnClickListener(new View.OnClickListener() {
                                               @Override

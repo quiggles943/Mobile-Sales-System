@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -46,39 +47,48 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
 
             URL url = new URL(link);
-            URLConnection conn = url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
 
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
             wr.write(data);
             wr.flush();
-            BufferedReader bR = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            int code = conn.getResponseCode();
+            switch(code) {
+                case 200:
+                    BufferedReader bR = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                   StringBuilder sB = new StringBuilder();
+                   String line = null;
+                    while ((line = bR.readLine()) != null) {
+                     sB.append(line);
+                     break;
+                  }
 
-            StringBuilder sB = new StringBuilder();
-            String line = null;
+                    bR.close();
 
-            while((line = bR.readLine()) != null)
-            {
-                sB.append(line);
-                break;
+                    jsonArr = new JSONArray(line);
+
+                    for (int i = 0; i < jsonArr.length(); i++) {
+                        JSONObject row;
+                        try {
+                            row = jsonArr.getJSONObject(i);
+
+                        } catch (JSONException e) {
+                            Log.e("JSON error : ", e.getMessage().toString());
+                        }
+                    }
+                    break;
+                case 401:
+                    Log.e("Authentication error", "The token on the device was not accepted by the server");
+                    break;
+                case 404:
+                    Log.e("Server error", "The page or directory you have attempted to acces either does not exist, is unavailable, had its name changed or has been moved. ");
+                    break;
+                case 405:
+                    Log.e("Request error", "The request to the server was not accepted because it was the wrong request format");
+
             }
-
-            bR.close();
-
-            jsonArr = new JSONArray(line);
-
-            for (int i = 0; i<jsonArr.length(); i++)
-            {
-                JSONObject row;
-                try {
-                    row = jsonArr.getJSONObject(i);
-
-                } catch (JSONException e) {
-                    Log.e("JSON error : ", e.getMessage().toString());
-                }
-            }
-
         } catch (Exception e) {
             Log.e("ASYNC Error :", e.getMessage().toString());
         }

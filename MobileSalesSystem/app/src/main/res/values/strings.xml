@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Mobile Sales System</string>
+
+    <string-array
+        name="string_format_array">
+        <item>A3</item>
+        <item>A4</item>
+        <item>A5</item>
+        <item>A6</item>
+    </string-array>
 </resources>

@@ -16,12 +16,10 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <ImageView
-                android:src="@drawable/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
-                android:layout_weight="1" />
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lv_cart" />
         </LinearLayout>
 
         <LinearLayout
@@ -33,24 +31,13 @@
             android:layout_marginBottom="10dp">
 
             <ImageButton
-                android:src="@drawable/sym_stat"
+                android:src="@drawable/sym_sync"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/BTN_STATISTICS"
+                android:id="@+id/imageButton"
                 android:layout_weight="1"
                 android:background="@drawable/selector_btn_red_large"
-                android:adjustViewBounds="false"
-                android:layout_marginRight="10dp" />
-
-            <ImageButton
-                android:src="@drawable/sym_cashpoint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_cashpoint"
-                android:layout_weight="1"
-                android:background="@drawable/selector_btn_red_large"
-                android:adjustViewBounds="false"
-                android:layout_marginLeft="10dp" />
+                android:adjustViewBounds="false" />
         </LinearLayout>
 
     </LinearLayout>

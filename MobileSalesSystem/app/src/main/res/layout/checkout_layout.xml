@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/lv_itemList" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_gravity="bottom|right|center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="400.00 £"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_total_price_checkout"
+                android:layout_weight="0.66"
+                android:layout_gravity="right"
+                android:layout_marginRight="24dp"
+                android:layout_marginLeft="12dp"
+                android:textSize="24sp"
+                android:gravity="right"
+                android:layout_width="72dp"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_gravity="bottom|right|center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:text="Discount:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/discount"
+                android:layout_weight="1"
+                android:textSize="24sp"
+                android:gravity="right"
+                android:textColor="@android:color/white" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editText"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_corner_textedit"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="24dp"
+                android:layout_width="72dp"
+                android:textSize="24sp"
+                android:gravity="right|center_vertical"
+                android:padding="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:src="@drawable/sym_paypal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_checkout"
+                android:layout_weight="1"
+                android:background="@drawable/selector_btn_red_large"
+                android:adjustViewBounds="false"
+                android:layout_marginRight="10dp" />
+
+            <ImageButton
+                android:src="@drawable/sym_cash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_add_item"
+                android:layout_weight="1"
+                android:background="@drawable/selector_btn_red_large"
+                android:adjustViewBounds="false"
+                android:layout_marginLeft="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

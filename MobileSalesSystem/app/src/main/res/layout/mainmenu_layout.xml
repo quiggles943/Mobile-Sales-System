@@ -20,7 +20,7 @@
                 android:src="@drawable/logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
+                android:id="@+id/iv_logo"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -36,7 +36,7 @@
                 android:src="@drawable/sym_stat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/BTN_STATISTICS"
+                android:id="@+id/btn_statistics"
                 android:layout_weight="1"
                 android:background="@drawable/selector_btn_red_large"
                 android:adjustViewBounds="false"

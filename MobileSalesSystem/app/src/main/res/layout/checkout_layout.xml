@@ -26,7 +26,6 @@
             android:layout_weight="1">
 
             <TextView
-                android:text="400.00 £"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_total_price_checkout"
                 android:layout_weight="0.66"
@@ -56,13 +55,14 @@
                 android:layout_weight="1"
                 android:textSize="24sp"
                 android:gravity="right"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="12dp" />
 
             <EditText
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
-                android:id="@+id/editText"
+                android:id="@+id/et_discount"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corner_textedit"
                 android:layout_marginLeft="12dp"
@@ -88,7 +88,7 @@
                 android:src="@drawable/sym_paypal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_checkout"
+                android:id="@+id/btn_paypal"
                 android:layout_weight="1"
                 android:background="@drawable/selector_btn_red_large"
                 android:adjustViewBounds="false"
@@ -98,7 +98,7 @@
                 android:src="@drawable/sym_cash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_add_item"
+                android:id="@+id/btn_cash"
                 android:layout_weight="1"
                 android:background="@drawable/selector_btn_red_large"
                 android:adjustViewBounds="false"

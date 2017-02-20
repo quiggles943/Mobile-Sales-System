@@ -4,41 +4,29 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/lv_itemList" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lv_cart" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp">
-
-            <ImageButton
-                android:src="@drawable/sym_sync"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButton"
-                android:layout_weight="1"
-                android:background="@drawable/selector_btn_red_large"
-                android:adjustViewBounds="false" />
-        </LinearLayout>
+        <ImageButton
+            android:src="@drawable/sym_sync"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_sync"
+            android:layout_weight="1"
+            android:background="@drawable/selector_btn_red_large"
+            android:adjustViewBounds="false" />
 
     </LinearLayout>
 

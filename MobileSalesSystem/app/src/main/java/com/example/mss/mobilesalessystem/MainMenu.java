@@ -27,7 +27,7 @@ public class MainMenu extends Activity {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.mainmenu_layout);
-        ImageButton transactionBtn = (ImageButton) findViewById(R.id.imageButton);
+        ImageButton transactionBtn = (ImageButton) findViewById(R.id.btn_cashpoint);
         /*if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }*/

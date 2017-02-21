@@ -24,6 +24,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLData;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -43,7 +45,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
         try {
 
-            String link = "http://quigleyserver.ddns.net/Group/database_test.php";
+            String link = "http://quigleyserver.ddns.net/Group/database_test_2.php";
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
 
             URL url = new URL(link);
@@ -58,25 +60,22 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
             switch(code) {
                 case 200:
                     BufferedReader bR = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                   StringBuilder sB = new StringBuilder();
-                   String line = null;
+                    ArrayList<String> lines = new ArrayList<>();
+                    String line;
                     while ((line = bR.readLine()) != null) {
-                     sB.append(line);
-                     break;
+                        lines.add(line);
                   }
 
                     bR.close();
+                    HashMap<String,JSONArray> jsonData = new HashMap<>();
+                    for(String s:lines)
+                    {
+                        int found = s.indexOf('[');
+                        String key = s.substring(0,found-1);
+                        String newS = s.substring(found, s.length());
 
-                    jsonArr = new JSONArray(line);
-
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        JSONObject row;
-                        try {
-                            row = jsonArr.getJSONObject(i);
-
-                        } catch (JSONException e) {
-                            Log.e("JSON error : ", e.getMessage().toString());
-                        }
+                        JSONArray json = new JSONArray(newS);
+                        jsonData.put(key,json);
                     }
                     break;
                 case 401:
@@ -94,5 +93,10 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
         }
 
         return null;
+    }
+
+    private void parseData(JSONObject dataToParse)
+    {
+
     }
 }

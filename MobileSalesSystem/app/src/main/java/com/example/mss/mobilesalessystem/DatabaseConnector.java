@@ -26,6 +26,8 @@ import java.sql.SQLData;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -77,6 +79,8 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                         JSONArray json = new JSONArray(newS);
                         jsonData.put(key,json);
                     }
+
+                    interpretData(jsonData);
                     break;
                 case 401:
                     Log.e("Authentication error", "The token on the device was not accepted by the server");
@@ -95,8 +99,46 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
         return null;
     }
 
-    private void parseData(JSONObject dataToParse)
+    private void interpretData(HashMap<String, JSONArray> dataToIntepret)
     {
+        for (Map.Entry<String, JSONArray> data : dataToIntepret.entrySet())
+        {
+            String sqlStatement = "INSERT INTO ";
+            sqlStatement += data.getKey();
+            sqlStatement += " VALUES (";
 
+            String sqlStart = sqlStatement;
+
+            JSONArray jA = data.getValue();
+            for (int i = 0; i < jA.length(); i  ++) {
+                try {
+                    JSONObject row;
+
+                    row = jA.getJSONObject(i);
+
+                    Iterator<String> iter = row.keys();
+
+                    while (iter.hasNext()) {
+                        String key = iter.next();
+
+                        sqlStatement += "'";
+
+                        sqlStatement += row.get(key);
+
+                        sqlStatement += "',";
+                    }
+
+                    sqlStatement = sqlStatement.substring(0, sqlStatement.length()-1);
+                    sqlStatement += ");";
+
+                    //run SQL
+
+                    sqlStatement = sqlStart;
+
+                } catch (JSONException e) {
+                    Log.e("JSON PARCING ERROR : ", e.getMessage().toString());
+                }
+            }
+        }
     }
 }

@@ -58,10 +58,10 @@ public class MainMenu extends Activity {
             String [] tableColumns = new String[5];
 
             tableName[2] = "product";
-            tableColumns[2] = "Format text, ImageID text, ProdDesc text, Price REAL, PRIMARY KEY (Format, ImageID)";
+            tableColumns[2] = "ProductID INTEGER, Format text, ImageID text, Price REAL, Cost REAL, Qty INTEGER, PRIMARY KEY (Format, ImageID)";
 
             tableName[1] = "image";
-            tableColumns[1] = "ImageID text, ImageDesc text, ImgFilePath text, PRIMARY KEY (ImageID)";
+            tableColumns[1] = "ImageID text, ImageDesc text, SmlImgFilePath text, MedImgFilePath text, PRIMARY KEY (ImageID)";
 
             tableName[0] = "format";
             tableColumns[0] = "Format text, FormatDesc text, PRIMARY KEY (Format)";

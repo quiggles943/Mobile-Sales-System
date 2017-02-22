@@ -105,7 +105,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
         {
             String sqlStatement = "INSERT INTO ";
             sqlStatement += data.getKey();
-            sqlStatement += " VALUES (";
+            sqlStatement += " (";
 
             String sqlStart = sqlStatement;
 
@@ -116,10 +116,24 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
                     row = jA.getJSONObject(i);
 
-                    Iterator<String> iter = row.keys();
+                    Iterator<String> iterColumns = row.keys();
 
-                    while (iter.hasNext()) {
-                        String key = iter.next();
+                    while(iterColumns.hasNext()) {
+                        String key = iterColumns.next();
+
+                        sqlStatement += key;
+
+                        sqlStatement += ",";
+                    }
+
+                    sqlStatement = sqlStatement.substring(0, sqlStatement.length()-1);
+
+                    sqlStatement += ") VALUES (";
+
+                    Iterator<String> iterValues = row.keys();
+
+                    while (iterValues.hasNext()) {
+                        String key = iterValues.next();
 
                         sqlStatement += "'";
 

@@ -2,6 +2,7 @@ package com.example.mss.mobilesalessystem;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
@@ -40,6 +41,10 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     JSONArray jsonArr;
     Context context;
 
+    public DatabaseConnector (Context c)
+    {
+        this.context = c;
+    }
 
     @Override
     protected Void doInBackground(String... strings) {
@@ -146,11 +151,16 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     sqlStatement += ");";
 
                     //run SQL
+                    SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
+
+                    pDB.execSQL(sqlStatement);
 
                     sqlStatement = sqlStart;
 
                 } catch (JSONException e) {
                     Log.e("JSON PARCING ERROR : ", e.getMessage().toString());
+                } catch (SQLiteException sqlE) {
+                    Log.e("SQL INSERTION ERROR : ", sqlE.getMessage().toString());
                 }
             }
         }

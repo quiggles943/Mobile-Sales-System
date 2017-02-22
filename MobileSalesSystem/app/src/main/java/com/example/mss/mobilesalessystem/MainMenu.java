@@ -80,7 +80,7 @@ public class MainMenu extends Activity {
                 }
             }
 
-            DatabaseConnector connector = new DatabaseConnector();      //creating a new database connector
+            DatabaseConnector connector = new DatabaseConnector(this.context);      //creating a new database connector
 
             SharedPreferences sharedP = this.getPreferences(Context.MODE_PRIVATE);      //oppening up shared preferences
             String token = sharedP.getString("token","");                               //gaining the token

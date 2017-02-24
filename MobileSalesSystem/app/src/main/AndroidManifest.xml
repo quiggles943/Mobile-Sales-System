@@ -24,12 +24,6 @@
         </intent-filter>
         </activity>
         <activity
-            android:name=".qrReader"
-            android:label="Mobile Sales System"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
             android:name=".qrScanner"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
@@ -37,6 +31,12 @@
         </activity>
         <activity
             android:name=".Transaction"
+            android:label="Mobile Sales System"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".ItemCheck"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >

@@ -112,7 +112,7 @@ public class qrScanner extends Activity {
         if(barcodes.valueAt(0).displayValue.contains(getString(R.string.website)))
         {
             barcodeDetector.release();
-            Intent intent = new Intent(context, Transaction.class);
+            Intent intent = new Intent(context, ItemCheck.class);
             intent.putExtra("barcode", barcodes.valueAt(0).displayValue);
             startActivity(intent);
         }

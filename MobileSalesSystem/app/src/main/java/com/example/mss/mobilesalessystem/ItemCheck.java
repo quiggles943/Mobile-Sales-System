@@ -1,17 +1,19 @@
 package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-
 /**
- * Created by Paul on 02/02/2017.
+ * Created by Paul on 23/02/2017.
  */
 
-public class Transaction extends Activity {
+public class ItemCheck extends Activity{
     TextView barcodeInfo;
-
+    ImageButton discard, accept;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,20 @@ public class Transaction extends Activity {
         } else {
             productName = "";                                                //otherwise it'll be blank
         }
-        barcodeInfo.setText(productName);                                    //outputs the new product name
+        barcodeInfo.setText(productName);
+
+        discard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                
+            }
+        });
     }
+
 }

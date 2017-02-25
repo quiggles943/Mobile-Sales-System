@@ -107,6 +107,23 @@ public class qrScanner extends Activity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == 1){
+            if(resultCode == Activity.RESULT_OK){
+                String result = data.getStringExtra("title");
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("title",result);
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+            }
+            if(resultCode == Activity.RESULT_CANCELED){
+
+            }
+        }
+    }
+
     public void processBarcode(SparseArray<Barcode> barcodes){
         Log.d("Barcode", barcodes.valueAt(0).displayValue);
         if(barcodes.valueAt(0).displayValue.contains(getString(R.string.website)))
@@ -114,7 +131,7 @@ public class qrScanner extends Activity {
             barcodeDetector.release();
             Intent intent = new Intent(context, ItemCheck.class);
             intent.putExtra("barcode", barcodes.valueAt(0).displayValue);
-            startActivity(intent);
+            startActivityForResult(intent,1);
         }
 
     }

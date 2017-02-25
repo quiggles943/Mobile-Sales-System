@@ -39,7 +39,10 @@ public class ItemCheck extends Activity{
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("title", productName);
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
             }
         });
     }

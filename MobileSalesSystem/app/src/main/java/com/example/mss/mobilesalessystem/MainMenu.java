@@ -46,7 +46,7 @@ public class MainMenu extends Activity {
         transactionBtn.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View view) {
-                                                  startActivity(new Intent(context,qrScanner.class));
+                                                  startActivity(new Intent(context,Cart.class));
                                               }
                                           }
         );

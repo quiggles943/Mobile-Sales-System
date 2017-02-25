@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 /**
  * Created by Paul on 25/02/2017.
@@ -15,11 +17,14 @@ public class Cart extends Activity{
     ImageButton addItemBtn, checkoutBtn;
     Context context;
     String result;
+    private BaseAdapter adapter;
+    private ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.cart_layout);
         context = this;
-
+        addItemBtn = (ImageButton)findViewById(R.id.btn_add_item);
 
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,6 +33,13 @@ public class Cart extends Activity{
                 startActivityForResult(intent,1);
             }
         });
+
+        // Mockup listview layout ---> cart_layout
+        listview = (ListView) findViewById(R.id.lv_itemList);
+        //create new Adapter
+        adapter = new CustomItemAdapter(this);
+        //set Adapter on listview
+        listview.setAdapter(adapter);
 
     }
 

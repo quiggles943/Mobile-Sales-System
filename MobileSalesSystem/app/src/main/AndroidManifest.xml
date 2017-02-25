@@ -2,7 +2,7 @@
     package="com.example.mss.mobilesalessystem">
 
     <uses-sdk android:minSdkVersion="21"
-        android:targetSdkVersion="23" />
+        android:targetSdkVersion="22" />
 
     <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
     <uses-permission android:name="android.permission.CAMERA" />
@@ -37,6 +37,12 @@
         </activity>
         <activity
             android:name=".ItemCheck"
+            android:label="Mobile Sales System"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".Cart"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >

@@ -119,7 +119,7 @@ public class qrScanner extends Activity {
                 finish();
             }
             if(resultCode == Activity.RESULT_CANCELED){
-
+                onResume();
             }
         }
     }

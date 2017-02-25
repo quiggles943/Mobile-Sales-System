@@ -18,6 +18,9 @@ public class ItemCheck extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_detail_layout);
+        discard = (ImageButton)findViewById(R.id.btn_discard);
+        accept = (ImageButton)findViewById(R.id.btn_accept);
+
         barcodeInfo = (TextView) findViewById(R.id.tv_detail_);
         final String barcode = getIntent().getStringExtra("barcode");
         final String [] barcodeSplit = barcode.split("/");                  //splitting the text read on the /
@@ -33,7 +36,8 @@ public class ItemCheck extends Activity{
         discard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                setResult(Activity.RESULT_CANCELED);
+                finish();
             }
         });
         accept.setOnClickListener(new View.OnClickListener() {

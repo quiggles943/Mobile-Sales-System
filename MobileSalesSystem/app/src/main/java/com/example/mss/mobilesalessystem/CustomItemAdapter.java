@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,13 @@ import java.util.List;
 public class CustomItemAdapter extends BaseAdapter {
 
     private Context context;
-
+    private ArrayList<orderItem> itemList;
     private static LayoutInflater inflater=null;
-    public CustomItemAdapter(Activity mainActivity) {
+    public CustomItemAdapter(Activity mainActivity, ArrayList<orderItem> list) {
         // TODO Auto-generated constructor stub
-        fillMockupList();
         context = mainActivity;
+        itemList = list;
+        fillMockupList();
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -36,7 +38,7 @@ public class CustomItemAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return mockupList.size();
+        return itemList.size();
     }
 
     @Override
@@ -63,7 +65,7 @@ public class CustomItemAdapter extends BaseAdapter {
             mViewHolder = (MyViewHolder) convertView.getTag();
         }
 
-        MockupItem currentItem = mockupList.get(position);
+        orderItem currentItem = itemList.get(position);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,12 +74,12 @@ public class CustomItemAdapter extends BaseAdapter {
         });
 
         // set on layout
-        mViewHolder.tv_title.setText(currentItem.name);
+        mViewHolder.tv_title.setText(currentItem.getItemDescription());
         //mViewHolder.tv_title.setTypeface(Global.typeFace); // Global Typeface
-        mViewHolder.tv_detailPrice.setText("" + currentItem.ammount + " x " + currentItem.singlePrice);
-        //mViewHolder.tv_frame.setText("" + currentItem.frame);
-        //mViewHolder.tv_size.setText(currentItem.size);
-        mViewHolder.tv_totalPrice.setText("" + (currentItem.ammount * currentItem.singlePrice + "£"));
+        mViewHolder.tv_detailPrice.setText("1 x " + currentItem.getItemPrice());
+        mViewHolder.tv_frame.setText(currentItem.getIsFramed());
+        mViewHolder.tv_size.setText(currentItem.getItemSize());
+        mViewHolder.tv_totalPrice.setText("£" + currentItem.getItemPrice());
 
         return convertView;
 
@@ -98,20 +100,19 @@ public class CustomItemAdapter extends BaseAdapter {
     /////// *** MOCKUP DATA *** ///////
     // just fot test purpose
 
-    private ArrayList<MockupItem> mockupList;
-
     // add items to mockup list
     private void fillMockupList(){
-        int count = 20;
-        mockupList = new ArrayList<MockupItem>();
+        itemList = new ArrayList<>();
 
-        for (int i = 0; i < count; i++){
-            mockupList.add(new MockupItem("Custom title" + i, true, "A4", i, i));
-        }
+        itemList.add(new orderItem(""+0,"Custom title" + 0, "A4",true, (float) 7));
+        itemList.add(new orderItem(""+1,"Custom title" + 1, "A5",false, (float) 5));
+        itemList.add(new orderItem(""+2,"Custom title" + 2, "A3",true, (float) 12));
+        itemList.add(new orderItem(""+3,"Custom title" + 3, "A6",false, (float) 3));
+        itemList.add(new orderItem(""+4,"Custom title" + 4, "Keyring",false, (float) 3));
     }
 
     // inner Mockup Class
-    public class MockupItem {
+    /*public class MockupItem {
 
         public String name;
         public boolean frame;
@@ -125,6 +126,6 @@ public class CustomItemAdapter extends BaseAdapter {
             this.singlePrice = singlePrice;
             this.ammount = ammount;
         }
-    }
+    }*/
 }
 

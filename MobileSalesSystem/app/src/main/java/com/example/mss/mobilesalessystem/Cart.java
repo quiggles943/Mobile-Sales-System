@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Paul on 25/02/2017.
  */
@@ -37,7 +39,8 @@ public class Cart extends Activity{
         // Mockup listview layout ---> cart_layout
         listview = (ListView) findViewById(R.id.lv_itemList);
         //create new Adapter
-        adapter = new CustomItemAdapter(this);
+        ArrayList<orderItem>items = new ArrayList<orderItem>();         //placeholder list
+        adapter = new CustomItemAdapter(this, items);
         //set Adapter on listview
         listview.setAdapter(adapter);
 

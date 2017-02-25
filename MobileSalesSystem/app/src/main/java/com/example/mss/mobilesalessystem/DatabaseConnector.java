@@ -108,7 +108,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     {
         for (Map.Entry<String, JSONArray> data : dataToIntepret.entrySet())
         {
-            String sqlStatement = "INSERT INTO ";
+            String sqlStatement = "INSERT OR IGNORE INTO ";
             sqlStatement += data.getKey();
             sqlStatement += " (";
 
@@ -148,7 +148,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     }
 
                     sqlStatement = sqlStatement.substring(0, sqlStatement.length()-1);
-                    sqlStatement += ") ON CONFLICT IGNORE;";
+                    sqlStatement += ");";
 
                     //run SQL
                     SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);

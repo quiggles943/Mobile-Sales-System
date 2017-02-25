@@ -3,6 +3,8 @@ package com.example.mss.mobilesalessystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -43,6 +45,7 @@ public class Cart extends Activity{
         adapter = new CustomItemAdapter(this, items);
         //set Adapter on listview
         listview.setAdapter(adapter);
+        queryDatabase();
 
     }
 
@@ -56,6 +59,20 @@ public class Cart extends Activity{
             if(resultCode == Activity.RESULT_CANCELED){
 
             }
+        }
+    }
+
+    private void queryDatabase(){
+        SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
+        Cursor cur = pDB.query("product",null,null,null,null,null,null);
+        cur.moveToFirst();
+        String[] testData = new String[40];
+        int i=0;
+        while(!cur.isAfterLast())
+        {
+            testData[i] = cur.getString(0)+" "+cur.getString(1)+" "+cur.getString(2)+" "+cur.getString(3)+" "+cur.getString(4)+" "+cur.getString(5);
+            cur.moveToNext();
+            i++;
         }
     }
 }

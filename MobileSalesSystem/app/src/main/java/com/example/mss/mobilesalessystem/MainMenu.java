@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ public class MainMenu extends Activity {
         context = this;
         setContentView(R.layout.mainmenu_layout);
         ImageButton transactionBtn = (ImageButton) findViewById(R.id.btn_cashpoint);
+        ImageButton statsBtn = (ImageButton) findViewById(R.id.btn_statistics);
         /*if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }*/
@@ -50,6 +52,13 @@ public class MainMenu extends Activity {
                                               }
                                           }
         );
+
+        statsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context,Statistics.class));
+            }
+        });
     }
 
     private void initDatabase(){

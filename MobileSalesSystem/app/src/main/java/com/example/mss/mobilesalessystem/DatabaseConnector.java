@@ -148,7 +148,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     }
 
                     sqlStatement = sqlStatement.substring(0, sqlStatement.length()-1);
-                    sqlStatement += ");";
+                    sqlStatement += ") ON CONFLICT IGNORE;";
 
                     //run SQL
                     SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);

@@ -161,6 +161,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     Log.e("JSON PARCING ERROR : ", e.getMessage().toString());
                 } catch (SQLiteException sqlE) {
                     Log.e("SQL INSERTION ERROR : ", sqlE.getMessage().toString());
+                    sqlStatement = sqlStart;
                 }
             }
         }

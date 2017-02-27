@@ -2,7 +2,13 @@ package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +22,8 @@ public class Checkout extends Activity {
     ArrayList<orderItem> order;
     private ArrayAdapter<orderItem> adapter;
     private TextView subtotalPriceDisplay, totalPriceDisplay;
+    private EditText discount;
+    private float total;
     ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,18 @@ public class Checkout extends Activity {
         listview.setAdapter(adapter);
 
         subtotalPriceDisplay.setText("Subtotal: £"+subTotal());
+
+        discount = (EditText) findViewById(R.id.et_discount);
+        discount.setImeActionLabel("Apply",KeyEvent.KEYCODE_ENTER);
+        discount.setOnEditorActionListener( new TextView.OnEditorActionListener(){
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                total = subTotal() - Float.parseFloat(discount.getText().toString());
+                Log.d("Total", ""+total);
+                return true;
+            }
+        });
     }
 
     public float subTotal(){

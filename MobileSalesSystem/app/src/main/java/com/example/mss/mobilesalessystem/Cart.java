@@ -1,7 +1,9 @@
 package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -109,5 +111,20 @@ public class Cart extends Activity{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Exit")
+                .setMessage("Are you sure you want to exit? This will remove your current order.")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            Cart.super.onBackPressed();
+                        }
+                })
+                .setNegativeButton(android.R.string.no, null).show();
     }
 }

@@ -20,13 +20,24 @@
         android:layout_marginTop="10dp">
 
         <ImageButton
-            android:src="@drawable/sym_sync"
+            android:src="@drawable/sym_sync_from_db"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_sync"
+            android:id="@+id/btn_sync_from_db"
             android:layout_weight="1"
             android:background="@drawable/selector_btn_red_large"
-            android:adjustViewBounds="false" />
+            android:adjustViewBounds="false"
+            android:layout_marginRight="10dp" />
+
+        <ImageButton
+            android:src="@drawable/sym_sync_to_db"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_sync_to_db"
+            android:layout_weight="1"
+            android:background="@drawable/selector_btn_red_large"
+            android:adjustViewBounds="false"
+            android:layout_marginLeft="10dp" />
 
     </LinearLayout>
 

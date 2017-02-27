@@ -48,6 +48,12 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
+            android:name=".Checkout"
+            android:label="Mobile Sales System"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
             android:name=".Statistics"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"

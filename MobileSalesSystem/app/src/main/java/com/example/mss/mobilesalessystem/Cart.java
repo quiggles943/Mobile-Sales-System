@@ -12,6 +12,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -26,7 +27,7 @@ public class Cart extends Activity{
     ImageButton addItemBtn, checkoutBtn;
     Context context;
     String result;
-    private BaseAdapter adapter;
+    private ArrayAdapter<orderItem> adapter;
     private ListView listview;
     ArrayList<orderItem>items;
     @Override
@@ -35,6 +36,7 @@ public class Cart extends Activity{
         setContentView(R.layout.cart_layout);
         context = this;
         addItemBtn = (ImageButton)findViewById(R.id.btn_add_item);
+        checkoutBtn =(ImageButton)findViewById(R.id.btn_checkout);
 
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +55,19 @@ public class Cart extends Activity{
         listview.setAdapter(adapter);
         queryDatabase();
         registerForContextMenu(listview);
+
+        checkoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                if(items.size() > 0)
+                {
+                    Intent intent = new Intent(context, Checkout.class);
+                    intent.putParcelableArrayListExtra("orderItems", items);
+                    startActivity(intent);
+                }
+            }
+        });
+
 
     }
 

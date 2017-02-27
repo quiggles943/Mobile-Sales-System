@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -43,10 +46,11 @@ public class Cart extends Activity{
         listview = (ListView) findViewById(R.id.lv_itemList);
         //create new Adapter
         items = new ArrayList<>();         //placeholder list
-        adapter = new CustomItemAdapter(this, items);
+        adapter = new CustomItemAdapter(this,R.layout.listitem, items);
         //set Adapter on listview
         listview.setAdapter(adapter);
         queryDatabase();
+        registerForContextMenu(listview);
 
     }
 
@@ -78,5 +82,32 @@ public class Cart extends Activity{
             cur.moveToNext();
             i++;
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        if(v.getId() == R.id.lv_itemList)
+        {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            int test = info.position;
+            orderItem item = (orderItem) listview.getItemAtPosition(test);
+            menu.setHeaderTitle("Options for "+item.getItemDescription());
+            menu.add("Remove");
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem selected)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)selected.getMenuInfo();
+        if(selected.toString().equals("Remove"))
+        {
+            orderItem item = (orderItem) listview.getItemAtPosition(info.position);
+            items.remove(item);
+            adapter.notifyDataSetChanged();
+            return true;
+        }
+        return false;
     }
 }

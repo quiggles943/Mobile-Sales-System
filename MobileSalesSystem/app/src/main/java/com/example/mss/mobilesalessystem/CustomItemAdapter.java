@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,43 +22,27 @@ import java.util.List;
  * Created by Kriss on 16/02/2017.
  */
 
-public class CustomItemAdapter extends BaseAdapter {
+public class CustomItemAdapter extends ArrayAdapter<orderItem> {
 
     private Context context;
+    int layoutResourceId;
     private ArrayList<orderItem> itemList;
-    private static LayoutInflater inflater=null;
-    public CustomItemAdapter(Activity mainActivity, ArrayList<orderItem> list) {
+    public CustomItemAdapter(Context context, int layoutResourceId, ArrayList<orderItem> list) {
+        super(context, layoutResourceId,list);
         // TODO Auto-generated constructor stub
-        context = mainActivity;
+        this.context = context;
+        this.layoutResourceId =layoutResourceId;
         itemList = list;
-        fillMockupList();
-        inflater = ( LayoutInflater )context.
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
-        return itemList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        // TODO Auto-generated method stub
-        return position;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        // TODO Auto-generated method stub
-        return position;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         MyViewHolder mViewHolder;
 
-        if (convertView == null) {
+        if (convertView == null)
+        {
+            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+            //convertView = inflater.inflate(layoutResourceId, parent, false);
             convertView = inflater.inflate(R.layout.listitem, parent, false);
             mViewHolder = new MyViewHolder(convertView);
             convertView.setTag(mViewHolder);
@@ -65,13 +50,20 @@ public class CustomItemAdapter extends BaseAdapter {
             mViewHolder = (MyViewHolder) convertView.getTag();
         }
 
-        orderItem currentItem = itemList.get(position);
+        final orderItem currentItem = itemList.get(position);
+        convertView.setLongClickable(true);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Click " + position , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "ProductID: " + currentItem.getItemID() , Toast.LENGTH_SHORT).show();
             }
         });
+        /*convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public void onLongClick(View v) {
+
+            }
+        });*/
 
         // set on layout
         mViewHolder.tv_title.setText(currentItem.getItemDescription());

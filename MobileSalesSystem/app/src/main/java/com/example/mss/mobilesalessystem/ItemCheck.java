@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  */
 
 public class ItemCheck extends Activity{
-    TextView barcodeInfo;
+    TextView barcodeInfo, framed;
     ImageButton discard, accept;
     String barcode = null;
     String ImageDesc, ImageId;
@@ -38,10 +39,10 @@ public class ItemCheck extends Activity{
         toggle = (ToggleButton) findViewById(R.id.btn_toggle_framed);
         discard = (ImageButton)findViewById(R.id.btn_discard);
         accept = (ImageButton)findViewById(R.id.btn_accept);
-
+        toggle.setEnabled(false);
         barcodeInfo = (TextView) findViewById(R.id.tv_detail_);
         formatList = (Spinner) findViewById(R.id.sp_format);
-
+        framed = (TextView)findViewById(R.id.framed);
         barcode = getIntent().getStringExtra("barcode");
         final String [] barcodeSplit = barcode.split("/");                  //splitting the text read on the /
         final String productName;                                            //making a new barcode string
@@ -74,15 +75,17 @@ public class ItemCheck extends Activity{
                     }
                 }
                 String prodId = "";
-                String query = "SELECT ProductId FROM product WHERE ImageId = '"+ImageId+"' AND Format = '"+finalFormat.getFormatId()+"';";     //finds the product id that has the image id and format id that is selected
+                float itemPrice = 0;
+                String query = "SELECT ProductId, Price FROM product WHERE ImageId = '"+ImageId+"' AND Format = '"+finalFormat.getFormatId()+"';";     //finds the product id that has the image id and format id that is selected
                 Cursor cur = pDB.rawQuery(query,null);
                 cur.moveToFirst();
                 while(!cur.isAfterLast())
                 {
                     prodId = cur.getString(0);      //set product id
+                    itemPrice = cur.getFloat(1);
                     cur.moveToNext();
                 }
-                orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat, toggle.isChecked());    //Create new orderItem with the given variables
+                orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat,itemPrice, toggle.isChecked());    //Create new orderItem with the given variables
                 Intent returnIntent = new Intent();     //create the return intent
                 returnIntent.putExtra("Item", finalItem);       //adds the order item to the Extras
                 setResult(Activity.RESULT_OK,returnIntent);     //sets the result
@@ -90,13 +93,36 @@ public class ItemCheck extends Activity{
             }
         });
 
+        formatList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String test = formatList.getSelectedItem().toString();
+                for (Format foundformat : formats) {
+                    if (foundformat.getFormatDescription().equals(test)) {
+                        if (foundformat.getFrameable()) {
+                            toggle.setEnabled(true);
+                            toggle.setVisibility(View.VISIBLE);
+                            framed.setVisibility(View.VISIBLE);
+                        } else {
+                            toggle.setEnabled(false);
+                            toggle.setVisibility(View.INVISIBLE);
+                            framed.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
 
     private void getItem(){
         formats = new ArrayList<>();
-        FormatsDesc = new ArrayList<>();
+
 
         String query = "SELECT ImageId, ImageDesc FROM image WHERE QRCode = '"+barcode+"';";
         Cursor cur = pDB.rawQuery(query,null);      //Query to get the image details based on the barcode.
@@ -119,6 +145,7 @@ public class ItemCheck extends Activity{
             if(cur.getString(0).contains("FRM"))        //checks if format is frameable
             {
                 framed = true;
+
             }
             else{
                 framed = false;
@@ -139,13 +166,41 @@ public class ItemCheck extends Activity{
                     {
                         formatIndex = formats.indexOf(foundformat);
                         formats.get(formatIndex).setFormatDescription(cur.getString(1));
-                        FormatsDesc.add(cur.getString(1));
-                        formats.get(formatIndex).setPrice(cur.getFloat(2));
+                        //FormatsDesc.add(cur.getString(1));
+                        if(foundformat.getFrameable())
+                        {
+                            formats.get(formatIndex).setExtraPrice(cur.getFloat(2));
+                        }
+
                     }
                 }
                 cur.moveToNext();
 
             }
+            ArrayList<Format> removeableFormats = new ArrayList<>();
+            FormatsDesc = new ArrayList<>();
+            for(Format foundformat:formats)
+            {
+                if(foundformat.getFormatId().contains("FRM"))
+                {
+                    int index = foundformat.getFormatId().indexOf("FRM");
+                    String formatCheck = foundformat.getFormatId().substring(0,index);
+                    for(Format matching:formats)
+                    {
+                        if(matching.getFormatId().equals(formatCheck))
+                        {
+                            matching.setFrameable(true);
+                            matching.setExtraPrice(foundformat.getExtraPrice());
+                            removeableFormats.add(foundformat);
+                        }
+                    }
+                }
+                else
+                {
+                    FormatsDesc.add(foundformat.getFormatDescription());
+                }
+            }
+            formats.remove(removeableFormats);
         }
 
 

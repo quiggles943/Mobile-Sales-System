@@ -15,19 +15,20 @@ public class orderItem implements Parcelable{
     public boolean frame;                       //Boolean to hold whether the item is framed
     private Format format;                      //Format object which holds the format information
     private String imageId;                     //String to hold the image ID
-//    private Float itemPrice;                    //Float to hold the price of the item, due to decimal place acceptance
+    private Float itemPrice;                    //Float to hold the price of the item, due to decimal place acceptance
 
     public orderItem() {
         //standard constructor
     }
 
 
-    public orderItem (String itemID, String itemDescription, Format format, Boolean framed)
+    public orderItem (String itemID, String itemDescription, Format format,float price , Boolean framed)
     {
         this.itemID = itemID;
         this.itemDescription = itemDescription;
         this.frame = framed;
         this.format = format;
+        this.itemPrice = price;
     }
 
     public static final Parcelable.Creator<orderItem> CREATOR = new Creator<orderItem>() {      //Parcelable Creator allows for the order item to be sent between objects as a parcelable file
@@ -80,7 +81,18 @@ public class orderItem implements Parcelable{
         this.imageId = imageId;
     }
 
-    public float getPrice(){ return format.getPrice(); }
+    public float getPrice(){ return itemPrice; }
+
+    public float getTotalPrice() {
+        if(getFramed()) {
+            return itemPrice + this.format.getExtraPrice();
+        }
+        else
+        {
+            return itemPrice;
+        }
+
+    }
 
 //    public Float getItemPrice() {
 //        return itemPrice;
@@ -108,7 +120,8 @@ public class orderItem implements Parcelable{
         parcel.writeString(format.getFormatId());
         parcel.writeString(format.getFormatDescription());
         parcel.writeByte((byte) (format.getFrameable() ? 1:0));
-        parcel.writeFloat(format.getPrice());
+        parcel.writeFloat(format.getExtraPrice());
+        parcel.writeFloat(itemPrice);
     }
 
     public orderItem(Parcel parcel)         //converts the parcel to an object
@@ -121,7 +134,8 @@ public class orderItem implements Parcelable{
         String formatDesc = parcel.readString();
         boolean formatFrameable = false;
         formatFrameable = parcel.readByte() != 0;
-        float formatPrice = parcel.readFloat();
-        this.format = new Format(formatid,formatDesc,formatFrameable,formatPrice);
+        float priceExtra = parcel.readFloat();
+        this.itemPrice = parcel.readFloat();
+        this.format = new Format(formatid,formatDesc,formatFrameable, priceExtra);
     }
 }

@@ -61,7 +61,7 @@ public class Checkout extends Activity {
         float value = 0;
         for(orderItem item : order)
         {
-            value += item.getPrice();
+            value += item.getTotalPrice();
         }
         return value;
     }

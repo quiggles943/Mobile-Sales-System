@@ -67,7 +67,7 @@ public class MainMenu extends Activity {
             String [] tableColumns = new String[5];
 
             tableName[2] = "product";
-            tableColumns[2] = "ProductID INTEGER, Format text, ImageID text, Qty INTEGER, PRIMARY KEY (Format, ImageID)";
+            tableColumns[2] = "ProductID INTEGER, Format text, ImageID text,  Qty INTEGER, Price Real, PRIMARY KEY (Format, ImageID)";
 
             tableName[1] = "image";
             tableColumns[1] = "ImageID text, ImageDesc text, SmlImgFilePath text, MedImgFilePath text, QRCode text, PRIMARY KEY (ImageID)";

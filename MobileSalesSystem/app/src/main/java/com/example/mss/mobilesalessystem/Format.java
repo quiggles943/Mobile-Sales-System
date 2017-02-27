@@ -9,7 +9,7 @@ public class Format {
     private String formatId;
     private String formatDescription;
     private boolean frameable;
-    private float price;
+    private float priceExtra;
 
     public Format(String FormatId, boolean Frameable)
     {
@@ -23,13 +23,14 @@ public class Format {
         this.formatId = FormatId;
         this.formatDescription = FormatDescription;
         this.frameable = Frameable;
+        this.priceExtra = 0;
     }
-    public Format(String FormatId, String FormatDescription, boolean Frameable, float Price)
+    public Format(String FormatId, String FormatDescription, boolean Frameable, float extraPrice)
     {
         this.formatId = FormatId;
         this.formatDescription = FormatDescription;
         this.frameable = Frameable;
-        this.price = Price;
+        this.priceExtra = extraPrice;
     }
 
     public String getProductId(){ return  productId; }
@@ -47,9 +48,9 @@ public class Format {
 
     public boolean getFrameable(){ return frameable; }
 
-    public void setPrice(float Price) { price = Price; }
+    public void setExtraPrice(float extraPrice) { priceExtra = extraPrice; }
 
-    public float getPrice(){ return price; }
+    public float getExtraPrice(){ return priceExtra; }
 
 
 }

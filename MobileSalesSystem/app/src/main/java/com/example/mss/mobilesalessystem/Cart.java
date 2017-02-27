@@ -23,6 +23,7 @@ public class Cart extends Activity{
     String result;
     private BaseAdapter adapter;
     private ListView listview;
+    ArrayList<orderItem>items;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class Cart extends Activity{
         // Mockup listview layout ---> cart_layout
         listview = (ListView) findViewById(R.id.lv_itemList);
         //create new Adapter
-        ArrayList<orderItem>items = new ArrayList<orderItem>();         //placeholder list
+        items = new ArrayList<>();         //placeholder list
         adapter = new CustomItemAdapter(this, items);
         //set Adapter on listview
         listview.setAdapter(adapter);
@@ -54,7 +55,10 @@ public class Cart extends Activity{
     {
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
-                result = data.getStringExtra("title");
+                orderItem result = data.getParcelableExtra("Item");
+                result.toString();
+                items.add(result);
+                adapter.notifyDataSetChanged();
             }
             if(resultCode == Activity.RESULT_CANCELED){
 
@@ -70,7 +74,7 @@ public class Cart extends Activity{
         int i=0;
         while(!cur.isAfterLast())
         {
-            testData[i] = cur.getString(0)+" "+cur.getString(1)+" "+cur.getString(2)+" "+cur.getString(3)+" "+cur.getString(4)+" "+cur.getString(5);
+            testData[i] = cur.getString(0)+" "+cur.getString(1)+" "+cur.getString(2)+" "+cur.getString(3);
             cur.moveToNext();
             i++;
         }

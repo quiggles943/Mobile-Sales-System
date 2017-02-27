@@ -76,10 +76,10 @@ public class CustomItemAdapter extends BaseAdapter {
         // set on layout
         mViewHolder.tv_title.setText(currentItem.getItemDescription());
         //mViewHolder.tv_title.setTypeface(Global.typeFace); // Global Typeface
-        mViewHolder.tv_detailPrice.setText("1 x " + currentItem.getItemPrice());
+        mViewHolder.tv_detailPrice.setText("1 x " + currentItem.getFormat().getPrice());
         mViewHolder.tv_frame.setText(currentItem.getIsFramed());
-        mViewHolder.tv_size.setText(currentItem.getItemSize());
-        mViewHolder.tv_totalPrice.setText("£" + currentItem.getItemPrice());
+        mViewHolder.tv_size.setText(currentItem.getFormat().getFormatDescription());
+        mViewHolder.tv_totalPrice.setText("£" + currentItem.getFormat().getPrice());
 
         return convertView;
 
@@ -102,13 +102,13 @@ public class CustomItemAdapter extends BaseAdapter {
 
     // add items to mockup list
     private void fillMockupList(){
-        itemList = new ArrayList<>();
+//        itemList = new ArrayList<>();
 
-        itemList.add(new orderItem(""+0,"Custom title" + 0, "A4",true, (float) 7));
-        itemList.add(new orderItem(""+1,"Custom title" + 1, "A5",false, (float) 5));
-        itemList.add(new orderItem(""+2,"Custom title" + 2, "A3",true, (float) 12));
-        itemList.add(new orderItem(""+3,"Custom title" + 3, "A6",false, (float) 3));
-        itemList.add(new orderItem(""+4,"Custom title" + 4, "Keyring",false, (float) 3));
+//        itemList.add(new orderItem(""+0,"Custom title" + 0,  new Format("A4", "A4", true,(float) 5 ), true));
+//        itemList.add(new orderItem(""+1,"Custom title" + 1,  new Format("A5", "A5", false,(float) 5 ), false));
+//        itemList.add(new orderItem(""+2,"Custom title" + 2,  new Format("A3", "A3", true,(float) 12 ), true));
+//        itemList.add(new orderItem(""+3,"Custom title" + 3,  new Format("A6", "A6", false,(float) 3 ), false));
+//        itemList.add(new orderItem(""+4,"Custom title" + 4,  new Format("Keyring", "Keyring", false,(float) 3 ), false));
     }
 
     // inner Mockup Class

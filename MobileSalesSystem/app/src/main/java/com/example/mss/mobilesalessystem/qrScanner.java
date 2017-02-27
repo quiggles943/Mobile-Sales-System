@@ -112,9 +112,10 @@ public class qrScanner extends Activity {
     {
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
-                String result = data.getStringExtra("title");
+                
+                orderItem result = (orderItem) data.getParcelableExtra("Item");
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("title",result);
+                returnIntent.putExtra("Item",result);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }

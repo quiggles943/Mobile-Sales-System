@@ -70,7 +70,6 @@
                     <Spinner
                         android:layout_width="96dp"
                         android:id="@+id/sp_format"
-                        android:entries="@array/string_format_array"
                         android:layout_weight="1"
                         android:layout_gravity="right"
                         android:paddingRight="5dp"

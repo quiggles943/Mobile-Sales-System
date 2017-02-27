@@ -40,13 +40,18 @@ public class Checkout extends Activity {
         subtotalPriceDisplay.setText("Subtotal: £"+subTotal());
 
         discount = (EditText) findViewById(R.id.et_discount);
+
+        total = subTotal();
+
+        discount.setText(""+total);
+
         discount.setImeActionLabel("Apply",KeyEvent.KEYCODE_ENTER);
         discount.setOnEditorActionListener( new TextView.OnEditorActionListener(){
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                total = subTotal() - Float.parseFloat(discount.getText().toString());
-                Log.d("Total", ""+total);
+                total = Float.parseFloat(discount.getText().toString());
+                discount.setText(""+total);
                 return true;
             }
         });

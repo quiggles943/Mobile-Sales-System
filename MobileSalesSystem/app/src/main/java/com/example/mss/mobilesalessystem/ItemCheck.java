@@ -23,13 +23,8 @@ public class ItemCheck extends Activity{
     TextView barcodeInfo;
     ImageButton discard, accept;
     String barcode = null;
-    orderItem product;
-    String ProductId,ImageDesc, ImageId;
+    String ImageDesc, ImageId;
 
-    private String itemSize;                    //String to hold the size of the item, i.e. A4, A5, Keyring
-    public boolean frame;                       //Boolean to hold whether the item is framed
-    private String imageId;                     //String to hold the image ID
-    private Float itemPrice;
     Spinner formatList;
     ArrayList<Format> formats;
     ArrayList<String> FormatsDesc;
@@ -53,18 +48,13 @@ public class ItemCheck extends Activity{
 
         getItem();
 
-        if(barcodeSplit[barcodeSplit.length-2].contains("product"))         //if the second last element is products
-        {
-            productName = ImageDesc;               //the new output is the product name
-        } else {
-            productName = "";                                                //otherwise it'll be blank
-        }
+        productName = ImageDesc;               //The product name is set to be the Image Description
         barcodeInfo.setText(productName);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, FormatsDesc);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, FormatsDesc);     //Creates ArrayAdapter
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        formatList.setAdapter(adapter);
+        formatList.setAdapter(adapter);     //sets the formatList Adapter to be the arrayAdapter
 
 
         discard.setOnClickListener(new View.OnClickListener() {
@@ -79,24 +69,24 @@ public class ItemCheck extends Activity{
             public void onClick(View view){
                 Format finalFormat = null;
                 for(Format foundformat:formats) {
-                    if (foundformat.getFormatDescription().equals(formatList.getSelectedItem().toString())) {
+                    if (foundformat.getFormatDescription().equals(formatList.getSelectedItem().toString())) {       //Finds the format object that equals the selected spinner format
                         finalFormat =  foundformat;
                     }
                 }
                 String prodId = "";
-                String query = "SELECT ProductId FROM product WHERE ImageId = '"+ImageId+"' AND Format = '"+finalFormat.getFormatId()+"';";
+                String query = "SELECT ProductId FROM product WHERE ImageId = '"+ImageId+"' AND Format = '"+finalFormat.getFormatId()+"';";     //finds the product id that has the image id and format id that is selected
                 Cursor cur = pDB.rawQuery(query,null);
                 cur.moveToFirst();
                 while(!cur.isAfterLast())
                 {
-                    prodId = cur.getString(0);
+                    prodId = cur.getString(0);      //set product id
                     cur.moveToNext();
                 }
-                orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat, toggle.isChecked());
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("Item", finalItem);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat, toggle.isChecked());    //Create new orderItem with the given variables
+                Intent returnIntent = new Intent();     //create the return intent
+                returnIntent.putExtra("Item", finalItem);       //adds the order item to the Extras
+                setResult(Activity.RESULT_OK,returnIntent);     //sets the result
+                finish();       //returns to the qrScanner activity to pass the orderItem to the Cart
             }
         });
 
@@ -109,45 +99,43 @@ public class ItemCheck extends Activity{
         FormatsDesc = new ArrayList<>();
 
         String query = "SELECT ImageId, ImageDesc FROM image WHERE QRCode = '"+barcode+"';";
-        Cursor cur = pDB.rawQuery(query,null);
+        Cursor cur = pDB.rawQuery(query,null);      //Query to get the image details based on the barcode.
         cur.moveToFirst();
         while(!cur.isAfterLast())
         {
-            ImageId = cur.getString(0);
-            ImageDesc = cur.getString(1);
+            ImageId = cur.getString(0);         //sets the ImageId
+            ImageDesc = cur.getString(1);       //sets the Image Description
             cur.moveToNext();
         }
         cur.close();
 
-        query = "SELECT ProductID, Format FROM product WHERE ImageID = '"+ImageId+"';";
-        cur = pDB.rawQuery(query,null);
+        query = "SELECT Format FROM product WHERE ImageID = '"+ImageId+"';";
+        cur = pDB.rawQuery(query,null);     //Query to find the formats that exist for the image
         cur.moveToFirst();
-        int i = 0;
 
         while(!cur.isAfterLast())
         {
             boolean framed;
-            if(cur.getString(1).contains("FRM"))
+            if(cur.getString(0).contains("FRM"))        //checks if format is frameable
             {
                 framed = true;
             }
             else{
                 framed = false;
             }
-            formats.add(new Format(cur.getString(1),framed));
-            i++;
+            formats.add(new Format(cur.getString(0),framed));       //creates a new format
             cur.moveToNext();
         }
         for(Format format:formats) {
             query = "SELECT Format, FormatDesc, Price FROM format WHERE Format = '" + format.getFormatId() + "';";
-            cur = pDB.rawQuery(query, null);
+            cur = pDB.rawQuery(query, null);        //Query to find each formats details
             cur.moveToFirst();
             while(!cur.isAfterLast())
             {
-                int formatIndex = 0;
+                int formatIndex;
                 for(Format foundformat:formats)
                 {
-                    if(foundformat.getFormatId().equals(cur.getString(0)))
+                    if(foundformat.getFormatId().equals(cur.getString(0)))      //finds each format object and adds the extra details to them
                     {
                         formatIndex = formats.indexOf(foundformat);
                         formats.get(formatIndex).setFormatDescription(cur.getString(1));

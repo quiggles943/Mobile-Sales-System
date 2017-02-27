@@ -88,7 +88,7 @@ public class qrScanner extends Activity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume(){      //onResume the barcode scanner restarts
         super.onResume();
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
@@ -113,11 +113,11 @@ public class qrScanner extends Activity {
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
                 
-                orderItem result = (orderItem) data.getParcelableExtra("Item");
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("Item",result);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                orderItem result = (orderItem) data.getParcelableExtra("Item");     //gets the orderItem from the passed intent
+                Intent returnIntent = new Intent();     //creates a return intent
+                returnIntent.putExtra("Item",result);   //adds the orderItem to the intent
+                setResult(Activity.RESULT_OK,returnIntent);     //sends the intent back to the Cart
+                finish();       //returns to the Cart
             }
             if(resultCode == Activity.RESULT_CANCELED){
                 onResume();
@@ -129,10 +129,10 @@ public class qrScanner extends Activity {
         Log.d("Barcode", barcodes.valueAt(0).displayValue);
         if(barcodes.valueAt(0).displayValue.contains(getString(R.string.website)))
         {
-            barcodeDetector.release();
-            Intent intent = new Intent(context, ItemCheck.class);
-            intent.putExtra("barcode", barcodes.valueAt(0).displayValue);
-            startActivityForResult(intent,1);
+            barcodeDetector.release();      //stops the barcode scanner
+            Intent intent = new Intent(context, ItemCheck.class);       //creates new intent
+            intent.putExtra("barcode", barcodes.valueAt(0).displayValue);       //adds the scanned barcode to the intent
+            startActivityForResult(intent,1);       //starts ItemCheck
         }
 
     }

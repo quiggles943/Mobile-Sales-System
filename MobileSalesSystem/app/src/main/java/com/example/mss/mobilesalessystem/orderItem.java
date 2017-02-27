@@ -13,7 +13,7 @@ public class orderItem implements Parcelable{
     private String itemID;                         //String to hold the item ID, used for database lookup
     private String itemDescription;             //String to hold the description of the item
     public boolean frame;                       //Boolean to hold whether the item is framed
-    private Format format;
+    private Format format;                      //Format object which holds the format information
     private String imageId;                     //String to hold the image ID
 //    private Float itemPrice;                    //Float to hold the price of the item, due to decimal place acceptance
 
@@ -30,7 +30,7 @@ public class orderItem implements Parcelable{
         this.format = format;
     }
 
-    public static final Parcelable.Creator<orderItem> CREATOR = new Creator<orderItem>() {
+    public static final Parcelable.Creator<orderItem> CREATOR = new Creator<orderItem>() {      //Parcelable Creator allows for the order item to be sent between objects as a parcelable file
         @Override
         public orderItem createFromParcel(Parcel in) {
             return new orderItem(in);
@@ -101,7 +101,7 @@ public class orderItem implements Parcelable{
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
+    public void writeToParcel(Parcel parcel, int i) {       //converts the object to a parcel
         parcel.writeString(itemID);
         parcel.writeString(itemDescription);
         parcel.writeByte((byte) (frame ? 1: 0));
@@ -111,7 +111,7 @@ public class orderItem implements Parcelable{
         parcel.writeFloat(format.getPrice());
     }
 
-    public orderItem(Parcel parcel)
+    public orderItem(Parcel parcel)         //converts the parcel to an object
     {
         this.frame = false;
         this.itemID = parcel.readString();

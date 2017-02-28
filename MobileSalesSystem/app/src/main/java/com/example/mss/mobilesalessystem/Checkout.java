@@ -76,6 +76,7 @@ public class Checkout extends Activity {
             @Override
             public void onClick(View v) {
                 addOrderToDatabase();                                                               //runs the subroutine to add the order to the database
+                //WE HAVE NO WHERE TO STORE THE TOTAL PRICE AND SO CAN'T SHOW TOTAL MONEY MADE....
                 Toast.makeText(context, "Order Added To Database", Toast.LENGTH_SHORT).show();      //temp toast to show it is working
             }
         });

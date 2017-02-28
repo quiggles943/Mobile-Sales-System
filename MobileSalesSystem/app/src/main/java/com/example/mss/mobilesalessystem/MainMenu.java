@@ -76,7 +76,7 @@ public class MainMenu extends Activity {
             tableColumns[0] = "Format text, FormatDesc text, Price REAL, Cost REAL, PRIMARY KEY (Format)";
 
             tableName[3] = "invoice";
-            tableColumns[3] = "InvoiceID INTEGER, Date DATE, Event INTEGER, CustomerID INTEGER";
+            tableColumns[3] = "InvoiceID INTEGER AUTOINCREMENT, Date DATE, Event INTEGER, CustomerID INTEGER";
 
             tableName[4] = "invoiceitems";
             tableColumns[4] = "InvoiceID INTEGER, ProductID INTEGER, Qty INTEGER";

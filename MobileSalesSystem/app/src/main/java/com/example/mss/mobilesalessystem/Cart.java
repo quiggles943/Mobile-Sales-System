@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -131,7 +132,7 @@ public class Cart extends Activity{
     @Override
     public void onBackPressed()
     {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Material_Dialog_Alert))
                 .setTitle("Confirm Exit")
                 .setMessage("Are you sure you want to exit? This will remove your current order.")
                 .setIcon(android.R.drawable.ic_dialog_alert)

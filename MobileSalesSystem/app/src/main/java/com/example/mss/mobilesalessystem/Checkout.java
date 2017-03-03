@@ -99,7 +99,7 @@ public class Checkout extends Activity {
 
             SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);        //oppening database
 
-            String invoiceJustCreated = "1";         //int to hold the invoice that was reviously just created
+            String invoiceJustCreated;         //int to hold the invoice that was reviously just created
             String[] tables = new String[1];
             tables[0] = "InvoiceID";
             //Cursor c = pDB.query("invoice",tables,null,null,null,null,"InvoiceID DESC","1");
@@ -108,7 +108,7 @@ public class Checkout extends Activity {
             if (c.getCount() > 0)       //if there are some results
             {
                 c.moveToFirst();        //move to first (largest due to ORDER BY)
-                invoiceJustCreated = c.toString();        //the first should be the invoice just created
+                invoiceJustCreated = c.getString(c.getColumnIndex("InvoiceID"));        //the first should be the invoice just created
             } else {
                 invoiceJustCreated = "1";
             }

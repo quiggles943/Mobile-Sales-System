@@ -63,7 +63,7 @@ public class CustomItemAdapter extends ArrayAdapter<orderItem> {
         //mViewHolder.tv_title.setTypeface(Global.typeFace); // Global Typeface
         if(currentItem.getFramed())
         {
-            mViewHolder.tv_detailPrice.setText("+ frame (£"+ currentItem.getFormat().getExtraPrice()+")");
+            mViewHolder.tv_detailPrice.setText("£"+currentItem.getPrice()+" + frame (£"+ currentItem.getFormat().getExtraPrice()+")");
         }
         else
         {

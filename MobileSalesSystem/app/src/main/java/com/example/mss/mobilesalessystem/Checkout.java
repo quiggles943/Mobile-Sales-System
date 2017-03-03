@@ -97,27 +97,35 @@ public class Checkout extends Activity {
 
         try {
 
-            SQLiteDatabase pDB = context.openOrCreateDatabase("Product_DB", MODE_PRIVATE, null);        //oppening database
+            SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);        //oppening database
 
-            Date d = new Date();        //getting the date
-
-            String currentDate = DateFormat.format("yyyy-MM-dd", d.getTime()).toString();       //getting the date into a format for SQLite
-
-            String sqlCreateInvoice = "INSERT INTO invoice (Date, Event, CustomerID) VALUES ("+ currentDate +",0,0)";   //making the insertion statement with customer and event ID of 0, need to change eventID
-
-            pDB.execSQL(sqlCreateInvoice);      //executing said SQL statement
-
-            String invoiceJustCreated = "";         //int to hold the invoice that was reviously just created
-
-            Cursor c = pDB.rawQuery("SELECT InvoiceID FROM invoice ORDER BY InvoiceID DESC", null);         //get all the invoice ID's by largest to smallest (largest will be most recent)
+            String invoiceJustCreated = "1";         //int to hold the invoice that was reviously just created
+            String[] tables = new String[1];
+            tables[0] = "InvoiceID";
+            //Cursor c = pDB.query("invoice",tables,null,null,null,null,"InvoiceID DESC","1");
+            Cursor c = pDB.rawQuery("SELECT InvoiceID FROM invoice ORDER BY InvoiceID DESC LIMIT 1", null);         //get all the invoice ID's by largest to smallest (largest will be most recent)
 
             if (c.getCount() > 0)       //if there are some results
             {
                 c.moveToFirst();        //move to first (largest due to ORDER BY)
                 invoiceJustCreated = c.toString();        //the first should be the invoice just created
+            } else {
+                invoiceJustCreated = "1";
             }
 
-            String start = "INSERT INTO invoiceitems VALUES (" + invoiceJustCreated + ",";      //sql starting statement
+            int invoiceNumber = Integer.parseInt(invoiceJustCreated) + 1;
+
+            String newInvoiceNumber = ""+invoiceNumber;
+
+            Date d = new Date();        //getting the date
+
+            String currentDate = DateFormat.format("yyyy-MM-dd", d.getTime()).toString();       //getting the date into a format for SQLite
+
+            String sqlCreateInvoice = "INSERT INTO invoice (InvoiceID, Date, Event, CustomerID) VALUES ("+newInvoiceNumber+","+ currentDate +",0,0)";   //making the insertion statement with customer and event ID of 0, need to change eventID
+
+            pDB.execSQL(sqlCreateInvoice);      //executing said SQL statement
+
+            String start = "INSERT INTO invoiceitems VALUES (" + newInvoiceNumber + ",";      //sql starting statement
 
             for (orderItem o : order)       //for all the orders
             {

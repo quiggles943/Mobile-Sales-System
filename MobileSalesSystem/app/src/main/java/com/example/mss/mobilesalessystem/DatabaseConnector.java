@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +45,12 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     public DatabaseConnector (Context c)
     {
         this.context = c;
+    }
+
+    @Override
+    protected void onPreExecute()
+    {
+        Toast.makeText(context,"Local database update started",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -102,6 +109,12 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
         }
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void result)
+    {
+        Toast.makeText(context,"Local database updated",Toast.LENGTH_SHORT).show();
     }
 
     private void interpretData(HashMap<String, JSONArray> dataToIntepret)

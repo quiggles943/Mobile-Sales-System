@@ -34,7 +34,7 @@ public class InvoiceAdapter extends ArrayAdapter<Invoice> {
         if (convertView == null)
         {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            convertView = inflater.inflate(R.layout.listitem, parent, false);
+            convertView = inflater.inflate(R.layout.basic_invoice_item, parent, false);
             mViewHolder = new MyViewHolder(convertView);
             convertView.setTag(mViewHolder);
         } else {
@@ -51,8 +51,8 @@ public class InvoiceAdapter extends ArrayAdapter<Invoice> {
         });
 
         // set on layout
-        mViewHolder.tv_invoiceTitle.setText(currentInvoice.getInvoiceId());
-        mViewHolder.tv_invoiceDate.setText(""+currentInvoice.getDate());
+        mViewHolder.tv_invoiceTitle.setText(" "+currentInvoice.getInvoiceId());
+        mViewHolder.tv_invoiceDate.setText(" "+currentInvoice.getDate());
 
         return convertView;
 

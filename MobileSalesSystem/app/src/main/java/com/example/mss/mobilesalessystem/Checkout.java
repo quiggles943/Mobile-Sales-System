@@ -121,7 +121,7 @@ public class Checkout extends Activity {
 
             String currentDate = DateFormat.format("yyyy-MM-dd", d.getTime()).toString();       //getting the date into a format for SQLite
 
-            String sqlCreateInvoice = "INSERT INTO invoice (InvoiceID, Date, Event, CustomerID) VALUES ("+newInvoiceNumber+","+ currentDate +",0,0)";   //making the insertion statement with customer and event ID of 0, need to change eventID
+            String sqlCreateInvoice = "INSERT INTO invoice (InvoiceID, Date, Event, CustomerID) VALUES ("+newInvoiceNumber+",'"+ currentDate +"',0,0)";   //making the insertion statement with customer and event ID of 0, need to change eventID
 
             pDB.execSQL(sqlCreateInvoice);      //executing said SQL statement
 

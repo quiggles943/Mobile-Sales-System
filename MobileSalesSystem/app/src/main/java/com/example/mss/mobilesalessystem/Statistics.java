@@ -2,9 +2,13 @@ package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,28 +23,47 @@ public class Statistics extends Activity {
     ArrayList<Invoice> invoices;
     InvoiceAdapter adapter;
     ListView listView;
-
+    ImageButton syncFromDb, syncToDb;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.statistic_layout);
         listView = (ListView)findViewById(R.id.lv_itemList);
-
+        final SharedPreferences sharedP = this.getPreferences(Context.MODE_PRIVATE);      //oppening up shared preferences
         invoices = new ArrayList<>();
-        pDB = context.openOrCreateDatabase("Product_DB", MODE_PRIVATE, null);
+        pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
         String query = "SELECT * FROM invoice";
         Cursor cur = pDB.rawQuery(query,null);
+            if(!(cur.moveToFirst()) || cur.getCount() ==0)
+            {
 
-        cur.moveToFirst();
-        while(!cur.isAfterLast())
-        {
-            invoices.add(new Invoice(cur.getInt(0),cur.getString(1), cur.getInt(2), cur.getInt(3)));
-        }
+            }
+            else {
+                while (!cur.isAfterLast()) {
+                    invoices.add(new Invoice(cur.getInt(0), cur.getString(1), cur.getInt(2), cur.getInt(3)));
+                    cur.moveToNext();
+                }
+                adapter = new InvoiceAdapter(this,R.layout.basic_invoice_item, invoices);
+                //set Adapter on listview
+                listView.setAdapter(adapter);
+            }
+            //Log.e("Invoice Error", ""+ex.getMessage().toString());
+        syncToDb = (ImageButton)findViewById(R.id.btn_sync_to_db);
+        syncFromDb = (ImageButton)findViewById(R.id.btn_sync_from_db);
 
-        adapter = new InvoiceAdapter(this,R.layout.basic_invoice_item, invoices);
-        //set Adapter on listview
-        listView.setAdapter(adapter);
+        syncFromDb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseConnector connector = new DatabaseConnector(context);      //creating a new database connector
+
+
+                String token = sharedP.getString("token","");                               //gaining the token
+
+                connector.execute(token);                                                   //running the database connector with the token
+
+            }
+        });
     }
 
 }

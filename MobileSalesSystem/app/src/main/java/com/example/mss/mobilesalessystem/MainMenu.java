@@ -2,18 +2,23 @@ package com.example.mss.mobilesalessystem;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
 import java.util.logging.*;
 
 /**
@@ -33,7 +38,6 @@ public class MainMenu extends Activity {
         /*if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }*/
-
         SharedPreferences sharedP = this.getPreferences(Context.MODE_PRIVATE);      //oppening up shared preferences
         SharedPreferences.Editor editor = sharedP.edit();                           //openning up an editor to write to shared preferences
 
@@ -46,11 +50,25 @@ public class MainMenu extends Activity {
 
         initDatabase();
         transactionBtn.setOnClickListener(new View.OnClickListener() {
-                                              @Override
-                                              public void onClick(View view) {
-                                                  startActivity(new Intent(context,Cart.class));
-                                              }
-                                          }
+            @Override
+            public void onClick(View view) {
+                String check = "SELECT count(*) FROM image";
+                Cursor cur = pDB.rawQuery(check, null);
+                cur.moveToFirst();
+                int checkInt = cur.getInt(0);
+                if(checkInt>0) {
+                    startActivity(new Intent(context, Cart.class));
+                }
+                else
+                {
+                    new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                            .setTitle("No Images Found")
+                            .setMessage("There are currently no images in the database")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setNegativeButton(android.R.string.ok, null).show();
+                }
+            }
+        }
         );
 
         statsBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,12 +107,7 @@ public class MainMenu extends Activity {
                 }
             }
 
-            DatabaseConnector connector = new DatabaseConnector(this.context);      //creating a new database connector
 
-            SharedPreferences sharedP = this.getPreferences(Context.MODE_PRIVATE);      //oppening up shared preferences
-            String token = sharedP.getString("token","");                               //gaining the token
-
-            connector.execute(token);                                                   //running the database connector with the token
 
         }catch(Exception e){
             Log.e("Database Creation Error", e.getMessage().toString());

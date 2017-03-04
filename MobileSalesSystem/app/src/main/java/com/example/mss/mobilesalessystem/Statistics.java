@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -30,7 +31,7 @@ public class Statistics extends Activity {
         context = this;
         setContentView(R.layout.statistic_layout);
         listView = (ListView)findViewById(R.id.lv_itemList);
-        final SharedPreferences sharedP = this.getPreferences(Context.MODE_PRIVATE);      //oppening up shared preferences
+        final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         invoices = new ArrayList<>();
         pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
         String query = "SELECT * FROM invoice";
@@ -55,10 +56,9 @@ public class Statistics extends Activity {
         syncFromDb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseConnector connector = new DatabaseConnector(context);      //creating a new database connector
+                DatabaseConnector connector = new DatabaseConnector(context, new String[]{"product","format","image"});      //creating a new database connector                 //openning up an editor to write to shared preferences
 
-
-                String token = sharedP.getString("token","");                               //gaining the token
+                String token = mSharedPreference.getString("token","");                               //gaining the token
 
                 connector.execute(token);                                                   //running the database connector with the token
 

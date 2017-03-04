@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -38,7 +39,7 @@ public class MainMenu extends Activity {
         /*if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }*/
-        SharedPreferences sharedP = this.getPreferences(Context.MODE_PRIVATE);      //oppening up shared preferences
+        SharedPreferences sharedP = PreferenceManager.getDefaultSharedPreferences(this);      //oppening up shared preferences
         SharedPreferences.Editor editor = sharedP.edit();                           //openning up an editor to write to shared preferences
 
         String checkToken = sharedP.getString("token", "");                         //string to check if token is already there

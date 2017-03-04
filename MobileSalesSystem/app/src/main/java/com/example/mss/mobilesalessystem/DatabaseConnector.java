@@ -41,10 +41,22 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
     JSONArray jsonArr;
     Context context;
+    String[] tables;
+    String tablesJSON;
 
-    public DatabaseConnector (Context c)
+    public DatabaseConnector (Context c, String[] tables)
     {
         this.context = c;
+        this.tables = tables;
+        try {
+            JSONArray tablesArray = new JSONArray(tables);
+            tablesJSON = tablesArray.toString();
+        }
+        catch (Exception ex)
+        {
+
+        }
+
     }
 
     @Override
@@ -61,6 +73,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
             String link = "http://quigleyserver.ddns.net/Group/database_test_2.php";
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
+            data += "&" + URLEncoder.encode("tables", "UTF-8") + "=" + URLEncoder.encode(tablesJSON, "UTF-8");
 
             URL url = new URL(link);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();

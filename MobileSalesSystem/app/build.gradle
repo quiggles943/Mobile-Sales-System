@@ -4,6 +4,9 @@ android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
 
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
     defaultConfig {
         applicationId "com.example.mss.mobilesalessystem"
         minSdkVersion 21

@@ -3,20 +3,29 @@ package com.example.mss.mobilesalessystem;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.ContactsContract;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -27,13 +36,14 @@ public class ItemCheck extends Activity{
     TextView barcodeInfo, framed;
     ImageButton discard, accept;
     String barcode = null;
-    String ImageDesc, ImageId;
+    String ImageDesc, ImageId, ImageFilePath;
 
     Spinner formatList;
     ArrayList<Format> formats;
     ArrayList<String> FormatsDesc;
     SQLiteDatabase pDB;
     ToggleButton toggle;
+    ImageView preview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +52,7 @@ public class ItemCheck extends Activity{
         toggle = (ToggleButton) findViewById(R.id.btn_toggle_framed);
         discard = (ImageButton)findViewById(R.id.btn_discard);
         accept = (ImageButton)findViewById(R.id.btn_accept);
+        preview = (ImageView)findViewById(R.id.iv_preview);
         toggle.setEnabled(false);
         barcodeInfo = (TextView) findViewById(R.id.tv_detail_);
         formatList = (Spinner) findViewById(R.id.sp_format);
@@ -51,7 +62,7 @@ public class ItemCheck extends Activity{
         final String productName;                                            //making a new barcode string
 
         if(getItem()) {
-
+            getThumbnail();
             productName = ImageDesc;               //The product name is set to be the Image Description
             barcodeInfo.setText(productName);
 
@@ -148,6 +159,7 @@ public class ItemCheck extends Activity{
             while (!cur.isAfterLast()) {
                 ImageId = cur.getString(0);         //sets the ImageId
                 ImageDesc = cur.getString(1);       //sets the Image Description
+
                 cur.moveToNext();
             }
             cur.close();
@@ -208,10 +220,47 @@ public class ItemCheck extends Activity{
                 }
                 formats.remove(removeableFormats);
             }
+
             return true;
         }
 
 
+    }
+
+    private void getThumbnail()
+    {
+        try {
+            ContextWrapper cw = new ContextWrapper(this.getApplicationContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("MedImg", Context.MODE_PRIVATE);
+            File mypath = null;
+            boolean thumbnail;
+            // Create imageDir
+            if(ImageId.equals("HLYQU")) {
+                mypath = new File(directory, "harley.png");
+                thumbnail = true;
+            }
+            else if(ImageId.equals("FRKGR"))
+            {
+                mypath = new File(directory, "freddy_krueger.png");
+                thumbnail = true;
+            }
+            else
+            {
+                thumbnail = false;
+            }
+
+            if(thumbnail) {
+                //File imagelocation = new File(mypath);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap image;
+
+                image = BitmapFactory.decodeStream(new FileInputStream(mypath), null, options);
+                preview.setImageBitmap(image);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

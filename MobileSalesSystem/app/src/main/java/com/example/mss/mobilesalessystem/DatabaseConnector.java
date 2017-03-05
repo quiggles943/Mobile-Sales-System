@@ -1,8 +1,12 @@
 package com.example.mss.mobilesalessystem;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
@@ -13,6 +17,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -106,6 +114,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     }
 
                     interpretData(jsonData);
+
                     break;
                 case 401:
                     Log.e("Authentication error", "The token on the device was not accepted by the server");
@@ -117,6 +126,32 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     Log.e("Request error", "The request to the server was not accepted because it was the wrong request format");
 
             }
+            Bitmap bitmapImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.harley);
+            File mydir = context.getDir("MedImg", Context.MODE_PRIVATE); //Creating an internal dir;
+            if (!mydir.exists())
+            {
+                mydir.mkdirs();
+            }
+            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("MedImg", Context.MODE_PRIVATE);
+            // Create imageDir
+            File mypath=new File(directory,"harley.png");
+
+            FileOutputStream fos = null;
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+
+            bitmapImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.freddy_krueger);
+            mypath=new File(directory,"freddy_krueger.png");
+
+            fos = null;
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+
+            fos.close();
         } catch (Exception e) {
             Log.e("ASYNC Error :", e.getMessage().toString());
         }

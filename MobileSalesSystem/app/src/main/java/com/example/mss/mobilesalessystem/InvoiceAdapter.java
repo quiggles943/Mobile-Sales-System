@@ -46,26 +46,27 @@ public class InvoiceAdapter extends ArrayAdapter<Invoice> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "ProductID: " + currentInvoice.getInvoiceId() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "InvoiceID: " + currentInvoice.getInvoiceId() , Toast.LENGTH_SHORT).show();
             }
         });
 
         // set on layout
         mViewHolder.tv_invoiceTitle.setText(" "+currentInvoice.getInvoiceId());
         mViewHolder.tv_invoiceDate.setText(" "+currentInvoice.getDate());
+        mViewHolder.tv_format.setText("");
 
         return convertView;
 
     }
     private class MyViewHolder {
-        TextView tv_invoiceTitle, tv_invoiceDate, tv_frame;
+        TextView tv_invoiceTitle, tv_invoiceDate, tv_format;
 
         // refer on layout
         public MyViewHolder(View item) {
 
             tv_invoiceTitle = (TextView) item.findViewById(R.id.tv_invoiceTitle);
             tv_invoiceDate = (TextView) item.findViewById(R.id.tv_invoiceDate);
-            tv_frame = (TextView) item.findViewById(R.id.tv_frame);
+            tv_format = (TextView) item.findViewById(R.id.tv_format);
         }
     }
 }

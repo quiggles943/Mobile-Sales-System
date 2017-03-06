@@ -2,6 +2,7 @@ package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -78,6 +79,11 @@ public class Checkout extends Activity {
                 addOrderToDatabase();                                                               //runs the subroutine to add the order to the database
                 //WE HAVE NO WHERE TO STORE THE TOTAL PRICE AND SO CAN'T SHOW TOTAL MONEY MADE....
                 Toast.makeText(context, "Order Added To Database", Toast.LENGTH_SHORT).show();      //temp toast to show it is working
+
+                Intent intent = new Intent(context, MainMenu.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         });
 

@@ -49,7 +49,7 @@ public class Statistics extends Activity {
                 //set Adapter on listview
                 listView.setAdapter(adapter);
             }
-            //Log.e("Invoice Error", ""+ex.getMessage().toString());
+
         syncToDb = (ImageButton)findViewById(R.id.btn_sync_to_db);
         syncFromDb = (ImageButton)findViewById(R.id.btn_sync_from_db);
 

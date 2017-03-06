@@ -1,5 +1,6 @@
 package com.example.mss.mobilesalessystem;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -51,6 +52,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     Context context;
     String[] tables;
     String tablesJSON;
+    ProgressDialog ringDialog;
 
     public DatabaseConnector (Context c, String[] tables)
     {
@@ -71,6 +73,13 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     protected void onPreExecute()
     {
         Toast.makeText(context,"Local database update started",Toast.LENGTH_SHORT).show();
+
+        ringDialog = new ProgressDialog(context,ProgressDialog.THEME_HOLO_DARK);
+        ringDialog.setTitle("Downloading Data");
+        ringDialog.setMessage("Currently Downloading Database, please wait");
+        ringDialog.setCancelable(false);
+        ringDialog.show();
+
     }
 
     @Override
@@ -99,6 +108,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     String line;
                     while ((line = bR.readLine()) != null) {
                         lines.add(line);
+                        //progress.incrementProgressBy(1);
                   }
 
                     bR.close();
@@ -163,10 +173,12 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void result)
     {
         Toast.makeText(context,"Local database updated",Toast.LENGTH_SHORT).show();
+        ringDialog.dismiss();
     }
 
     private void interpretData(HashMap<String, JSONArray> dataToIntepret)
     {
+
         for (Map.Entry<String, JSONArray> data : dataToIntepret.entrySet())
         {
             String sqlStatement = "INSERT OR IGNORE INTO ";
@@ -226,5 +238,10 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                 }
             }
         }
+    }
+
+    protected void onProgressUpdate(Void... values)
+    {
+
     }
 }

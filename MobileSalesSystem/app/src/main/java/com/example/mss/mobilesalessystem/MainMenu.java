@@ -86,19 +86,19 @@ public class MainMenu extends Activity {
             String [] tableColumns = new String[5];
 
             tableName[2] = "product";
-            tableColumns[2] = "ProductID INTEGER, Format text, ImageID text,  Qty INTEGER, Price Real, PRIMARY KEY (Format, ImageID)";
+            tableColumns[2] = "ProductID INTEGER, ProductDescription text, Format text, ImageID text, Price REAL, Framable INTEGER, PRIMARY KEY (ProductID), FOREIGN KEY (Format) REFERENCES format(FormatID), FOREIGN KEY (ImageID) references image(ImageID)";
 
             tableName[1] = "image";
-            tableColumns[1] = "ImageID text, ImageDesc text, SmlImgFilePath text, MedImgFilePath text, QRCode text, PRIMARY KEY (ImageID)";
+            tableColumns[1] = "ImageID text, ImageDesc text, MedImgFilePath text, QRCode text, PRIMARY KEY (ImageID)";
 
             tableName[0] = "format";
-            tableColumns[0] = "Format text, FormatDesc text, Price REAL, Cost REAL, PRIMARY KEY (Format)";
+            tableColumns[0] = "Format text, FormatDesc text, PRIMARY KEY (Format)";
 
             tableName[3] = "invoice";
-            tableColumns[3] = "InvoiceID INTEGER, Date DATE, Event INTEGER, CustomerID INTEGER";
+            tableColumns[3] = "InvoiceID INTEGER, Date DATE, CustomerID INTEGER, ShippingCost REAL, PaymentMethod text, AmountPaid REAL, PRIMARY KEY (InvoiceID)";
 
             tableName[4] = "invoiceitems";
-            tableColumns[4] = "InvoiceID INTEGER, ProductID INTEGER, Qty INTEGER";
+            tableColumns[4] = "InvoiceID INTEGER, ProductID INTEGER, Qty INTEGER, PRIMARY KEY (InvoiceID, ProductID), FOREIGN KEY (InvoiceID) REFERENCES invoice(InvoiceID), FOREIGN KEY (ProductID) REFERENCES product(ProductID)";
 
             pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
 

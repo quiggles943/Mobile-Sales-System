@@ -43,7 +43,7 @@ public class qrScanner extends Activity {
         cameraSource = new CameraSource
                 .Builder(this, barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
-                .setAutoFocusEnabled(false)
+                .setAutoFocusEnabled(true)
                 .build();
 
 

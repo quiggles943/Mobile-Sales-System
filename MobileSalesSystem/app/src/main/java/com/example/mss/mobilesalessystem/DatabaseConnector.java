@@ -53,6 +53,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     String[] tables;
     String tablesJSON;
     ProgressDialog ringDialog;
+    SQLiteDatabase pDB;
 
     public DatabaseConnector (Context c, String[] tables)
     {
@@ -174,6 +175,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     {
         Toast.makeText(context,"Local database updated",Toast.LENGTH_SHORT).show();
         ringDialog.dismiss();
+        pDB.close();
     }
 
     private void interpretData(HashMap<String, JSONArray> dataToIntepret)
@@ -224,7 +226,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     sqlStatement += ");";
 
                     //run SQL
-                    SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
+                    pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
 
                     pDB.execSQL(sqlStatement);
 

@@ -108,7 +108,7 @@ public class MainMenu extends Activity {
                 }
             }
 
-
+            pDB.close();
 
         }catch(Exception e){
             Log.e("Database Creation Error", e.getMessage().toString());

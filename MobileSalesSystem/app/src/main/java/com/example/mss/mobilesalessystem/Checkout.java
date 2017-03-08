@@ -144,6 +144,8 @@ public class Checkout extends Activity {
                 pDB.execSQL(sqlInvoiceItems);       //running said SQL statement
             }
 
+            pDB.close();
+
         } catch (SQLiteException e) {
             Log.e("Order Addition Error", e.getMessage().toString());
         }

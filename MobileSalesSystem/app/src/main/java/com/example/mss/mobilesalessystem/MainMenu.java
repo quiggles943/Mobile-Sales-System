@@ -33,6 +33,7 @@ public class MainMenu extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
         setContentView(R.layout.mainmenu_layout);
         ImageButton transactionBtn = (ImageButton) findViewById(R.id.btn_cashpoint);
         ImageButton statsBtn = (ImageButton) findViewById(R.id.btn_statistics);
@@ -68,6 +69,7 @@ public class MainMenu extends Activity {
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setNegativeButton(android.R.string.ok, null).show();
                 }
+                pDB.close();
             }
         }
         );
@@ -100,7 +102,6 @@ public class MainMenu extends Activity {
             tableName[4] = "invoiceitems";
             tableColumns[4] = "InvoiceID INTEGER, ProductID INTEGER, Qty INTEGER, PRIMARY KEY (InvoiceID, ProductID), FOREIGN KEY (InvoiceID) REFERENCES invoice(InvoiceID), FOREIGN KEY (ProductID) REFERENCES product(ProductID)";
 
-            pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
 
             if(tableName.length == tableColumns.length) {
                 for (int i = 0; i < tableName.length; i++) {
@@ -108,7 +109,6 @@ public class MainMenu extends Activity {
                 }
             }
 
-            pDB.close();
 
         }catch(Exception e){
             Log.e("Database Creation Error", e.getMessage().toString());

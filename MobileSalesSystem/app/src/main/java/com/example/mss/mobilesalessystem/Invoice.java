@@ -9,22 +9,24 @@ import java.sql.Date;
 public class Invoice {
     private int invoiceId;
     private Date date;
-    private int event;
     private int customer;
+    private String paymentMethod;
+    private float amountPaid;
 
-    public Invoice(int id, String date, int event, int customer)
+    public Invoice(int id, String date, int customer, String paymentMethod, float amountPaid)
     {
         this.invoiceId = id;
         this.date = Date.valueOf(date);
-        this.event = event;
         this.customer = customer;
+        this.paymentMethod = paymentMethod;
+        this.amountPaid = amountPaid;
     }
 
     public int getInvoiceId(){ return this.invoiceId; }
 
     public Date getDate() { return this.date; }
 
-    public int getEvent(){ return this.event;}
+    public String getpaymentMethod() { return this.paymentMethod; }
 
-    public  int getCustomer() { return this.customer; }
+    public float getAmountPaid() { return this.amountPaid; }
 }

@@ -33,6 +33,7 @@ public class Checkout extends Activity {
     private TextView subtotalPriceDisplay, totalPriceDisplay;
     private EditText discount;
     private ImageButton cashPay, paypalPay;
+    private String paymentMethod;
     private float total;
     ListView listview;
     Context context;
@@ -76,6 +77,7 @@ public class Checkout extends Activity {
         {
             @Override
             public void onClick(View v) {
+                paymentMethod = "Cash";
                 addOrderToDatabase();                                                               //runs the subroutine to add the order to the database
                 //WE HAVE NO WHERE TO STORE THE TOTAL PRICE AND SO CAN'T SHOW TOTAL MONEY MADE....
                 Toast.makeText(context, "Order Added To Database", Toast.LENGTH_SHORT).show();      //temp toast to show it is working
@@ -127,7 +129,7 @@ public class Checkout extends Activity {
 
             String currentDate = DateFormat.format("yyyy-MM-dd", d.getTime()).toString();       //getting the date into a format for SQLite
 
-            String sqlCreateInvoice = "INSERT INTO invoice (InvoiceID, Date, Event, CustomerID) VALUES ("+newInvoiceNumber+",'"+ currentDate +"',0,0)";   //making the insertion statement with customer and event ID of 0, need to change eventID
+            String sqlCreateInvoice = "INSERT INTO invoice (InvoiceID, Date, CustomerID, PaymentMethod, AmountPaid) VALUES ("+newInvoiceNumber+",'"+ currentDate +"',0,'"+paymentMethod+"', "+total+")";   //making the insertion statement with customer and event ID of 0, need to change eventID
 
             pDB.execSQL(sqlCreateInvoice);      //executing said SQL statement
 

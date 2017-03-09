@@ -36,11 +36,18 @@
 
 
             <TextView
-                android:text="A4"
+                android:text=" Amount Paid: £"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:text="100.00"
                 android:layout_width="24dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_format"
-                android:layout_weight="1"
+                android:id="@+id/tv_price"
+                android:layout_weight="0.14"
                 android:padding="1dp"
                 android:paddingBottom="1dp"
                 android:paddingLeft="1dp"
@@ -59,11 +66,10 @@
                 android:layout_weight="0.06" />
 
             <TextView
-                android:text="0x00"
+                android:text="18/02/17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_invoiceDate"
-                android:layout_weight="0.22"
                 android:padding="1dp"
                 android:paddingBottom="1dp"
                 android:paddingLeft="1dp"

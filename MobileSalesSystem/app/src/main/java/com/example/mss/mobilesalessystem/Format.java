@@ -5,7 +5,6 @@ package com.example.mss.mobilesalessystem;
  */
 
 public class Format {
-    private String productId;
     private String formatId;
     private String formatDescription;
     private boolean frameable;
@@ -33,9 +32,6 @@ public class Format {
         this.priceExtra = extraPrice;
     }
 
-    public String getProductId(){ return  productId; }
-
-    public void setProductId(String productId) { this.productId = productId; }
 
     public String getFormatId(){ return formatId; }
 

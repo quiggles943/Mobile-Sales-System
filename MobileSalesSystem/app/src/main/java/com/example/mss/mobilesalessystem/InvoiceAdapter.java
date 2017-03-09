@@ -53,20 +53,20 @@ public class InvoiceAdapter extends ArrayAdapter<Invoice> {
         // set on layout
         mViewHolder.tv_invoiceTitle.setText(" "+currentInvoice.getInvoiceId());
         mViewHolder.tv_invoiceDate.setText(" "+currentInvoice.getDate());
-        mViewHolder.tv_format.setText("");
+        mViewHolder.tv_price.setText(""+currentInvoice.getAmountPaid());
 
         return convertView;
 
     }
     private class MyViewHolder {
-        TextView tv_invoiceTitle, tv_invoiceDate, tv_format;
+        TextView tv_invoiceTitle, tv_invoiceDate, tv_price;
 
         // refer on layout
         public MyViewHolder(View item) {
 
             tv_invoiceTitle = (TextView) item.findViewById(R.id.tv_invoiceTitle);
             tv_invoiceDate = (TextView) item.findViewById(R.id.tv_invoiceDate);
-            tv_format = (TextView) item.findViewById(R.id.tv_format);
+            tv_price = (TextView) item.findViewById(R.id.tv_price);
         }
     }
 }

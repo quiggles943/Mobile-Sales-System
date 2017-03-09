@@ -49,7 +49,7 @@ public class Statistics extends Activity {
             }
             else {
                 while (!cur.isAfterLast()) {
-                    invoices.add(new Invoice(cur.getInt(0), cur.getString(1), cur.getInt(2), cur.getInt(3)));
+                    invoices.add(new Invoice(cur.getInt(0), cur.getString(1), cur.getInt(2), cur.getString(4), cur.getFloat(5)));
                     cur.moveToNext();
                 }
                 adapter = new InvoiceAdapter(this,R.layout.basic_invoice_item, invoices);

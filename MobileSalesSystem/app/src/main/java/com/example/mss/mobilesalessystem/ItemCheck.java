@@ -136,8 +136,8 @@ public class ItemCheck extends Activity{
 
     private boolean getItem(){
         formats = new ArrayList<>();
-
-        String query = "SELECT ImageId, ImageDesc FROM image WHERE QRCode = '"+barcode+"';";
+        FormatsDesc = new ArrayList<>();
+        String query = "SELECT ImageId, ImageDesc, MedImgFilePath FROM image WHERE QRCode = '"+barcode+"';";
         Cursor cur = pDB.rawQuery(query,null);      //Query to get the image details based on the barcode.
         if(!(cur.moveToFirst()) || cur.getCount() ==0)
         {
@@ -159,18 +159,19 @@ public class ItemCheck extends Activity{
             while (!cur.isAfterLast()) {
                 ImageId = cur.getString(0);         //sets the ImageId
                 ImageDesc = cur.getString(1);       //sets the Image Description
+                ImageFilePath = cur.getString(2);   //sets the image filepath
 
                 cur.moveToNext();
             }
             cur.close();
 
-            query = "SELECT Format FROM product WHERE ImageID = '" + ImageId + "';";
+            query = "SELECT Format, Framable FROM product WHERE ImageID = '" + ImageId + "';";
             cur = pDB.rawQuery(query, null);     //Query to find the formats that exist for the image
             cur.moveToFirst();
 
             while (!cur.isAfterLast()) {
                 boolean framed;
-                if (cur.getString(0).contains("FRM"))        //checks if format is frameable
+                if (cur.getInt(1) == 1)        //checks if format is frameable
                 {
                     framed = true;
 
@@ -181,7 +182,8 @@ public class ItemCheck extends Activity{
                 cur.moveToNext();
             }
             for (Format format : formats) {
-                query = "SELECT Format, FormatDesc, Price FROM format WHERE Format = '" + format.getFormatId() + "';";
+
+                query = "SELECT Format, FormatDesc FROM format WHERE Format = '" + format.getFormatId() + "';";
                 cur = pDB.rawQuery(query, null);        //Query to find each formats details
                 cur.moveToFirst();
                 while (!cur.isAfterLast()) {
@@ -191,34 +193,13 @@ public class ItemCheck extends Activity{
                         {
                             formatIndex = formats.indexOf(foundformat);
                             formats.get(formatIndex).setFormatDescription(cur.getString(1));
-                            //FormatsDesc.add(cur.getString(1));
-                            if (foundformat.getFrameable()) {
-                                formats.get(formatIndex).setExtraPrice(cur.getFloat(2));
-                            }
+                            FormatsDesc.add(foundformat.getFormatDescription());
 
                         }
                     }
                     cur.moveToNext();
 
                 }
-                ArrayList<Format> removeableFormats = new ArrayList<>();
-                FormatsDesc = new ArrayList<>();
-                for (Format foundformat : formats) {
-                    if (foundformat.getFormatId().contains("FRM")) {
-                        int index = foundformat.getFormatId().indexOf("FRM");
-                        String formatCheck = foundformat.getFormatId().substring(0, index);
-                        for (Format matching : formats) {
-                            if (matching.getFormatId().equals(formatCheck)) {
-                                matching.setFrameable(true);
-                                matching.setExtraPrice(foundformat.getExtraPrice());
-                                removeableFormats.add(foundformat);
-                            }
-                        }
-                    } else {
-                        FormatsDesc.add(foundformat.getFormatDescription());
-                    }
-                }
-                formats.remove(removeableFormats);
             }
 
             return true;
@@ -251,7 +232,6 @@ public class ItemCheck extends Activity{
             }
 
             if(thumbnail) {
-                //File imagelocation = new File(mypath);
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 Bitmap image;
 

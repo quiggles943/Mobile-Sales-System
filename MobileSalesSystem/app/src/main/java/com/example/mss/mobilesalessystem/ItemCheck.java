@@ -101,7 +101,9 @@ public class ItemCheck extends Activity{
                     cur.close();
                     orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat, itemPrice, toggle.isChecked());    //Create new orderItem with the given variables
                     Intent returnIntent = new Intent();     //create the return intent
-                    returnIntent.putExtra("Item", finalItem);       //adds the order item to the Extras
+                    Bundle extras = new Bundle();
+                    extras.putParcelable("Item", finalItem);
+                    //returnIntent.putExtra("Item", finalItem);       //adds the order item to the Extras
                     if(toggle.isChecked())
                     {
                         String frameId = "", frameDesc = "";
@@ -115,18 +117,21 @@ public class ItemCheck extends Activity{
                             framePrice = cur2.getFloat(1);
                             cur2.moveToNext();
                         }
-                        query = "SELECT FormatDesc FROM format WHERE Format = '" + frameId + "';";
+                        query = "SELECT FormatDesc FROM format WHERE Format = '" + finalFormat.getFormatId() + "FRM';";
                         Cursor cur3 = pDB.rawQuery(query, null);
                         cur3.moveToFirst();
                         while (!cur3.isAfterLast()){
                             frameDesc = cur3.getString(0);
+                            cur3.moveToNext();
                         }
                         frameFormat = new Format(frameId,frameDesc,true);
                         orderItem frame = new orderItem(frameId, frameDesc, frameFormat,framePrice, true);
-                        returnIntent.putExtra("framed", 1);       //adds the order item to the Extras
-                        returnIntent.putExtra("Frame", frame);       //adds the order item to the Extras
+                        extras.putBoolean("framed", true);      //adds the true boolean to denote that the item is framed
+                        extras.putParcelable("Frame", frame);   //adds the frame item
+                        //returnIntent.putExtra("framed", 1);       //adds the order item to the Extras
+                        //returnIntent.putExtra("Frame", frame);       //adds the order item to the Extras
                     }
-
+                    returnIntent.putExtras(extras);
                     setResult(Activity.RESULT_OK, returnIntent);     //sets the result
                     finish();       //returns to the qrScanner activity to pass the orderItem to the Cart
                 }
@@ -197,7 +202,8 @@ public class ItemCheck extends Activity{
 
             while (!cur.isAfterLast()) {
                 boolean framed;
-                if (cur.getInt(1) == 1)        //checks if format is frameable
+                int framable = cur.getInt(1);
+                if (framable == 1)        //checks if format is frameable
                 {
                     framed = true;
 

@@ -69,7 +69,6 @@ public class MainMenu extends Activity {
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setNegativeButton(android.R.string.ok, null).show();
                 }
-                pDB.close();
             }
         }
         );

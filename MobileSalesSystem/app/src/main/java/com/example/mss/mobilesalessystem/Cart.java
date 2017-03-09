@@ -77,13 +77,14 @@ public class Cart extends Activity{
     {
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
-                orderItem result = data.getParcelableExtra("Item");
-                result.toString();
+                Bundle extras = data.getExtras();
+                boolean framed = extras.getBoolean("framed");
+                orderItem result = extras.getParcelable("Item");
                 items.add(result);
-                int framed = data.getIntExtra("framed", 0);
-                if(framed == 1)
+
+                if(framed)
                 {
-                    orderItem frame = data.getParcelableExtra("Frame");
+                    orderItem frame = extras.getParcelable("Frame");
                     items.add(frame);
                 }
                 adapter.notifyDataSetChanged();

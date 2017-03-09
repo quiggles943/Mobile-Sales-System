@@ -80,6 +80,12 @@ public class Cart extends Activity{
                 orderItem result = data.getParcelableExtra("Item");
                 result.toString();
                 items.add(result);
+                int framed = data.getIntExtra("framed", 0);
+                if(framed == 1)
+                {
+                    orderItem frame = data.getParcelableExtra("Frame");
+                    items.add(frame);
+                }
                 adapter.notifyDataSetChanged();
             }
             if(resultCode == Activity.RESULT_CANCELED){

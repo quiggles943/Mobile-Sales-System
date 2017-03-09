@@ -96,7 +96,7 @@ public class Checkout extends Activity {
         float value = 0;
         for(orderItem item : order)
         {
-            value += item.getTotalPrice();
+            value += item.getPrice();
         }
         return value;
     }

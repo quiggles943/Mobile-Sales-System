@@ -61,17 +61,10 @@ public class CustomItemAdapter extends ArrayAdapter<orderItem> {
         // set on layout
         mViewHolder.tv_title.setText(currentItem.getItemDescription());
         //mViewHolder.tv_title.setTypeface(Global.typeFace); // Global Typeface
-        if(currentItem.getFramed())
-        {
-            mViewHolder.tv_detailPrice.setText("£"+currentItem.getPrice()+" + frame (£"+ currentItem.getFormat().getExtraPrice()+")");
-        }
-        else
-        {
             mViewHolder.tv_detailPrice.setText("");
-        }
         mViewHolder.tv_frame.setText(currentItem.getIsFramed());
         mViewHolder.tv_size.setText(currentItem.getFormat().getFormatDescription());
-        mViewHolder.tv_totalPrice.setText("£" + currentItem.getTotalPrice());
+        mViewHolder.tv_totalPrice.setText("£" + currentItem.getPrice());
 
         return convertView;
 

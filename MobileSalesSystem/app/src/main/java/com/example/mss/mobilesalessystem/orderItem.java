@@ -83,25 +83,6 @@ public class orderItem implements Parcelable{
 
     public float getPrice(){ return itemPrice; }
 
-    public float getTotalPrice() {
-        if(getFramed()) {
-            return itemPrice + this.format.getExtraPrice();
-        }
-        else
-        {
-            return itemPrice;
-        }
-
-    }
-
-//    public Float getItemPrice() {
-//        return itemPrice;
-//    }
-
-//    public void setItemPrice(Float itemPrice) {
-//        this.itemPrice = itemPrice;
-//    }
-
     public void setFormat(Format format){ this.format = format; }
 
     public Format getFormat(){ return format; }
@@ -120,7 +101,6 @@ public class orderItem implements Parcelable{
         parcel.writeString(format.getFormatId());
         parcel.writeString(format.getFormatDescription());
         parcel.writeByte((byte) (format.getFrameable() ? 1:0));
-        parcel.writeFloat(format.getExtraPrice());
         parcel.writeFloat(itemPrice);
     }
 
@@ -134,8 +114,7 @@ public class orderItem implements Parcelable{
         String formatDesc = parcel.readString();
         boolean formatFrameable = false;
         formatFrameable = parcel.readByte() != 0;
-        float priceExtra = parcel.readFloat();
         this.itemPrice = parcel.readFloat();
-        this.format = new Format(formatid,formatDesc,formatFrameable, priceExtra);
+        this.format = new Format(formatid,formatDesc,formatFrameable);
     }
 }

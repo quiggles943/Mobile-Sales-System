@@ -98,9 +98,35 @@ public class ItemCheck extends Activity{
                         itemPrice = cur.getFloat(1);
                         cur.moveToNext();
                     }
+                    cur.close();
                     orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat, itemPrice, toggle.isChecked());    //Create new orderItem with the given variables
                     Intent returnIntent = new Intent();     //create the return intent
                     returnIntent.putExtra("Item", finalItem);       //adds the order item to the Extras
+                    if(toggle.isChecked())
+                    {
+                        String frameId = "", frameDesc = "";
+                        Format frameFormat;
+                        float framePrice = 0;
+                        String frameQuery = "SELECT ProductId, Price FROM product WHERE Format = '" + finalFormat.getFormatId() + "FRM';";
+                        Cursor cur2 = pDB.rawQuery(frameQuery, null);
+                        cur2.moveToFirst();
+                        while (!cur2.isAfterLast()) {
+                            frameId = cur2.getString(0);      //set product id
+                            framePrice = cur2.getFloat(1);
+                            cur2.moveToNext();
+                        }
+                        query = "SELECT FormatDesc FROM format WHERE Format = '" + frameId + "';";
+                        Cursor cur3 = pDB.rawQuery(query, null);
+                        cur3.moveToFirst();
+                        while (!cur3.isAfterLast()){
+                            frameDesc = cur3.getString(0);
+                        }
+                        frameFormat = new Format(frameId,frameDesc,true);
+                        orderItem frame = new orderItem(frameId, frameDesc, frameFormat,framePrice, true);
+                        returnIntent.putExtra("framed", 1);       //adds the order item to the Extras
+                        returnIntent.putExtra("Frame", frame);       //adds the order item to the Extras
+                    }
+
                     setResult(Activity.RESULT_OK, returnIntent);     //sets the result
                     finish();       //returns to the qrScanner activity to pass the orderItem to the Cart
                 }

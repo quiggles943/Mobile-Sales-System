@@ -8,7 +8,6 @@ public class Format {
     private String formatId;
     private String formatDescription;
     private boolean frameable;
-    private float priceExtra;
 
     public Format(String FormatId, boolean Frameable)
     {
@@ -22,14 +21,6 @@ public class Format {
         this.formatId = FormatId;
         this.formatDescription = FormatDescription;
         this.frameable = Frameable;
-        this.priceExtra = 0;
-    }
-    public Format(String FormatId, String FormatDescription, boolean Frameable, float extraPrice)
-    {
-        this.formatId = FormatId;
-        this.formatDescription = FormatDescription;
-        this.frameable = Frameable;
-        this.priceExtra = extraPrice;
     }
 
 
@@ -43,10 +34,6 @@ public class Format {
     public void setFrameable(boolean Frameable) { frameable = Frameable; }
 
     public boolean getFrameable(){ return frameable; }
-
-    public void setExtraPrice(float extraPrice) { priceExtra = extraPrice; }
-
-    public float getExtraPrice(){ return priceExtra; }
 
 
 }

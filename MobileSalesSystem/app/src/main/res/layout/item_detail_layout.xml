@@ -39,8 +39,7 @@
                 android:id="@+id/tv_detail_"
                 android:gravity="center"
                 android:textSize="18sp"
-                android:textColor="@android:color/white"
-                android:text="TEST TEST" />
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout

@@ -4,11 +4,35 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/selector_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_settings"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/lv_itemList" />
+        android:id="@+id/elv_itemList" />
 
     <LinearLayout
         android:orientation="horizontal"

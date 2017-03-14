@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -30,14 +31,14 @@ public class Statistics extends Activity {
     SQLiteDatabase pDB = null;
     ArrayList<Invoice> invoices;
     InvoiceAdapter adapter;
-    ListView listView;
+    ExpandableListView listView;
     ImageButton syncFromDb, syncToDb;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.statistic_layout);
-        listView = (ListView)findViewById(R.id.lv_itemList);
+        listView = (ExpandableListView)findViewById(R.id.elv_itemList);
         final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         invoices = new ArrayList<>();
         pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);

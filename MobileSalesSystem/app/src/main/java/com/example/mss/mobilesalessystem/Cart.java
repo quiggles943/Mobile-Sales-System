@@ -77,15 +77,20 @@ public class Cart extends Activity{
     {
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
-                Bundle extras = data.getExtras();
-                boolean framed = extras.getBoolean("framed");
-                orderItem result = extras.getParcelable("Item");
-                items.add(result);
+                ArrayList<orderItem> parcelItems =new ArrayList<>();
+                //Bundle extras = data.getExtras();
+                //boolean framed = extras.getBoolean("framed");
+                //orderItem result = extras.getParcelable("Item");
+                //items.add(result);
 
-                if(framed)
+                /*if(framed)
                 {
                     orderItem frame = extras.getParcelable("Frame");
                     items.add(frame);
+                }*/
+                parcelItems = data.getParcelableArrayListExtra("items");
+                for(orderItem item : parcelItems) {
+                    items.add(item);
                 }
                 adapter.notifyDataSetChanged();
             }

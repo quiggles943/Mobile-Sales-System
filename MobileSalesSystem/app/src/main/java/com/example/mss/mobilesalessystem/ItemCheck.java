@@ -101,8 +101,10 @@ public class ItemCheck extends Activity{
                     cur.close();
                     orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat, itemPrice, toggle.isChecked());    //Create new orderItem with the given variables
                     Intent returnIntent = new Intent();     //create the return intent
-                    Bundle extras = new Bundle();
-                    extras.putParcelable("Item", finalItem);
+                    //Bundle extras = new Bundle();
+                    ArrayList<orderItem> parcelItems = new ArrayList<>();
+                    parcelItems.add(finalItem);
+                    //extras.putParcelable("Item", finalItem);
                     //returnIntent.putExtra("Item", finalItem);       //adds the order item to the Extras
                     if(toggle.isChecked())
                     {
@@ -126,12 +128,13 @@ public class ItemCheck extends Activity{
                         }
                         frameFormat = new Format(frameId,frameDesc,true);
                         orderItem frame = new orderItem(frameId, frameDesc, frameFormat,framePrice, true);
-                        extras.putBoolean("framed", true);      //adds the true boolean to denote that the item is framed
-                        extras.putParcelable("Frame", frame);   //adds the frame item
+                        parcelItems.add(frame);
+                        //extras.putBoolean("framed", true);      //adds the true boolean to denote that the item is framed
+                        //extras.putParcelable("Frame", frame);   //adds the frame item
                         //returnIntent.putExtra("framed", 1);       //adds the order item to the Extras
                         //returnIntent.putExtra("Frame", frame);       //adds the order item to the Extras
                     }
-                    returnIntent.putExtras(extras);
+                    returnIntent.putParcelableArrayListExtra("items",parcelItems);
                     setResult(Activity.RESULT_OK, returnIntent);     //sets the result
                     finish();       //returns to the qrScanner activity to pass the orderItem to the Cart
                 }

@@ -13,6 +13,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -60,13 +61,22 @@ public class Checkout extends Activity {
 
         discount.setText(""+total);
 
+        discount.setSelectAllOnFocus(true);
+
         discount.setImeActionLabel("Apply",KeyEvent.KEYCODE_ENTER);
         discount.setOnEditorActionListener( new TextView.OnEditorActionListener(){
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
                 total = Float.parseFloat(discount.getText().toString());
                 discount.setText(""+total);
+
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(v.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                subtotalPriceDisplay.setText("Was £" + subTotal() +"    Now £" + total);
+
                 return true;
             }
         });

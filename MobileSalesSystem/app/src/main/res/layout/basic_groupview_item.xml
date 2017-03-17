@@ -7,12 +7,14 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
+        android:layout_height="8pt"></LinearLayout>
 
     <TextView
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="5pt"
         android:id="@+id/tv_groupView_title"
-        tools:text="Test" />
+        tools:text="Test"
+        android:gravity="right" />
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -88,7 +89,7 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
         }
         //TEXT VIEW WITHIN PARENT LISTVIEW
         TextView listTitleTextView = (TextView)convertView.findViewById(R.id.tv_groupView_title);
-        listTitleTextView.setText(invoice.getInvoiceId()+"");
+        listTitleTextView.setText("Order : "+invoice.getInvoiceId()+"\n"+ invoice.getDate().toString());
         return convertView;
     }
 

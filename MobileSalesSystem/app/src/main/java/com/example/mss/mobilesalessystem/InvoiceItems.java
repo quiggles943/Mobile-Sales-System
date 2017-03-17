@@ -9,6 +9,8 @@ public class InvoiceItems  {
     private int invoiceID;
     private String itemID;
     private String itemDescription;
+    private float price;
+    private String format;
 
     public InvoiceItems ()
     {
@@ -53,4 +55,11 @@ public class InvoiceItems  {
         return this.itemDescription;
     }
 
+    public void setPrice(float price){ this.price = price; }
+
+    public float getPrice () { return this.price; }
+
+    public void setFormat(String format){ this.format = format; }
+
+    public String getFormat(){ return this.format; }
 }

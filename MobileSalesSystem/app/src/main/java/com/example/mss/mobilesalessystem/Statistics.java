@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -136,10 +137,26 @@ public class Statistics extends Activity {
                     }
                 }
             }
+            for(InvoiceItems item : items)
+            {
+                String sql = "SELECT p.format, p.price FROM  product p WHERE ProductID = " + item.getItemID() + ";";
+                Cursor cu = pDB.rawQuery(sql,null);
+                if (!(cu.moveToFirst()) || cu.getCount() == 0)
+                {
 
+                } else {
+                    while (!cu.isAfterLast()) {
+                        item.setFormat(cu.getString(0));
+                        item.setPrice(cu.getFloat(1));
+                        cu.moveToNext();
+                    }
+                }
+            }
             result.put(i, items);
 
         }
+
+
 
         return result;
     }

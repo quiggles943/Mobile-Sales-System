@@ -53,7 +53,7 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
         //View required
          TextView expandedListTextView = (TextView) convertView.findViewById(R.id.tv_itemTitle);
         //GET DESC NEEDS TO BE ADDED
-        expandedListTextView.setText(expandedListItem.getDesc());
+        expandedListTextView.setText(expandedListItem.getItemDescription());
         return convertView;
     }
 

@@ -81,6 +81,11 @@ public class orderItem implements Parcelable{
         this.imageId = imageId;
     }
 
+    public void setItemPrice (Float price)
+    {
+        this.itemPrice = price;
+    }
+
     public float getPrice(){ return itemPrice; }
 
     public void setFormat(Format format){ this.format = format; }

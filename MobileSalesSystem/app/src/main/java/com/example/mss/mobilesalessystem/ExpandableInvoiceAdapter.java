@@ -51,8 +51,7 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.listitem, null);
         }
         //View required
-         TextView expandedListTextView = (TextView) convertView.findViewById(R.id.tv_itemTitle);
-        //GET DESC NEEDS TO BE ADDED
+        TextView expandedListTextView = (TextView) convertView.findViewById(R.id.tv_itemTitle);
         expandedListTextView.setText(expandedListItem.getItemDescription());
         return convertView;
     }
@@ -89,7 +88,7 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
         }
         //TEXT VIEW WITHIN PARENT LISTVIEW
         TextView listTitleTextView = (TextView)convertView.findViewById(R.id.tv_groupView_title);
-        listTitleTextView.setText(invoice.getInvoiceId());
+        listTitleTextView.setText(invoice.getInvoiceId()+"");
         return convertView;
     }
 

@@ -20,7 +20,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Paul on 25/02/2017.
@@ -29,18 +31,25 @@ import java.util.ArrayList;
 public class Statistics extends Activity {
     Context context;
     SQLiteDatabase pDB = null;
-    ArrayList<Invoice> invoices;
     InvoiceAdapter adapter;
-    ExpandableListView listView;
     ImageButton syncFromDb, syncToDb;
+
+    ExpandableListView listView;
+    ExpandableInvoiceAdapter expInvAdap;
+    ArrayList<Invoice> expListTitles;
+    HashMap<Invoice, ArrayList<InvoiceItems>> expListDetails;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.statistic_layout);
+
         listView = (ExpandableListView)findViewById(R.id.elv_itemList);
+
         final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        invoices = new ArrayList<>();
+        expListTitles = new ArrayList<>();
         pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
         String query = "SELECT * FROM invoice";
         Cursor cur = pDB.rawQuery(query,null);
@@ -50,13 +59,16 @@ public class Statistics extends Activity {
             }
             else {
                 while (!cur.isAfterLast()) {
-                    invoices.add(new Invoice(cur.getInt(0), cur.getString(1), cur.getInt(2), cur.getString(4), cur.getFloat(5)));
+                    expListTitles.add(new Invoice(cur.getInt(0), cur.getString(1), cur.getInt(2), cur.getString(4), cur.getFloat(5)));
                     cur.moveToNext();
                 }
-                adapter = new InvoiceAdapter(this,R.layout.basic_invoice_item, invoices);
-                //set Adapter on listview
-                listView.setAdapter(adapter);
             }
+
+        expListDetails = getHashedData();
+
+        expInvAdap = new ExpandableInvoiceAdapter(this, expListTitles,expListDetails);
+        listView.setAdapter(expInvAdap);
+        //NEED TO SET ON GROUP CLICK LISTENER
 
         syncToDb = (ImageButton)findViewById(R.id.btn_sync_to_db);
         syncFromDb = (ImageButton)findViewById(R.id.btn_sync_from_db);
@@ -93,6 +105,43 @@ public class Statistics extends Activity {
 
             }
         });
+    }
+
+    private HashMap<Invoice, ArrayList<InvoiceItems>> getHashedData()
+    {
+        HashMap<Invoice, ArrayList<InvoiceItems>> result = new HashMap<>();
+
+        for(Invoice i: expListTitles)
+        {
+            String sqlStatement = "SELECT * FROM invoiceitems WHERE InvoiceID = " + i.getInvoiceId() + ";";
+
+            ArrayList<InvoiceItems> items = new ArrayList<>();
+
+            pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
+
+            Cursor c = pDB.rawQuery(sqlStatement, null);
+
+            if (!(c.moveToFirst()) || c.getCount() == 0)
+            {
+
+            } else {
+                while (!c.isAfterLast()) {
+                    String sql = "SELECT i.imageDesc FROM image i JOIN product p ON i.imageID=p.imageID WHERE ProductID = " + c.getString(1) + ";";
+                    Cursor cu = pDB.rawQuery(sql, null);
+                    if (!(cu.moveToFirst()) || cu.getCount() == 0) {
+
+                    } else {
+                        items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0)));
+                        c.moveToNext();
+                    }
+                }
+            }
+
+            result.put(i, items);
+
+        }
+
+        return result;
     }
 
 }

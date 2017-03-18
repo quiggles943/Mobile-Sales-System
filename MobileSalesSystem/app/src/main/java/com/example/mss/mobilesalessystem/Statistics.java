@@ -14,7 +14,10 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
@@ -47,7 +50,6 @@ public class Statistics extends Activity {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.statistic_layout);
-
         listView = (ExpandableListView)findViewById(R.id.elv_itemList);
 
         final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -134,6 +136,8 @@ public class Statistics extends Activity {
 
             }
         });
+
+        registerForContextMenu(listView);
     }
 
     private HashMap<Invoice, ArrayList<InvoiceItems>> getHashedData()
@@ -188,5 +192,51 @@ public class Statistics extends Activity {
 
         return result;
     }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v , menuInfo);
+        Log.i("", "Click");
+        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
+
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
+        Invoice invoice = expListTitles.get(groupPosition);
+
+        // Show context menu for groups
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+            menu.setHeaderTitle("Invoice "+invoice.getInvoiceId());
+            menu.add(0, 0, 1, "Refund");
+
+            // Show context menu for children
+        } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            //InvoiceItems item = expListDetails.get(invoice).get(childPosition);
+            //menu.setHeaderTitle(item.getItemDescription());
+            //menu.add(0, 0, 1, "View");
+        }
+    }
+
+    public boolean onContextItemSelected(MenuItem selected)
+    {
+        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) selected.getMenuInfo();
+
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
+        Invoice invoice = expListTitles.get(groupPosition);
+
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+            // do something with parent
+            //Toast.makeText(context,"Invoice Order "+invoice.getInvoiceId(),Toast.LENGTH_SHORT).show();
+
+        } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            // do someting with child
+            InvoiceItems item = expListDetails.get(invoice).get(childPosition);
+            //Toast.makeText(context,"Invoice item Id "+item.getItemID(),Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onContextItemSelected(selected);
+    }
+
 
 }

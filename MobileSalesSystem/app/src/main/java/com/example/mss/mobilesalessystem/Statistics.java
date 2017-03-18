@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -206,7 +207,7 @@ public class Statistics extends Activity {
         // Show context menu for groups
         if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
             menu.setHeaderTitle("Invoice "+invoice.getInvoiceId());
-            menu.add(0, 0, 1, "Refund");
+            menu.add("Refund");
 
             // Show context menu for children
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
@@ -227,7 +228,14 @@ public class Statistics extends Activity {
 
         if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
             // do something with parent
-            //Toast.makeText(context,"Invoice Order "+invoice.getInvoiceId(),Toast.LENGTH_SHORT).show();
+            if(selected.toString().equals("Refund"))
+            {
+                //Invoice invoice = (Invoice) listview.getItemAtPosition(info.position);
+                Intent intent = new Intent(context, Refund.class);
+                intent.putExtra("invoice", invoice);
+                startActivityForResult(intent, 0);
+                return true;
+            }
 
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
             // do someting with child

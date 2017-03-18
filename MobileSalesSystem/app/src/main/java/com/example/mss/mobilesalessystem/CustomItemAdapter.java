@@ -41,6 +41,7 @@ public class CustomItemAdapter extends ArrayAdapter<orderItem> {
 
         if (convertView == null)
         {
+            //create the list item view
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             convertView = inflater.inflate(R.layout.listitem, parent, false);
             mViewHolder = new MyViewHolder(convertView);
@@ -48,20 +49,20 @@ public class CustomItemAdapter extends ArrayAdapter<orderItem> {
         } else {
             mViewHolder = (MyViewHolder) convertView.getTag();
         }
-
+        //get item at position
         final orderItem currentItem = itemList.get(position);
         convertView.setLongClickable(true);
-        convertView.setOnClickListener(new View.OnClickListener() {
+        /*convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "ProductID: " + currentItem.getItemID() , Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         // set on layout
         mViewHolder.tv_title.setText(currentItem.getItemDescription());
         //mViewHolder.tv_title.setTypeface(Global.typeFace); // Global Typeface
-            mViewHolder.tv_detailPrice.setText("");
+        mViewHolder.tv_detailPrice.setText("");
         mViewHolder.tv_frame.setText(currentItem.getIsFramed());
         mViewHolder.tv_size.setText(currentItem.getFormat().getFormatDescription());
         mViewHolder.tv_totalPrice.setText("£" + currentItem.getPrice());
@@ -74,7 +75,7 @@ public class CustomItemAdapter extends ArrayAdapter<orderItem> {
 
         // refer on layout
         public MyViewHolder(View item) {
-
+            //sets the View Holder Text Views
             tv_title = (TextView) item.findViewById(R.id.tv_itemTitle);
             tv_size = (TextView) item.findViewById(R.id.tv_format);
             tv_frame = (TextView) item.findViewById(R.id.tv_frame);

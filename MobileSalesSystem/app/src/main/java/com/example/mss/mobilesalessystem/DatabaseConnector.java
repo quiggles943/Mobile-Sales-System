@@ -48,7 +48,7 @@ import static android.content.Context.MODE_PRIVATE;
 //returned type required
 public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
-    JSONArray jsonArr;
+    //JSONArray jsonArr;
     Context context;
     String[] tables;
     String tablesJSON;
@@ -73,8 +73,8 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     @Override
     protected void onPreExecute()
     {
-        Toast.makeText(context,"Local database update started",Toast.LENGTH_SHORT).show();
-
+        //Toast.makeText(context,"Local database update started",Toast.LENGTH_SHORT).show();
+        //Set up the ring dialog
         ringDialog = new ProgressDialog(context,ProgressDialog.THEME_HOLO_DARK);
         ringDialog.setTitle("Downloading Data");
         ringDialog.setMessage("Currently Downloading Database, please wait");
@@ -88,7 +88,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
         String token = strings[0];
 
         try {
-
+            //set the URL and post data
             String link = "http://quigleyserver.ddns.net/Group/database_test_2.php";
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
             data += "&" + URLEncoder.encode("tables", "UTF-8") + "=" + URLEncoder.encode(tablesJSON, "UTF-8");
@@ -99,17 +99,19 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            //write the post data
             wr.write(data);
             wr.flush();
+            //gets the response code from the web server
             int code = conn.getResponseCode();
             switch(code) {
                 case 200:
+                    //reads the data from the web server
                     BufferedReader bR = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     ArrayList<String> lines = new ArrayList<>();
                     String line;
                     while ((line = bR.readLine()) != null) {
                         lines.add(line);
-                        //progress.incrementProgressBy(1);
                   }
 
                     bR.close();

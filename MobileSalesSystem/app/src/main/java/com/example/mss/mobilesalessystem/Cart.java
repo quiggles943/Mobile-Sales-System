@@ -27,7 +27,6 @@ import java.util.ArrayList;
 public class Cart extends Activity{
     ImageButton addItemBtn, checkoutBtn;
     Context context;
-    String result;
     private ArrayAdapter<orderItem> adapter;
     private ListView listview;
     ArrayList<orderItem>items;
@@ -36,9 +35,23 @@ public class Cart extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart_layout);
         context = this;
+
+        //set the image buttons for adding item and moving to checkout
         addItemBtn = (ImageButton)findViewById(R.id.btn_add_item);
         checkoutBtn =(ImageButton)findViewById(R.id.btn_checkout);
+        //sets the listView
+        listview = (ListView) findViewById(R.id.lv_itemList);
 
+        //initialise the array list and the item adapter
+        items = new ArrayList<>();
+        adapter = new CustomItemAdapter(this,R.layout.listitem, items);
+        //set Adapter on listview
+        listview.setAdapter(adapter);
+
+        //initialises the context menu
+        registerForContextMenu(listview);
+
+        //sets onclick methods for the buttons
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -46,17 +59,6 @@ public class Cart extends Activity{
                 startActivityForResult(intent,1);
             }
         });
-
-        // Mockup listview layout ---> cart_layout
-        listview = (ListView) findViewById(R.id.lv_itemList);
-        //create new Adapter
-        items = new ArrayList<>();         //placeholder list
-        adapter = new CustomItemAdapter(this,R.layout.listitem, items);
-        //set Adapter on listview
-        listview.setAdapter(adapter);
-        queryDatabase();
-        registerForContextMenu(listview);
-
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -77,17 +79,7 @@ public class Cart extends Activity{
     {
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
-                ArrayList<orderItem> parcelItems =new ArrayList<>();
-                //Bundle extras = data.getExtras();
-                //boolean framed = extras.getBoolean("framed");
-                //orderItem result = extras.getParcelable("Item");
-                //items.add(result);
-
-                /*if(framed)
-                {
-                    orderItem frame = extras.getParcelable("Frame");
-                    items.add(frame);
-                }*/
+                ArrayList<orderItem> parcelItems;
                 parcelItems = data.getParcelableArrayListExtra("items");
                 for(orderItem item : parcelItems) {
                     items.add(item);
@@ -100,19 +92,6 @@ public class Cart extends Activity{
         }
     }
 
-    private void queryDatabase(){
-        SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
-        Cursor cur = pDB.query("product",null,null,null,null,null,null);
-        cur.moveToFirst();
-        String[] testData = new String[40];
-        int i=0;
-        while(!cur.isAfterLast())
-        {
-            testData[i] = cur.getString(0)+" "+cur.getString(1)+" "+cur.getString(2)+" "+cur.getString(3);
-            cur.moveToNext();
-            i++;
-        }
-    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)

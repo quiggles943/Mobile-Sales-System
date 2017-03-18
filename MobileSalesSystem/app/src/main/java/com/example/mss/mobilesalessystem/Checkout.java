@@ -52,37 +52,30 @@ public class Checkout extends Activity {
         adapter = new CustomItemAdapter(this,R.layout.listitem, order);
         //set Adapter on listview
         listview.setAdapter(adapter);
-
-        subtotalPriceDisplay.setText("Subtotal: £"+subTotal());
-
-        discount = (EditText) findViewById(R.id.et_discount);
-
         total = subTotal();
+        //sets the subtotal price
+        subtotalPriceDisplay.setText("Subtotal: £"+total);
 
+        //set up the discount EditText
+        discount = (EditText) findViewById(R.id.et_discount);
         discount.setText(""+total);
-
         discount.setSelectAllOnFocus(true);
-
         discount.setImeActionLabel("Apply",KeyEvent.KEYCODE_ENTER);
         discount.setOnEditorActionListener( new TextView.OnEditorActionListener(){
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
                 total = Float.parseFloat(discount.getText().toString());
                 discount.setText(""+total);
-
                 InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 in.hideSoftInputFromWindow(v.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
                 subtotalPriceDisplay.setText("Was £" + subTotal() +"    Now £" + total);
-
                 return true;
             }
         });
 
+        //Set up the cash payment ImageButton
         cashPay = (ImageButton) findViewById(R.id.btn_cash);
-
         cashPay.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -99,9 +92,11 @@ public class Checkout extends Activity {
             }
         });
 
+        //Set up the paypal payment ImageButton
         paypalPay = (ImageButton) findViewById(R.id.btn_paypal);
     }
 
+    //Calculate subtotal
     public float subTotal(){
         float value = 0;
         for(orderItem item : order)

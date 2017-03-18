@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -69,6 +70,33 @@ public class Statistics extends Activity {
 
         expInvAdap = new ExpandableInvoiceAdapter(this, expListTitles,expListDetails);
         listView.setAdapter(expInvAdap);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                long packedPosition = listView.getExpandableListPosition(position);
+
+                int itemType = ExpandableListView.getPackedPositionType(packedPosition);
+                int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
+                int childPosition = ExpandableListView.getPackedPositionChild(packedPosition);
+                Invoice invoice = expListTitles.get(groupPosition);
+
+
+        /*  if group item clicked */
+                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                    Toast.makeText(context,"Invoice Order "+invoice.getInvoiceId(),Toast.LENGTH_SHORT).show();
+                }
+
+        /*  if child item clicked */
+                else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    InvoiceItems item = expListDetails.get(invoice).get(childPosition);
+                    Toast.makeText(context,"Invoice item Id "+item.getItemID(),Toast.LENGTH_SHORT).show();
+                }
+
+
+                return false;
+            }
+        });
         //NEED TO SET ON GROUP CLICK LISTENER
 
         syncToDb = (ImageButton)findViewById(R.id.btn_sync_to_db);

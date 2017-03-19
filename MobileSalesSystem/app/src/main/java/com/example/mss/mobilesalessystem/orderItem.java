@@ -3,7 +3,6 @@ package com.example.mss.mobilesalessystem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.text.Normalizer;
 
 /**
  * Created by 40114815 on 31/01/2017.

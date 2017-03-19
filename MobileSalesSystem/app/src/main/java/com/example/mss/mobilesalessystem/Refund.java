@@ -8,17 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
 
 /**
@@ -67,6 +63,16 @@ public class Refund extends Activity {
         CustomItemAdapter adapter = new CustomItemAdapter(this,R.layout.listitem, invoiceItems);
         //set Adapter on listview
         listView.setAdapter(adapter);
+
+        refund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("invoice", invoice);
+                setResult(1, returnIntent);
+                finish();
+            }
+        });
 
     }
 

@@ -9,24 +9,20 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,13 +33,13 @@ import java.util.HashMap;
 public class Statistics extends Activity {
     Context context;
     SQLiteDatabase pDB = null;
-    InvoiceAdapter adapter;
     ImageButton syncFromDb, syncToDb;
 
     ExpandableListView listView;
     ExpandableInvoiceAdapter expInvAdap;
     ArrayList<Invoice> expListTitles;
     HashMap<Invoice, ArrayList<InvoiceItems>> expListDetails;
+    Invoice selectedInvoice;
 
 
     @Override
@@ -234,7 +230,6 @@ public class Statistics extends Activity {
                 Intent intent = new Intent(context, Refund.class);
                 intent.putExtra("invoice", invoice);
                 startActivityForResult(intent, 0);
-                return true;
             }
 
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
@@ -245,6 +240,47 @@ public class Statistics extends Activity {
 
         return super.onContextItemSelected(selected);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == 0){
+            if(resultCode == 1){
+                selectedInvoice = data.getParcelableExtra("invoice");
+                Invoice removedInvoice = null;
+                for(Invoice invoice: expListTitles){
+                    if(invoice.getInvoiceId() == selectedInvoice.getInvoiceId())
+                    {
+                        removedInvoice = invoice;
+                    }
+                }
+                boolean invoiceRemoved = expListTitles.remove(removedInvoice);
+                expInvAdap.notifyDataSetChanged();
+                String currentDate = (String) DateFormat.format("ddMMM  HH:mm:ss", removedInvoice.getDate());
+                AlertDialog.Builder invoiceRemovedDialog = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog));
+                if(invoiceRemoved)
+                {           invoiceRemovedDialog.setTitle("Invoice Removed")
+                            .setMessage("Invoice: "+removedInvoice.getInvoiceId()+"\nDate: "+currentDate+"\nPrice: £"+removedInvoice.getAmountPaid()+"\nhas been removed")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
+                }
+                else if(!invoiceRemoved)
+                {
+                    invoiceRemovedDialog.setTitle("Invoice Removal Error")
+                            .setMessage("Invoice: "+removedInvoice.getInvoiceId()+" has not been able to be refunded through the app")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
+                }
+
+            }
+            else{
+                selectedInvoice = null;
+            }
+        }
+    }
+
 
 
 }

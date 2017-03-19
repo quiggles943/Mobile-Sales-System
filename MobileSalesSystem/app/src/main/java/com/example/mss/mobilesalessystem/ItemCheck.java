@@ -11,8 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +23,6 @@ import android.widget.ToggleButton;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**

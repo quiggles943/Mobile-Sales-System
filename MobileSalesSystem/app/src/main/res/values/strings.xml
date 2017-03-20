@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Mobile Sales System</string>
     <string name="website">http://janinevanmoosel.co.uk/product/</string>
+    <string name="appVersionTitle">Aardvark</string>
     <string name="serverurl">jdbc:mysql://192.168.0.26:80/jvanm</string>
         <string-array
             name="string_format_array">

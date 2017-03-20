@@ -255,6 +255,12 @@ public class Statistics extends Activity {
                     }
                 }
                 boolean invoiceRemoved = expListTitles.remove(removedInvoice);
+
+                String sql = "DELETE FROM invoice WHERE InvoiceID ="+removedInvoice.getInvoiceId()+";";
+                pDB.execSQL(sql);
+                sql = "DELETE FROM invoiceitems WHERE InvoiceID ="+removedInvoice.getInvoiceId()+";";
+                pDB.execSQL(sql);
+
                 expInvAdap.notifyDataSetChanged();
                 String currentDate = (String) DateFormat.format("ddMMM  HH:mm:ss", removedInvoice.getDate());
                 AlertDialog.Builder invoiceRemovedDialog = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog));

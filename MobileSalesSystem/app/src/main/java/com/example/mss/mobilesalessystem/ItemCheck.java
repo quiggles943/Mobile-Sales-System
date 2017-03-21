@@ -20,11 +20,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-
+import com.example.mss.mobilesalessystem.ImageFromPath.*;
 /**
  * Created by Paul on 23/02/2017.
  */
@@ -243,35 +242,8 @@ public class ItemCheck extends Activity{
     private void getThumbnail()
     {
         try {
-            //ONLY WORKS WITH TEST DATA SO FAR
-            ContextWrapper cw = new ContextWrapper(this.getApplicationContext());
-            // path to /data/data/yourapp/app_data/imageDir
-            String[]filepath= ImageFilePath.split("/");
-            File directory = cw.getDir(filepath[0], Context.MODE_PRIVATE);
-            File mypath;
-            boolean thumbnail;
-            String fileToFind = filepath[1];
-            if(fileToFind.contains(" "))
-            {
-                String[] splitFile = fileToFind.split(" ");
-                fileToFind = "";
-                for (String s: splitFile)
-                {
-                    fileToFind += s.toLowerCase() + "_";
-                }
-                fileToFind = fileToFind.substring(0, fileToFind.length()-1);
-            }
-
-            mypath = new File(directory,fileToFind);
-            thumbnail = true;
-
-            if(thumbnail) {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                Bitmap image;
-
-                image = BitmapFactory.decodeStream(new FileInputStream(mypath), null, options);
-                preview.setImageBitmap(image);
-            }
+            Bitmap image = ImageFromPath.imageFromPath(ImageFilePath, this);
+            preview.setImageBitmap(image);
         } catch (Exception e) {
             e.printStackTrace();
         }

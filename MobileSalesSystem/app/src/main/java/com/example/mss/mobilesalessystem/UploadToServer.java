@@ -29,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Paul on 20/03/2017.
  */
 
-public class UploadToServer extends AsyncTask<String, Void, Void> {
+public class UploadToServer extends AsyncTask<String, Void, Boolean> {
     Context context;
     ProgressDialog ringDialog;
     SQLiteDatabase pDB;
@@ -56,15 +56,15 @@ public class UploadToServer extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... strings) {
+    protected Boolean doInBackground(String... strings) {
         try {
+            boolean success = true;
             String token = strings[0];
             JSONArray finalSalesArray = getSalesTotals();
-            finalSalesArray.toString();
             //set the URL and post data
-            /*String link = "http://quigleyserver.ddns.net/Group/database_test_3.php";
+            String link = "http://quigleyserver.ddns.net/Group/database_test_3.php";
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
-            data += "&" + URLEncoder.encode("tables", "UTF-8") + "=" + URLEncoder.encode(finalSalesArray.toString(), "UTF-8");
+            data += "&" + URLEncoder.encode("items_sold", "UTF-8") + "=" + URLEncoder.encode(finalSalesArray.toString(), "UTF-8");
 
             URL url = new URL(link);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -82,46 +82,62 @@ public class UploadToServer extends AsyncTask<String, Void, Void> {
                     //reads the data from the web server
                     BufferedReader bR = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     ArrayList<String> lines = new ArrayList<>();
+                    ArrayList<String> failedUploads = new ArrayList<>();
                     String line;
                     while ((line = bR.readLine()) != null) {
                         lines.add(line);
                     }
-
-                    bR.close();
-                    HashMap<String, JSONArray> jsonData = new HashMap<>();
-                    for (String s : lines) {
-                        int found = s.indexOf('[');
-                        String key = s.substring(0, found - 1);
-                        String newS = s.substring(found, s.length());
-
-                        JSONArray json = new JSONArray(newS);
-                        jsonData.put(key, json);
+                    for(String result: lines)
+                    {
+                        String[]resultSplit = result.split(":");
+                        if(resultSplit[1].equals("0"))
+                        {
+                            failedUploads.add(resultSplit[0]);
+                            success = false;
+                        }
                     }
-
                     break;
                 case 401:
                     Log.e("Authentication error", "The token on the device was not accepted by the server");
                     break;
                 case 404:
-                    Log.e("Server error", "The page or directory you have attempted to acces either does not exist, is unavailable, had its name changed or has been moved. ");
+                    Log.e("Page not found", "The page or directory you have attempted to access either does not exist, is unavailable, had its name changed or has been moved. ");
                     break;
                 case 405:
                     Log.e("Request error", "The request to the server was not accepted because it was the wrong request format");
-
-            }*/
+                    break;
+                case 500:
+                    Log.e("Server error", "The server has thrown an error on it's side.");
+                    break;
+            }
+            if(success) {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         catch(Exception e)
         {
-
+            Log.e("Exception",e.getMessage());
+            return false;
         }
-        return null;
+
+
     }
 
     @Override
-    protected void onPostExecute(Void result)
+    protected void onPostExecute(Boolean result)
     {
-        Toast.makeText(context,"Global database updated",Toast.LENGTH_SHORT).show();
         ringDialog.dismiss();
+        if(result) {
+            Toast.makeText(context, "Global database updated", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(context, "Global database update was not successful", Toast.LENGTH_SHORT).show();
+        }
         pDB.close();
     }
 
@@ -131,26 +147,24 @@ public class UploadToServer extends AsyncTask<String, Void, Void> {
 
         try {
             JSONObject objectResult;
-            HashMap<Integer, Integer> salesTotals = new HashMap<>();
+            HashMap<String, Integer> salesTotals = new HashMap<>();
 
-            String sql = "SELECT ProductID, COUNT(ProductID) FROM invoiceitems GROUP BY ProductID";
+            String sql = "SELECT ProductID, Qty FROM invoiceitems GROUP BY ProductID";
 
             Cursor c = pDB.rawQuery(sql, null);
             if (!(c.moveToFirst()) || c.getCount() == 0) {
 
             } else {
                 while (!c.isAfterLast()) {
-                    salesTotals.put(c.getInt(0), c.getInt(1));
+                    salesTotals.put(c.getString(0), c.getInt(1));
                     c.moveToNext();
                 }
             }
 
             objectResult = new JSONObject(salesTotals);
-            result = new JSONArray(objectResult.toString());
+            result = new JSONArray();
+            result.put(objectResult);
 
-
-        } catch (JSONException e) {
-            Log.e("JSON Creation Error:", e.getMessage());
         } catch (SQLiteException ex) {
             Log.e("Sales Totals Error:", ex.getMessage());
         }

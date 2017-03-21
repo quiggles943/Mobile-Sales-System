@@ -12,18 +12,19 @@ public class InvoiceItems  {
     private float price;
     private String format;
     private int qty;
+    private String imgFilePath;
     public InvoiceItems ()
     {
         //standard constructor
     }
 
-    public InvoiceItems(int invoiceID, String itemID, String itemDescription, int quantity)
+    public InvoiceItems(int invoiceID, String itemID, String itemDescription, int quantity, String imgFilePath)
     {
         this.invoiceID = invoiceID;
         this.itemID = itemID;
         this.itemDescription = itemDescription;
         this.qty = quantity;
-
+        this.imgFilePath = imgFilePath;
     }
 
     public void setInvoiceID (int invoiceID)
@@ -65,4 +66,6 @@ public class InvoiceItems  {
     public String getFormat(){ return this.format; }
 
     public int getQty() { return this.qty; }
+
+    public String getImgFilePath() { return this.imgFilePath; }
 }

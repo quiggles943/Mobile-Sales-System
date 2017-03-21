@@ -16,13 +16,14 @@ public class orderItem implements Parcelable{
     private String imageId;                     //String to hold the image ID
     private Float itemPrice;                    //Float to hold the price of the item, due to decimal place acceptance
     private int qty;
+    private String imgFilePath;
 
     public orderItem() {
         //standard constructor
     }
 
 
-    public orderItem (String itemID, String itemDescription, Format format,float price , Boolean framed)
+    public orderItem (String itemID, String itemDescription, Format format,float price , Boolean framed, String imgFilePath)
     {
         this.itemID = itemID;
         this.itemDescription = itemDescription;
@@ -30,6 +31,7 @@ public class orderItem implements Parcelable{
         this.format = format;
         this.itemPrice = price;
         this.qty = 1;
+        this.imgFilePath=imgFilePath;
     }
 
     public static final Parcelable.Creator<orderItem> CREATOR = new Creator<orderItem>() {      //Parcelable Creator allows for the order item to be sent between objects as a parcelable file
@@ -97,6 +99,8 @@ public class orderItem implements Parcelable{
 
     public int getQty(){ return this.qty; }
 
+    public String getImgFilePath() { return  this.imgFilePath; }
+
 
     @Override
     public int describeContents() {
@@ -113,6 +117,7 @@ public class orderItem implements Parcelable{
         parcel.writeByte((byte) (format.getFrameable() ? 1:0));
         parcel.writeFloat(itemPrice);
         parcel.writeInt(qty);
+        parcel.writeString(imgFilePath);
     }
 
     public orderItem(Parcel parcel)         //converts the parcel to an object
@@ -128,5 +133,6 @@ public class orderItem implements Parcelable{
         this.itemPrice = parcel.readFloat();
         this.format = new Format(formatid,formatDesc,formatFrameable);
         this.qty= parcel.readInt();
+        this.imgFilePath = parcel.readString();
     }
 }

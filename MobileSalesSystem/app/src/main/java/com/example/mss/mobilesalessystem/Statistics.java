@@ -164,12 +164,12 @@ public class Statistics extends Activity {
 
             } else {
                 while (!c.isAfterLast()) {
-                    String sql = "SELECT i.imageDesc FROM image i JOIN product p ON i.imageID=p.imageID WHERE ProductID = " + c.getString(1) + ";";
+                    String sql = "SELECT i.imageDesc, i.MedImgFilePath FROM image i JOIN product p ON i.imageID=p.imageID WHERE ProductID = " + c.getString(1) + ";";
                     Cursor cu = pDB.rawQuery(sql, null);
                     if (!(cu.moveToFirst()) || cu.getCount() == 0) {
 
                     } else {
-                        items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0), c.getInt(2)));
+                        items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0), c.getInt(2), cu.getString(1)));
                         c.moveToNext();
                     }
                 }

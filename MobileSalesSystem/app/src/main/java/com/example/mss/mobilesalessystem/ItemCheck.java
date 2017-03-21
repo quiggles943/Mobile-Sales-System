@@ -95,7 +95,7 @@ public class ItemCheck extends Activity{
                         cur.moveToNext();
                     }
                     cur.close();
-                    orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat, itemPrice, toggle.isChecked());    //Create new orderItem with the given variables
+                    orderItem finalItem = new orderItem(prodId, ImageDesc, finalFormat, itemPrice, toggle.isChecked(), ImageFilePath);    //Create new orderItem with the given variables
                     Intent returnIntent = new Intent();     //create the return intent
                     //Bundle extras = new Bundle();
                     ArrayList<orderItem> parcelItems = new ArrayList<>();
@@ -123,7 +123,7 @@ public class ItemCheck extends Activity{
                             cur3.moveToNext();
                         }
                         frameFormat = new Format(frameId,frameDesc,true);
-                        orderItem frame = new orderItem(frameId, frameDesc, frameFormat,framePrice, true);
+                        orderItem frame = new orderItem(frameId, frameDesc, frameFormat,framePrice, true,"");
                         parcelItems.add(frame);
                         //extras.putBoolean("framed", true);      //adds the true boolean to denote that the item is framed
                         //extras.putParcelable("Frame", frame);   //adds the frame item

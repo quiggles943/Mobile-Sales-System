@@ -2,11 +2,13 @@ package com.example.mss.mobilesalessystem;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -59,6 +61,7 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
         TextView format = (TextView) convertView.findViewById(R.id.tv_format);
         TextView qty = (TextView) convertView.findViewById(R.id.tv_qty);
         TextView indvPrice = (TextView) convertView.findViewById(R.id.tv_detail_price);
+        ImageView thumbnail = (ImageView) convertView.findViewById(R.id.iv_thumbnail);
         int quantity = expandedListItem.getQty();
         float totalprice = (expandedListItem.getPrice()*quantity);
         float indvprice = expandedListItem.getPrice();
@@ -68,6 +71,8 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
 
         expandedListTextView.setText(expandedListItem.getItemDescription());
         qty.setText(expandedListItem.getQty()+"");
+
+        thumbnail.setImageBitmap(ImageFromPath.imageFromPath(expandedListItem.getImgFilePath(),context));
         return convertView;
     }
 
@@ -103,8 +108,12 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
         }
         //TEXT VIEW WITHIN PARENT LISTVIEW
         TextView listTitleTextView = (TextView)convertView.findViewById(R.id.tv_groupView_title);
+        TextView listDateTextView = (TextView) convertView.findViewById(R.id.tv_groupView_date);
+        TextView listPriceTextView = (TextView) convertView.findViewById(R.id.tv_groupView_price);
         String currentDate = (String) DateFormat.format("dd MMM  HH:mm:ss", invoice.getDate());
-        listTitleTextView.setText("Order : "+invoice.getInvoiceId()+"\n"+ currentDate);
+        listTitleTextView.setText("Order : "+invoice.getInvoiceId());
+        listDateTextView.setText(currentDate);
+        listPriceTextView.setText(String.format("£ %.2f",invoice.getAmountPaid()));
         return convertView;
     }
 

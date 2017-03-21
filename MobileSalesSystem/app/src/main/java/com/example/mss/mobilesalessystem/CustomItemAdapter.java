@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -58,12 +59,13 @@ public class CustomItemAdapter extends ArrayAdapter<orderItem> {
         mViewHolder.tv_frame.setText(currentItem.getIsFramed());
         mViewHolder.tv_size.setText(currentItem.getFormat().getFormatDescription());
         mViewHolder.tv_totalPrice.setText("£" + currentItem.getPrice());
-
+        mViewHolder.thumbnail.setImageBitmap(ImageFromPath.imageFromPath(currentItem.getImgFilePath(), context));
         return convertView;
 
     }
     private class MyViewHolder {
         TextView tv_title, tv_size, tv_frame, tv_detailPrice, tv_totalPrice;
+        ImageView thumbnail;
 
         // refer on layout
         public MyViewHolder(View item) {
@@ -73,6 +75,7 @@ public class CustomItemAdapter extends ArrayAdapter<orderItem> {
             tv_frame = (TextView) item.findViewById(R.id.tv_frame);
             tv_detailPrice = (TextView) item.findViewById(R.id.tv_detail_price);
             tv_totalPrice = (TextView) item.findViewById(R.id.tv_total_price);
+            thumbnail = (ImageView)item.findViewById(R.id.iv_thumbnail);
         }
     }
 }

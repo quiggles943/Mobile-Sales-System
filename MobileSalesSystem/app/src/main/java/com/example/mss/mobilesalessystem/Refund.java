@@ -92,26 +92,26 @@ public class Refund extends Activity {
 
         } else {
             while (!c.isAfterLast()) {
-                String sql = "SELECT i.imageDesc FROM image i JOIN product p ON i.imageID=p.imageID WHERE ProductID = " + c.getString(1) + ";";
+                String sql = "SELECT i.imageDesc, i.MedImgFilePath FROM image i JOIN product p ON i.imageID=p.imageID WHERE ProductID = " + c.getString(1) + ";";
                 Cursor cu = pDB.rawQuery(sql, null);
                 if (!(cu.moveToFirst()) || cu.getCount() == 0) {
 
                 } else {
-                    items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0), c.getInt(2)));
+                    items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0), c.getInt(2), cu.getString(1)));
                     c.moveToNext();
                 }
             }
         }
         for(InvoiceItems item : items)
         {
-            String sql = "SELECT p.format, p.price FROM  product p WHERE ProductID = " + item.getItemID() + ";";
+            String sql = "SELECT p.format, p.price, i.MedImgFilePath FROM  product p JOIN image i ON p.imageID = i.imageID WHERE ProductID = " + item.getItemID() + ";";
             Cursor cu = pDB.rawQuery(sql,null);
             if (!(cu.moveToFirst()) || cu.getCount() == 0)
             {
 
             } else {
                 while (!cu.isAfterLast()) {
-                    orderitems.add(new orderItem(item.getItemID(),item.getItemDescription(),new Format(cu.getString(0), false),cu.getFloat(1), false));
+                    orderitems.add(new orderItem(item.getItemID(),item.getItemDescription(),new Format(cu.getString(0), false),cu.getFloat(1), false, cu.getString(2)));
                     //item.setFormat(cu.getString(0));
                     //item.setPrice(cu.getFloat(1));
                     cu.moveToNext();

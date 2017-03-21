@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -85,6 +86,7 @@ public class Checkout extends Activity {
 
                 Intent intent = new Intent(context, MainMenu.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                playSound();
                 startActivity(intent);
                 finish();
             }
@@ -182,5 +184,10 @@ public class Checkout extends Activity {
             Log.e("Order Addition Error", e.getMessage().toString());
         }
 
+    }
+
+    public void playSound(){
+        final MediaPlayer soundPlayer = MediaPlayer.create(this, R.raw.complete_transaction);
+        soundPlayer.start();
     }
 }

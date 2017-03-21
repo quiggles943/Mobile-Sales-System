@@ -138,13 +138,40 @@ public class Checkout extends Activity {
 
             String start = "INSERT INTO invoiceitems VALUES (" + newInvoiceNumber + ",";      //sql starting statement
 
-            for (orderItem o : order)       //for all the orders
+            ArrayList<orderItem> finalList = new ArrayList<>();
+
+            for(orderItem item : order)
+            {
+                boolean found = false;
+                for(orderItem finalItem : finalList)
+                {
+                    if(finalItem.getItemID().equals(item.getItemID()))
+                    {
+                        finalList.get(finalList.indexOf(finalItem)).setQty(finalList.get(finalList.indexOf(finalItem)).getQty()+1);
+                        found =true;
+                    }
+                }
+                if(!found)
+                {
+                    finalList.add(item);
+                }
+                /*if(finalList.contains(item))
+                {
+                    finalList.get(finalList.indexOf(item)).setQty(finalList.get(finalList.indexOf(item)).getQty()+1);
+                }
+                else
+                {
+                    finalList.add(item);
+                }*/
+            }
+
+            for (orderItem o : finalList)       //for all the orders
             {
                 String sqlInvoiceItems = start;         //resetting sql statement
 
                 sqlInvoiceItems += o.getItemID();         //adding the item ID (ASSUMING THIS IS SAME AS PRODUCT ID IN SCHEMA??)
 
-                sqlInvoiceItems += ",1);";         //adding on the 1 for quantity (ASSUMING WE ARENT GROUPING MULTIPLE OF SAME PRODUCT AS ONE ORDER ITEM??)
+                sqlInvoiceItems += ","+o.getQty()+");";         //adding on the 1 for quantity (ASSUMING WE ARENT GROUPING MULTIPLE OF SAME PRODUCT AS ONE ORDER ITEM??)
 
                 pDB.execSQL(sqlInvoiceItems);       //running said SQL statement
             }

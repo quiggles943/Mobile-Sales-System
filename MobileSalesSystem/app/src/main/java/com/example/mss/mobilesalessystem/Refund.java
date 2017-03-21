@@ -97,7 +97,7 @@ public class Refund extends Activity {
                 if (!(cu.moveToFirst()) || cu.getCount() == 0) {
 
                 } else {
-                    items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0)));
+                    items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0), c.getInt(2)));
                     c.moveToNext();
                 }
             }

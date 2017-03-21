@@ -11,17 +11,18 @@ public class InvoiceItems  {
     private String itemDescription;
     private float price;
     private String format;
-
+    private int qty;
     public InvoiceItems ()
     {
         //standard constructor
     }
 
-    public InvoiceItems(int invoiceID, String itemID, String itemDescription)
+    public InvoiceItems(int invoiceID, String itemID, String itemDescription, int quantity)
     {
         this.invoiceID = invoiceID;
         this.itemID = itemID;
         this.itemDescription = itemDescription;
+        this.qty = quantity;
 
     }
 
@@ -62,4 +63,6 @@ public class InvoiceItems  {
     public void setFormat(String format){ this.format = format; }
 
     public String getFormat(){ return this.format; }
+
+    public int getQty() { return this.qty; }
 }

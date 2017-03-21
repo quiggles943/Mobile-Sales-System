@@ -96,7 +96,6 @@ public class Statistics extends Activity {
                 return false;
             }
         });
-        //NEED TO SET ON GROUP CLICK LISTENER
 
         syncToDb = (ImageButton)findViewById(R.id.btn_sync_to_db);
         syncFromDb = (ImageButton)findViewById(R.id.btn_sync_from_db);
@@ -133,6 +132,15 @@ public class Statistics extends Activity {
 
             }
         });
+        syncToDb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final UploadToServer serverUpdate = new UploadToServer(context);      //creating a new database connector                 //openning up an editor to write to shared preferences
+
+                final String token = mSharedPreference.getString("token","");
+                serverUpdate.execute(token);
+            }
+        });
 
         registerForContextMenu(listView);
     }
@@ -161,7 +169,7 @@ public class Statistics extends Activity {
                     if (!(cu.moveToFirst()) || cu.getCount() == 0) {
 
                     } else {
-                        items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0)));
+                        items.add(new InvoiceItems(c.getInt(0), c.getString(1), cu.getString(0), c.getInt(2)));
                         c.moveToNext();
                     }
                 }

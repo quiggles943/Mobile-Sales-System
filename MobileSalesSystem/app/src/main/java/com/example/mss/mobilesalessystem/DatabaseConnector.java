@@ -51,8 +51,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
             JSONArray tablesArray = new JSONArray(tables);
             tablesJSON = tablesArray.toString();
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
 
         }
 

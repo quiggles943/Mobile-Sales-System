@@ -84,6 +84,7 @@ public class Invoice implements Parcelable {
 
     public long getTimeStamp(){ return this.timeStamp;}
 
+
     private Date convertDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);

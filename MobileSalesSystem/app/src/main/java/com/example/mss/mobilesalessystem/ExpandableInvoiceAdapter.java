@@ -52,16 +52,22 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             //Layout for expanded listview needed
-            convertView = layoutInflater.inflate(R.layout.invoice_listitem, null);
+            convertView = layoutInflater.inflate(R.layout.invoice_listitem,null);
         }
         TextView expandedListTextView = (TextView) convertView.findViewById(R.id.tv_itemTitle);
         TextView price = (TextView) convertView.findViewById(R.id.tv_total_price);
         TextView format = (TextView) convertView.findViewById(R.id.tv_format);
-
-        price.setText("£"+expandedListItem.getPrice());
+        TextView qty = (TextView) convertView.findViewById(R.id.tv_qty);
+        TextView indvPrice = (TextView) convertView.findViewById(R.id.tv_detail_price);
+        int quantity = expandedListItem.getQty();
+        float totalprice = (expandedListItem.getPrice()*quantity);
+        float indvprice = expandedListItem.getPrice();
+        indvPrice.setText(quantity+" x "+ String.format("£ %.2f",indvprice));
+        price.setText(String.format("£ %.2f",totalprice));
         format.setText(expandedListItem.getFormat());
 
         expandedListTextView.setText(expandedListItem.getItemDescription());
+        qty.setText(expandedListItem.getQty()+"");
         return convertView;
     }
 

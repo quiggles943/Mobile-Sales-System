@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="85dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/rounded_corner_items"
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:id="@+id/iv_thumbnail"
         android:layout_weight="1"
-        android:layout_height="72dp"
+        android:layout_height="90dp"
         android:paddingRight="5dp" />
 
     <LinearLayout
@@ -71,7 +71,56 @@
                 android:layout_gravity="left|center_vertical" />
 
             <TextView
-                android:text="100.00€"
+                android:text="5x£20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_detail_price"
+                android:layout_weight="1"
+                android:padding="1dp"
+                android:paddingBottom="1dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:paddingTop="1dp"
+                android:gravity="right"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="quantity:"
+                android:layout_height="wrap_content"
+                android:id="@+id/quantity"
+                android:gravity="right"
+                android:padding="1dp"
+                android:paddingBottom="1dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:paddingTop="1dp"
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:layout_gravity="left|center_vertical" />
+
+            <TextView
+                android:text="1"
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_qty"
+                android:layout_weight="1.18"
+                android:padding="1dp"
+                android:paddingBottom="1dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:paddingTop="1dp"
+                android:gravity="left"
+                android:textColor="@android:color/white"
+                android:layout_gravity="left|center_vertical" />
+
+            <TextView
+                android:text="£100.00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_total_price"
@@ -84,14 +133,6 @@
                 android:textSize="22sp"
                 android:gravity="right"
                 android:textColor="@android:color/white" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
         </LinearLayout>
     </LinearLayout>
 

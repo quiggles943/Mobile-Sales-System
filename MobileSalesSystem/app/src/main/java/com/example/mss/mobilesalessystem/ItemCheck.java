@@ -243,25 +243,27 @@ public class ItemCheck extends Activity{
     private void getThumbnail()
     {
         try {
+            //ONLY WORKS WITH TEST DATA SO FAR
             ContextWrapper cw = new ContextWrapper(this.getApplicationContext());
             // path to /data/data/yourapp/app_data/imageDir
-            File directory = cw.getDir("MedImg", Context.MODE_PRIVATE);
-            File mypath = null;
+            String[]filepath= ImageFilePath.split("/");
+            File directory = cw.getDir(filepath[0], Context.MODE_PRIVATE);
+            File mypath;
             boolean thumbnail;
-            // Create imageDir
-            if(ImageId.equals("HLYQU")) {
-                mypath = new File(directory, "harley.png");
-                thumbnail = true;
-            }
-            else if(ImageId.equals("FRKGR"))
+            String fileToFind = filepath[1];
+            if(fileToFind.contains(" "))
             {
-                mypath = new File(directory, "freddy_krueger.png");
-                thumbnail = true;
+                String[] splitFile = fileToFind.split(" ");
+                fileToFind = "";
+                for (String s: splitFile)
+                {
+                    fileToFind += s.toLowerCase() + "_";
+                }
+                fileToFind = fileToFind.substring(0, fileToFind.length()-1);
             }
-            else
-            {
-                thumbnail = false;
-            }
+
+            mypath = new File(directory,fileToFind);
+            thumbnail = true;
 
             if(thumbnail) {
                 BitmapFactory.Options options = new BitmapFactory.Options();

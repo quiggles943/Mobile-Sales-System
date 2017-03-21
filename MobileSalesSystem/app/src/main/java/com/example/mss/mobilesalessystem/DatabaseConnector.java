@@ -172,7 +172,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
         for (Map.Entry<String, JSONArray> data : dataToIntepret.entrySet())
         {
-            String sqlStatement = "INSERT OR IGNORE INTO ";
+            String sqlStatement = "INSERT OR REPLACE INTO ";
             sqlStatement += data.getKey();
             sqlStatement += " (";
 

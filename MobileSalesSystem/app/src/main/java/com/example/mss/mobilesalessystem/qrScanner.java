@@ -3,8 +3,10 @@ package com.example.mss.mobilesalessystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -144,7 +146,13 @@ public class qrScanner extends Activity {
             barcodeDetector.release();      //stops the barcode scanner
             Intent intent = new Intent(context, ItemCheck.class);       //creates new intent
             intent.putExtra("barcode", barcodes.valueAt(0).displayValue);       //adds the scanned barcode to the intent
-            startActivityForResult(intent,1);       //starts ItemCheck
+            String permission = "android.permission.VIBRATE";
+            int res = this.checkCallingOrSelfPermission(permission);
+            if(res == PackageManager.PERMISSION_GRANTED) {
+                Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(200);
+            }
+            startActivityForResult(intent, 1);       //starts ItemCheck
         }
 
     }

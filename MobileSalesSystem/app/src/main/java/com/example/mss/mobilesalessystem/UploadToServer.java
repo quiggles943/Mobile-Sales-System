@@ -1,5 +1,6 @@
 package com.example.mss.mobilesalessystem;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -33,6 +35,7 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
     Context context;
     ProgressDialog ringDialog;
     SQLiteDatabase pDB;
+    String message;
 
     public UploadToServer (Context c)
     {
@@ -84,8 +87,14 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
                     ArrayList<String> lines = new ArrayList<>();
                     ArrayList<String> failedUploads = new ArrayList<>();
                     String line;
+                    int i = 0;
                     while ((line = bR.readLine()) != null) {
                         lines.add(line);
+                        i++;
+                    }
+                    if(i == 0){
+                        success = false;
+                        message = "There were no transactions to upload";
                     }
                     for(String result: lines)
                     {
@@ -95,6 +104,10 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
                             failedUploads.add(resultSplit[0]);
                             success = false;
                         }
+                    }
+                    if(!success && i>0)
+                    {
+                        message = failedUploads.size()+" invoice(s) were unable to be uploaded";
                     }
                     break;
                 case 401:
@@ -111,6 +124,7 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
                     break;
             }
             if(success) {
+                message = "Global database updated";
                 return true;
             }
             else
@@ -131,12 +145,19 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
     protected void onPostExecute(Boolean result)
     {
         ringDialog.dismiss();
+        AlertDialog.Builder alert = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog))
+                                 .setTitle("Global Database Upload")
+                                 .setMessage(message);
         if(result) {
             Toast.makeText(context, "Global database updated", Toast.LENGTH_SHORT).show();
+            alert.setIcon(android.R.drawable.ic_dialog_info)
+                 .setPositiveButton(android.R.string.ok, null).show();
         }
         else
         {
             Toast.makeText(context, "Global database update was not successful", Toast.LENGTH_SHORT).show();
+            alert.setIcon(android.R.drawable.ic_dialog_alert)
+                    .setNegativeButton(android.R.string.ok, null).show();
         }
         pDB.close();
     }

@@ -157,14 +157,6 @@ public class Checkout extends Activity {
                 {
                     finalList.add(item);
                 }
-                /*if(finalList.contains(item))
-                {
-                    finalList.get(finalList.indexOf(item)).setQty(finalList.get(finalList.indexOf(item)).getQty()+1);
-                }
-                else
-                {
-                    finalList.add(item);
-                }*/
             }
 
             for (orderItem o : finalList)       //for all the orders

@@ -2,6 +2,7 @@ package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +32,6 @@ public class MainMenu extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
         setContentView(R.layout.mainmenu_layout);
         version = (TextView) findViewById(R.id.tv_version);
         PackageInfo pInfo = null;
@@ -56,10 +56,14 @@ public class MainMenu extends Activity {
 
         if(checkToken == "") {                                                      //if the token isn't there
             editor.putString("token", "bTe>(AQSs(Au9?9sS%&H6Pgke!LMm9,A?ZM9x");         //writing the token string to the shared preferences
-            editor.commit();
+            editor.apply();
         }
 
-        initDatabase();
+
+        InitDatabase initDatabase = new InitDatabase(context);
+        initDatabase.execute();
+        pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
+
         transactionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,8 +94,9 @@ public class MainMenu extends Activity {
         });
     }
 
-    private void initDatabase(){
+    /*private void initDatabase(){
         try {
+
             String [] tableName = new String[5];
             String [] tableColumns = new String[5];
 
@@ -118,9 +123,10 @@ public class MainMenu extends Activity {
             }
 
 
+
         }catch(Exception e){
             Log.e("Database Creation Error", e.getMessage().toString());
         }
-    }
+    }*/
 
 }

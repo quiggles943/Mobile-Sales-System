@@ -2,6 +2,7 @@ package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,11 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.users.FullAccount;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,6 +47,7 @@ public class Statistics extends Activity {
     ArrayList<Invoice> expListTitles;
     HashMap<Invoice, ArrayList<InvoiceItems>> expListDetails;
     Invoice selectedInvoice;
+
 
 
     @Override
@@ -118,6 +125,7 @@ public class Statistics extends Activity {
                 }
                 else if(networkType.getType() == ConnectivityManager.TYPE_WIFI) {
                     connector.execute(token);                                                   //running the database connector with the token
+                    dropboxImageDownload();
                 } else if (networkType.getType() == ConnectivityManager.TYPE_MOBILE) {
                     new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
                             .setTitle("Confirm Database Sync")
@@ -126,11 +134,11 @@ public class Statistics extends Activity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     connector.execute(token);
+                                    dropboxImageDownload();
                                 }
                             })
                             .setNegativeButton(android.R.string.no, null).show();
                 }
-
             }
         });
         syncToDb.setOnClickListener(new View.OnClickListener() {
@@ -210,6 +218,30 @@ public class Statistics extends Activity {
 
         return result;
     }
+
+    public void dropboxImageDownload()
+    {
+        final int IMAGE_REQUEST_CODE = 101;
+        final String ACCESS_TOKEN = DropboxClient.retrieveAccessToken(context);
+        if (ACCESS_TOKEN == null)return;
+        new GetDropboxAccount(DropboxClient.getClient(ACCESS_TOKEN), new GetDropboxAccount.TaskDelegate() {
+            @Override
+            public void onAccountReceived(FullAccount account) {
+                //Print account's info
+                DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
+                Log.d("User", account.getEmail());
+                Log.d("User", account.getName().getDisplayName());
+                Log.d("User", account.getAccountType().name());
+
+                //updateUI(account);
+            }
+            @Override
+            public void onError(Exception error) {
+                Log.d("User", "Error receiving account details.");
+            }
+        }).execute();
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v , menuInfo);

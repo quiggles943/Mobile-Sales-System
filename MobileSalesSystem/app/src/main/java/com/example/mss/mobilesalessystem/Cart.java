@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
@@ -120,7 +121,7 @@ public class Cart extends Activity{
     @Override
     public void onBackPressed()
     {
-        new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Material_Dialog_Alert))
+        final AlertDialog alert = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Material_Dialog_Alert))
                 .setTitle("Confirm Exit")
                 .setMessage("Are you sure you want to exit? This will remove your current order.")
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -130,5 +131,23 @@ public class Cart extends Activity{
                         }
                 })
                 .setNegativeButton(android.R.string.no, null).show();
+        final Handler handler  = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (alert.isShowing()) {
+                    alert.dismiss();
+                }
+            }
+        };
+
+        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                handler.removeCallbacks(runnable);
+            }
+        });
+
+        handler.postDelayed(runnable, 2000);
     }
 }

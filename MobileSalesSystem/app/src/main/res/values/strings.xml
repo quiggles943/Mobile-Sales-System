@@ -2,5 +2,8 @@
     <string name="app_name">Mobile Sales System</string>
     <string name="website">http://janinevanmoosel.co.uk/product/</string>
     <string name="appVersionTitle">Aardvark 0.9.7</string>
-    <string name="serverurl">jdbc:mysql://192.168.0.26:80/jvanm</string>
+    <string name="URL_preference_title">Database Server URL</string>
+    <string name="URL_preference_summary">The URL used to connect to the global database</string>
+    <string name="payment_sound_preference_title">Payment Sound</string>
+    <string name="payment_sound_preference_summary">Payment sound used when a transaction is completed</string>
 </resources>

@@ -7,14 +7,15 @@
 
         <EditTextPreference
             android:key="server_url"
-            android:title="Database server URL"
-            android:summary="The URL used to connect to the global database"
-            android:dialogTitle="Database server URL" />
+            android:title="@string/URL_preference_title"
+            android:summary="@string/URL_preference_summary"
+            android:dialogTitle="@string/URL_preference_title"
+            android:inputType="textNoSuggestions|textUri"/>
 
         <CheckBoxPreference
             android:key="payment_sound"
-            android:title="Payment Sound"
-            android:summary="Payment sound used when a transaction is completed" />
+            android:title="@string/payment_sound_preference_title"
+            android:summary="@string/payment_sound_preference_summary" />
 
     </PreferenceCategory>
 

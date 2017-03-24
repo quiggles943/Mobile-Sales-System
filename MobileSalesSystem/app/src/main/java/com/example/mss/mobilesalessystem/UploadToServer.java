@@ -52,7 +52,7 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
     {
         //Toast.makeText(context,"Local database update started",Toast.LENGTH_SHORT).show();
         //Set up the ring dialog
-        ringDialog = new ProgressDialog(context,ProgressDialog.THEME_HOLO_DARK);
+        ringDialog = new ProgressDialog(context);
         ringDialog.setTitle("Uploading Data");
         ringDialog.setMessage("Currently uploading database information, please wait");
         ringDialog.setCancelable(false);

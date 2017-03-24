@@ -75,6 +75,33 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
+        <activity
+            android:name=".DropboxLogin"
+            android:label="Mobile Sales System"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="com.example.mss.mobilesalessystem.DropboxLogin"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name="com.dropbox.core.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask">
+
+            <intent-filter>
+                <data android:scheme="db-meuvjkjxl7djuwv" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
 
     </application>
 

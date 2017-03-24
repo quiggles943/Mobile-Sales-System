@@ -149,6 +149,7 @@
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-vision-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-wallet-8.3.0" level="project" />
+    <orderEntry type="library" exported="" name="dropbox-core-sdk-3.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-analytics-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-drive-8.3.0" level="project" />
@@ -156,6 +157,7 @@
     <orderEntry type="library" exported="" name="play-services-ads-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-appinvite-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-appstate-8.3.0" level="project" />
+    <orderEntry type="library" exported="" name="jackson-core-2.7.4" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-games-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-gcm-8.3.0" level="project" />
@@ -165,5 +167,6 @@
     <orderEntry type="library" exported="" name="play-services-nearby-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-fitness-8.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-panorama-8.3.0" level="project" />
+    <orderEntry type="library" exported="" name="android-android-22" level="project" />
   </component>
 </module>

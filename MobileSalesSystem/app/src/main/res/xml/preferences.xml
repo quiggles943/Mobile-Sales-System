@@ -20,6 +20,12 @@
     </PreferenceCategory>
 
     <Preference
+        android:key="dropbox"
+        android:title="Dropbox Login">
+        <intent android:action="com.example.mss.mobilesalessystem.DropboxLogin"/>
+    </Preference>
+
+    <Preference
         android:key="pref_static_field_key"
         android:selectable="false"
         android:persistent="false"

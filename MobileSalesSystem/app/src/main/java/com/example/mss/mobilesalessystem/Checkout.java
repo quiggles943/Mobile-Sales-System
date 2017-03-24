@@ -3,11 +3,13 @@ package com.example.mss.mobilesalessystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -59,6 +61,7 @@ public class Checkout extends Activity {
         discount = (EditText) findViewById(R.id.et_discount);
         discount.setText(""+total);
         discount.setSelectAllOnFocus(true);
+        //discount.setTextColor(R.color.);
         discount.setImeActionLabel("Apply",KeyEvent.KEYCODE_ENTER);
         discount.setOnEditorActionListener( new TextView.OnEditorActionListener(){
 
@@ -179,7 +182,11 @@ public class Checkout extends Activity {
     }
 
     public void playSound(){
-        final MediaPlayer soundPlayer = MediaPlayer.create(this, R.raw.complete_transaction);
-        soundPlayer.start();
+        final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        final boolean sound = mSharedPreference.getBoolean("payment_sound",true);
+        if(sound) {
+            final MediaPlayer soundPlayer = MediaPlayer.create(this, R.raw.complete_transaction);
+            soundPlayer.start();
+        }
     }
 }

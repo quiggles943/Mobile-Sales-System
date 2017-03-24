@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
     ProgressDialog ringDialog;
     SQLiteDatabase pDB;
     String message;
+    String urlString;
 
     public UploadToServer (Context c)
     {
@@ -54,7 +57,8 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
         ringDialog.setMessage("Currently uploading database information, please wait");
         ringDialog.setCancelable(false);
         ringDialog.show();
-
+        final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(context);
+        urlString = mSharedPreference.getString("server_url","");
 
     }
 
@@ -65,7 +69,9 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
             String token = strings[0];
             JSONArray finalSalesArray = getSalesTotals();
             //set the URL and post data
-            String link = "http://quigleyserver.ddns.net/Group/database_test_3.php";
+
+            String link = "http://"+urlString+"/database_test_3.php";
+            //String link = "http://quigleyserver.ddns.net/Group/database_test_3.php";
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
             data += "&" + URLEncoder.encode("items_sold", "UTF-8") + "=" + URLEncoder.encode(finalSalesArray.toString(), "UTF-8");
 

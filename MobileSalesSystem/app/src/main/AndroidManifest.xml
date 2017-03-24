@@ -31,43 +31,49 @@
             android:name=".qrScanner"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
         <activity
             android:name=".Transaction"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
         <activity
             android:name=".ItemCheck"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
         <activity
             android:name=".Cart"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
         <activity
             android:name=".Checkout"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
         <activity
             android:name=".Statistics"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
         <activity
             android:name=".Refund"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".Settings"
+            android:label="Mobile Sales System"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
 
     </application>

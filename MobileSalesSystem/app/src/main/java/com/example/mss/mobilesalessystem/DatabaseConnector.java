@@ -3,11 +3,13 @@ package com.example.mss.mobilesalessystem;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     String tablesJSON;
     ProgressDialog ringDialog;
     SQLiteDatabase pDB;
+    String urlString;
 
     public DatabaseConnector (Context c, String[] tables)
     {
@@ -67,6 +70,9 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
         ringDialog.setMessage("Currently Downloading Database, please wait");
         ringDialog.setCancelable(false);
         ringDialog.show();
+        final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(context);
+        urlString = mSharedPreference.getString("server_url","");
+
 
     }
 
@@ -76,7 +82,9 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
 
         try {
             //set the URL and post data
-            String link = "http://quigleyserver.ddns.net/Group/database_test_2.php";
+
+            String link = "http://"+urlString+"/database_test_2.php";
+            //String link = "http://quigleyserver.ddns.net/Group/database_test_2.php";
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
             data += "&" + URLEncoder.encode("tables", "UTF-8") + "=" + URLEncoder.encode(tablesJSON, "UTF-8");
 

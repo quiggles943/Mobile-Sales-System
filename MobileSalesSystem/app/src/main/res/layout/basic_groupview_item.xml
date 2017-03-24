@@ -15,8 +15,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_groupView_title"
             tools:text="Test"
-            android:layout_weight="1.18"
-            android:layout_marginLeft="40dp" />
+            android:layout_weight="0.19"
+            android:layout_marginLeft="40dp"
+            android:gravity="right"
+            android:layout_marginRight="5dp" />
 
     </LinearLayout>
 

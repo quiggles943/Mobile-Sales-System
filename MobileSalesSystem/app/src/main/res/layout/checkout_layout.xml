@@ -72,7 +72,8 @@
                 android:layout_width="72dp"
                 android:textSize="24sp"
                 android:gravity="right|center_vertical"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:textColor="@color/primary_text_default_material_light" />
 
         </LinearLayout>
 

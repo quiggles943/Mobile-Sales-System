@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 public class Statistics extends Activity {
     Context context;
     SQLiteDatabase pDB = null;
-    ImageButton syncFromDb, syncToDb;
+    ImageButton syncFromDb, syncToDb, settings;
 
     ExpandableListView listView;
     ExpandableInvoiceAdapter expInvAdap;
@@ -142,7 +143,19 @@ public class Statistics extends Activity {
             }
         });
 
+        settings = (ImageButton)findViewById(R.id.btn_settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, Settings.class);
+                startActivity(intent);
+            }
+        });
+
+        final String url = mSharedPreference.getString("server_url","");
         registerForContextMenu(listView);
+
+
     }
 
     private HashMap<Invoice, ArrayList<InvoiceItems>> getHashedData()

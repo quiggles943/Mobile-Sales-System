@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Application Settings">
+
+        <EditTextPreference
+            android:key="server_url"
+            android:title="Database server URL"
+            android:summary="The URL used to connect to the global database"
+            android:dialogTitle="Database server URL" />
+
+        <CheckBoxPreference
+            android:key="payment_sound"
+            android:title="Payment Sound"
+            android:summary="Payment sound used when a transaction is completed" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

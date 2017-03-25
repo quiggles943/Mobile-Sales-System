@@ -8,7 +8,7 @@
         <EditTextPreference
             android:key="server_url"
             android:title="@string/URL_preference_title"
-            android:summary="@string/URL_preference_summary"
+            android:summary="%s"
             android:dialogTitle="@string/URL_preference_title"
             android:inputType="textNoSuggestions|textUri"/>
 

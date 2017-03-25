@@ -239,7 +239,7 @@ public class Statistics extends Activity {
             public void onError(Exception error) {
                 Log.d("User", "Error receiving account details.");
             }
-        }).execute();
+        },context).execute();
     }
 
     @Override

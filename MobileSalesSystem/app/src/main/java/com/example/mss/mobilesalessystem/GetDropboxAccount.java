@@ -1,5 +1,7 @@
 package com.example.mss.mobilesalessystem;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -17,28 +19,32 @@ public class GetDropboxAccount extends AsyncTask<Void, Void, FullAccount> {
     private DbxClientV2 dbxClient;
     private TaskDelegate  delegate;
     private Exception error;
+    private Context context;
+    ProgressDialog ringDialog;
 
     public interface TaskDelegate {
         void onAccountReceived(FullAccount account);
         void onError(Exception error);
     }
 
-    GetDropboxAccount(DbxClientV2 dbxClient, TaskDelegate delegate){
+    GetDropboxAccount(DbxClientV2 dbxClient, TaskDelegate delegate, Context context){
         this.dbxClient = dbxClient;
         this.delegate = delegate;
+        this.context = context;
+    }
+    @Override
+    protected void onPreExecute() {
+        ringDialog = new ProgressDialog(context);
+        ringDialog.setTitle("Retrieving Dropbox Account");
+        ringDialog.setMessage("Currently retrieving Dropbox account details, please wait");
+        ringDialog.setCancelable(false);
+        ringDialog.show();
     }
 
     @Override
     protected FullAccount doInBackground(Void... params) {
         try {
             //get the users FullAccount
-            Metadata metadata = null;
-            try {
-                metadata = dbxClient.files().getMetadata("/");
-            } catch (DbxException e) {
-                e.printStackTrace();
-            }
-            Log.d("Path", metadata.getName());
             return dbxClient.users().getCurrentAccount();
         } catch (DbxException e) {
             e.printStackTrace();
@@ -50,7 +56,7 @@ public class GetDropboxAccount extends AsyncTask<Void, Void, FullAccount> {
     @Override
     protected void onPostExecute(FullAccount account) {
         super.onPostExecute(account);
-
+        ringDialog.dismiss();
         if (account != null && error == null){
             //User Account received successfully
             delegate.onAccountReceived(account);

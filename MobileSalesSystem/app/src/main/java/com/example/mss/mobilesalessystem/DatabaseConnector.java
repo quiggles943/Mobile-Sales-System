@@ -1,8 +1,10 @@
 package com.example.mss.mobilesalessystem;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -11,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -36,17 +39,18 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Paul on 13/02/2017.
  */
 //returned type required
-public class DatabaseConnector extends AsyncTask<String, Void, Void> {
+public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
 
     //JSONArray jsonArr;
     Context context;
     String[] tables;
-    String tablesJSON;
+    String tablesJSON, token;
     ProgressDialog ringDialog;
     SQLiteDatabase pDB;
     String urlString;
+    AlertDialog.Builder alert;
 
-    public DatabaseConnector (Context c, String[] tables)
+    public DatabaseConnector (Context c, String[] tables, String token)
     {
         this.context = c;
         this.tables = tables;
@@ -57,6 +61,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
         catch (Exception ex) {
 
         }
+        this.token = token;
 
     }
 
@@ -77,12 +82,13 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... strings) {
-        String token = strings[0];
-
+    protected Boolean doInBackground(String... strings) {
         try {
             //set the URL and post data
-
+            if(urlString.equals("") ||urlString == null)
+            {
+                return false;
+            }
             String link = "http://"+urlString+"/database_test_2.php";
             //String link = "http://quigleyserver.ddns.net/Group/database_test_2.php";
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
@@ -122,56 +128,40 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
                     }
 
                     interpretData(jsonData);
-
-                    break;
+                    return true;
                 case 401:
                     Log.e("Authentication error", "The token on the device was not accepted by the server");
-                    break;
+                    return false;
                 case 404:
                     Log.e("Server error", "The page or directory you have attempted to acces either does not exist, is unavailable, had its name changed or has been moved. ");
-                    break;
+                    return false;
                 case 405:
                     Log.e("Request error", "The request to the server was not accepted because it was the wrong request format");
-
+                    return false;
             }
-            Bitmap bitmapImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.harley);
-            File mydir = context.getDir("MedImg", Context.MODE_PRIVATE); //Creating an internal dir;
-            if (!mydir.exists())
-            {
-                mydir.mkdirs();
-            }
-            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
-            // path to /data/data/yourapp/app_data/imageDir
-            File directory = cw.getDir("MedImg", Context.MODE_PRIVATE);
-            // Create imageDir
-            File mypath=new File(directory,"harley.png");
-
-            FileOutputStream fos = null;
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-
-            bitmapImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.freddy_krueger);
-            mypath=new File(directory,"freddy_krueger.png");
-
-            fos = null;
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-
-            fos.close();
         } catch (Exception e) {
             Log.e("ASYNC Error :", e.getMessage().toString());
+            return false;
         }
 
         return null;
     }
 
     @Override
-    protected void onPostExecute(Void result)
+    protected void onPostExecute(Boolean result)
     {
-        Toast.makeText(context,"Local database updated",Toast.LENGTH_SHORT).show();
         ringDialog.dismiss();
+        if(result) {
+            Toast.makeText(context, "Local database updated", Toast.LENGTH_SHORT).show();
+        }else{
+            alert = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                    .setTitle("Connection Error")
+                    .setMessage("There is no database URL specified")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.ok,null);
+            alert.show();
+        }
+
         //pDB.close();
     }
 

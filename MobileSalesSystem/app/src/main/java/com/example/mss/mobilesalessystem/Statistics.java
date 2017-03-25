@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
@@ -26,12 +27,16 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Paul on 25/02/2017.
@@ -114,31 +119,37 @@ public class Statistics extends Activity {
 
                 ConnectivityManager cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);          //opening a connectivity manager
                 NetworkInfo networkType = cManager.getActiveNetworkInfo();
-
-                final DatabaseConnector connector = new DatabaseConnector(context, new String[]{"product","format","image"});      //creating a new database connector                 //openning up an editor to write to shared preferences
-
                 final String token = mSharedPreference.getString("token","");                               //gaining the token
+                final DatabaseConnector connector = new DatabaseConnector(context, new String[]{"product","format","image"}, token);      //creating a new database connector                 //openning up an editor to write to shared preferences
 
-                if(networkType == null)
-                {
-                    Toast.makeText(context,"No internet available", Toast.LENGTH_SHORT).show();        //Toast to say there is no internet at all
-                }
-                else if(networkType.getType() == ConnectivityManager.TYPE_WIFI) {
-                    connector.execute(token);                                                   //running the database connector with the token
-                    dropboxImageDownload();
-                } else if (networkType.getType() == ConnectivityManager.TYPE_MOBILE) {
-                    new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
-                            .setTitle("Confirm Database Sync")
-                            .setMessage("You are on mobile data, are you sure you would like to progress?")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    connector.execute(token);
-                                    dropboxImageDownload();
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, null).show();
-                }
+                    if (networkType == null) {
+                        Toast.makeText(context, "No internet available", Toast.LENGTH_SHORT).show();        //Toast to say there is no internet at all
+                    } else if (networkType.getType() == ConnectivityManager.TYPE_WIFI) {
+                        try {
+                            //boolean dataDownloaded = connector.execute(token).get();//running the database connector with the token
+                            connector.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        dropboxImageDownload();
+                    } else if (networkType.getType() == ConnectivityManager.TYPE_MOBILE) {
+                        new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                                .setTitle("Confirm Database Sync")
+                                .setMessage("You are on mobile data, are you sure you would like to progress?")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        try {
+                                            //boolean dataDownloaded = connector.execute(token).get();
+                                            connector.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                        }catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        dropboxImageDownload();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, null).show();
+                    }
             }
         });
         syncToDb.setOnClickListener(new View.OnClickListener() {
@@ -221,25 +232,39 @@ public class Statistics extends Activity {
 
     public void dropboxImageDownload()
     {
-        final int IMAGE_REQUEST_CODE = 101;
         final String ACCESS_TOKEN = DropboxClient.retrieveAccessToken(context);
-        if (ACCESS_TOKEN == null)return;
+        if (ACCESS_TOKEN == null)
+        {
+            new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                    .setTitle("Connection Error")
+                    .setMessage("There is no Dropbox account connected")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.ok,null).show();
+            return;
+        }
         new GetDropboxAccount(DropboxClient.getClient(ACCESS_TOKEN), new GetDropboxAccount.TaskDelegate() {
             @Override
             public void onAccountReceived(FullAccount account) {
                 //Print account's info
+                ArrayList<String> test = null;
                 DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
-                Log.d("User", account.getEmail());
-                Log.d("User", account.getName().getDisplayName());
-                Log.d("User", account.getAccountType().name());
+                DropboxGetFolder folder = new DropboxGetFolder(client, context);
+                try {
+                    test = folder.execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
 
-                //updateUI(account);
+                DropboxDownloadFolder downloadFolder = new DropboxDownloadFolder(client,test,context);
+                downloadFolder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             }
             @Override
             public void onError(Exception error) {
                 Log.d("User", "Error receiving account details.");
             }
-        },context).execute();
+        },context).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override

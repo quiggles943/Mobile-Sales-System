@@ -65,6 +65,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     {
         //Toast.makeText(context,"Local database update started",Toast.LENGTH_SHORT).show();
         //Set up the ring dialog
+        ringDialog = new ProgressDialog(context);
         ringDialog.setTitle("Downloading Data");
         ringDialog.setMessage("Currently Downloading Database, please wait");
         ringDialog.setCancelable(false);
@@ -171,7 +172,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Void> {
     {
         Toast.makeText(context,"Local database updated",Toast.LENGTH_SHORT).show();
         ringDialog.dismiss();
-        pDB.close();
+        //pDB.close();
     }
 
     private void interpretData(HashMap<String, JSONArray> dataToIntepret)

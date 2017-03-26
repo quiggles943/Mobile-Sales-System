@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Created by Paul on 25/03/2017.
  */
 
-public class DropboxDownloadFolder extends AsyncTask<Void, Integer, Boolean> {
+public class DropboxDownloadFolder extends AsyncTask<Void, String, Boolean> {
     ArrayList<String> downloadFilePaths;
     DbxClientV2 client;
     Context context;
@@ -42,11 +42,11 @@ public class DropboxDownloadFolder extends AsyncTask<Void, Integer, Boolean> {
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setCancelable(false);
         super.onPreExecute();
-        mProgressDialog.show();
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
+        publishProgress();
         File mydir = context.getDir("MedImg", Context.MODE_PRIVATE); //Creating an internal dir;
         if (!mydir.exists())
         {
@@ -68,7 +68,7 @@ public class DropboxDownloadFolder extends AsyncTask<Void, Integer, Boolean> {
                 DownloadBuilder downloadBuilder = client.files().downloadBuilder(path);
                 long fileLength = downloadBuilder.download(fos).getSize();
                 //Metadata data = downloadBuilder.download(fos);
-                publishProgress();
+                publishProgress(client.files().getMetadata(path).getName());
                 //data.getPathDisplay();
             }
 
@@ -81,12 +81,19 @@ public class DropboxDownloadFolder extends AsyncTask<Void, Integer, Boolean> {
     }
 
     @Override
-    protected void onProgressUpdate(Integer... progress) {
+    protected void onProgressUpdate(String... progress) {
         super.onProgressUpdate(progress);
-        // if we get here, length is known, now set indeterminate to false
-        mProgressDialog.setIndeterminate(false);
-        mProgressDialog.incrementProgressBy(1);
-        //mProgressDialog.setProgress(progress[0]);
+        if(!mProgressDialog.isShowing())
+        {
+            mProgressDialog.show();
+        }
+        else {
+            // if we get here, length is known, now set indeterminate to false
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.incrementProgressBy(1);
+            mProgressDialog.setMessage(progress[0]);
+            //mProgressDialog.setProgress(progress[0]);
+        }
     }
 
     @Override

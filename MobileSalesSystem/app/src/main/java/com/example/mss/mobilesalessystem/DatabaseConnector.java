@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -78,7 +79,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
         ringDialog.setTitle("Downloading Data");
         ringDialog.setMessage("Currently Downloading Database, please wait");
         ringDialog.setCancelable(false);
-        ringDialog.show();
+        //ringDialog.show();
         final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(context);
         urlString = mSharedPreference.getString("server_url","");
 
@@ -87,6 +88,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... strings) {
+        publishProgress();
         try {
             //set the URL and post data
             if(urlString.equals("") ||urlString == null)
@@ -165,7 +167,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                     .setPositiveButton(android.R.string.ok,null);
             alert.show();
         }
-        dropboxImageDownload();
+        //dropboxImageDownload();
         //pDB.close();
     }
 
@@ -272,6 +274,6 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
 
     protected void onProgressUpdate(Void... values)
     {
-
+        ringDialog.show();
     }
 }

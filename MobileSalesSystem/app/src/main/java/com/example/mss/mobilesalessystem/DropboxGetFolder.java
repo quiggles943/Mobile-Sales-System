@@ -1,11 +1,13 @@
 package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
@@ -29,12 +31,25 @@ public class DropboxGetFolder extends AsyncTask<Void, Void, ArrayList<String>> {
     DbxClientV2 client;
     Context context;
     SQLiteDatabase pDB;
+    ProgressDialog ringDialog;
     DropboxGetFolder(DbxClientV2 dbxClient, Context context){
         this.client = dbxClient;
         this.context = context;
     }
+
+    @Override
+    protected void onPreExecute()
+    {
+        ringDialog = new ProgressDialog(context);
+        ringDialog.setTitle("Retrieving Image Data");
+        ringDialog.setMessage("Currently Retrieving Image Data, please wait");
+        ringDialog.setCancelable(false);
+        ringDialog.show();
+    }
+
     @Override
     protected ArrayList<String> doInBackground(Void... voids) {
+        publishProgress();
         pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
         ArrayList<String> downloadPaths = null;
         String sql = "SELECT MedImgFilePath FROM image";
@@ -88,8 +103,16 @@ public class DropboxGetFolder extends AsyncTask<Void, Void, ArrayList<String>> {
         return downloadPaths;
     }
 
-    protected void onPostExecute(ArrayList<String> result)
-    {
+    @Override
+    protected void onPostExecute(ArrayList<String> result) {
+        ringDialog.dismiss();
         super.onPostExecute(result);
     }
+    @Override
+    protected void onProgressUpdate(Void... values)
+    {
+        super.onProgressUpdate();
+
+    }
+
 }

@@ -38,6 +38,8 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import static android.os.AsyncTask.SERIAL_EXECUTOR;
+
 /**
  * Created by Paul on 25/02/2017.
  */
@@ -127,7 +129,8 @@ public class Statistics extends Activity {
                     } else if (networkType.getType() == ConnectivityManager.TYPE_WIFI) {
                         try {
                             //boolean dataDownloaded = connector.execute(token).get();//running the database connector with the token
-                            connector.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                            connector.executeOnExecutor(SERIAL_EXECUTOR);
+                            dropboxImageDownload();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -140,7 +143,7 @@ public class Statistics extends Activity {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         try {
                                             //boolean dataDownloaded = connector.execute(token).get();
-                                            connector.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                                            connector.executeOnExecutor(SERIAL_EXECUTOR);
                                         }catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -173,6 +176,44 @@ public class Statistics extends Activity {
         registerForContextMenu(listView);
 
 
+    }
+
+    public void dropboxImageDownload()
+    {
+        final String ACCESS_TOKEN = DropboxClient.retrieveAccessToken(context);
+        if (ACCESS_TOKEN == null)
+        {
+            new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                    .setTitle("Connection Error")
+                    .setMessage("There is no Dropbox account connected")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.ok,null).show();
+            return;
+        }
+        new GetDropboxAccount(DropboxClient.getClient(ACCESS_TOKEN), new GetDropboxAccount.TaskDelegate() {
+            @Override
+            public void onAccountReceived(FullAccount account) {
+                //Print account's info
+                ArrayList<String> test = null;
+                DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
+                DropboxGetFolder folder = new DropboxGetFolder(client, context);
+                try {
+                    folder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    test = folder.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                DropboxDownloadFolder downloadFolder = new DropboxDownloadFolder(client,test,context);
+                downloadFolder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            }
+            @Override
+            public void onError(Exception error) {
+                Log.d("User", "Error receiving account details.");
+            }
+        },context).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     private HashMap<Invoice, ArrayList<InvoiceItems>> getHashedData()

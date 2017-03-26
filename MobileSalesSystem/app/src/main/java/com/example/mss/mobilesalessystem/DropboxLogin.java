@@ -11,8 +11,12 @@ import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.dropbox.core.DbxException;
 import com.dropbox.core.android.Auth;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FolderMetadata;
+import com.dropbox.core.v2.files.ListFolderErrorException;
+import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.users.FullAccount;
 
 import java.util.concurrent.ExecutionException;
@@ -96,6 +100,18 @@ public class DropboxLogin extends Activity {
                     editor.putString("dropbox_email", account.getEmail());
                     editor.putBoolean("dropbox_login", true);
                     editor.commit();
+                    try {
+                        try {
+                            client.files().listFolder("/MedImg/");
+                        } catch (ListFolderErrorException ex) {
+                            client.files().createFolder("/MedImg", false);
+                        }
+                    }catch(DbxException e)
+                    {
+
+                    }
+
+
                     /*DropboxGetFolder folder = new DropboxGetFolder(client, context);
                     try {
                         test = folder.execute().get();

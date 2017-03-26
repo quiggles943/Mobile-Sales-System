@@ -9,6 +9,10 @@ import android.util.Log;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.CreateFolderErrorException;
+import com.dropbox.core.v2.files.FolderMetadata;
+import com.dropbox.core.v2.files.GetMetadataErrorException;
+import com.dropbox.core.v2.files.ListFolderErrorException;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
@@ -46,7 +50,21 @@ public class DropboxGetFolder extends AsyncTask<Void, Void, ArrayList<String>> {
         }
         ArrayList<String> entries = new ArrayList<>();
         try {
-            ListFolderResult result = client.files().listFolder("/MedImg/");
+            ListFolderResult result = null;
+            try {
+                result = client.files().listFolder("/MedImg/");
+            }catch (ListFolderErrorException ex)
+            {
+                try {
+                    FolderMetadata data = client.files().createFolder("/MedImg", false);
+                    data.getPathDisplay();
+                    result = client.files().listFolder("/MedImg/");
+                }
+                catch(CreateFolderErrorException e)
+                {
+                    Log.e("error", e.getMessage());
+                }
+            }
             downloadPaths = new ArrayList<>();
             for(Metadata metadata : result.getEntries())
             {

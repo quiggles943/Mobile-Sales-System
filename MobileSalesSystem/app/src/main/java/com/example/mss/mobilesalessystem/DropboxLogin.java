@@ -6,29 +6,17 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.DropBoxManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.dropbox.core.DbxException;
 import com.dropbox.core.android.Auth;
-import com.dropbox.core.util.StringUtil;
-import com.dropbox.core.v1.DbxEntry;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.ListFolderResult;
-import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * Created by mrjbe on 24/03/2017.
@@ -37,7 +25,6 @@ public class DropboxLogin extends Activity {
     TextView email,username,accountType;
     ImageButton connect;
     Context context;
-    ArrayList<String> test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +43,8 @@ public class DropboxLogin extends Activity {
         if(prefs.getBoolean("dropbox_login",false)) {
             DropboxClient.logoutClient(context);
             SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("dropbox_name", "n/a");
+            editor.putString("dropbox_email", "n/a");
             editor.putBoolean("dropbox_login", false);
             editor.commit();
         }

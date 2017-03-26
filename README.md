@@ -1,29 +1,22 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### Features Completed ###
 
-### What is this repository for? ###
+* Scan Qr Codes
+* Checks Qr code against database and returns correct product
+* Retrieves correct image information
+* Allows for products to be added to a cart
+* Tallies total and allows for checkout with cash option
+* Saves transaction as an invoice.
+* Invoice is saved and view-able in statistics
+* Can download information from a web server
+* Can download images from linked dropbox account
+* Can edit web address that is accessed in preferences
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### Known bugs ###
 
-### How do I get set up? ###
+* When first Logging into dropbox account the login does not register. Another login is required
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### Current Issues ###
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+*Checking of dropbox for valid images takes a long period of time (tested with 104 files, 7 were downloaded. check took 58s!)

@@ -250,7 +250,7 @@ public class Statistics extends Activity {
                 DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
                 DropboxGetFolder folder = new DropboxGetFolder(client, context);
                 try {
-                    test = folder.execute().get();
+                    test = folder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR).get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {

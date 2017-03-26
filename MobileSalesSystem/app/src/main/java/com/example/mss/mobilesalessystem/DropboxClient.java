@@ -34,4 +34,14 @@ public class DropboxClient {
         }
 
     }
+
+    public static Boolean logoutClient(Context context)
+    {
+        SharedPreferences prefs = context.getSharedPreferences("com.example.mss.mobilesalessystem", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("access-token",null);
+        editor.putBoolean("dropbox_login", false);
+        editor.commit();
+        return true;
+    }
 }

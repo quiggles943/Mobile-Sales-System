@@ -46,7 +46,7 @@ public class Settings extends Activity {
 
     public static class SettingsFragment extends PreferenceFragment {
         private ArrayList<Preference> mPreferences = new ArrayList<>();
-        private String[] mPreferenceKeys = new String[] {"server_url"};
+        private String[] mPreferenceKeys = new String[] {"server_url", "dropbox_details","dropbox_login"};
         private SharedPreferences.OnSharedPreferenceChangeListener mListener;
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -54,18 +54,31 @@ public class Settings extends Activity {
 
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preferences);
-            SharedPreferences.OnSharedPreferenceChangeListener mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                     for (Preference pref : mPreferences) {
                         if (pref.getKey().equals(key)) {
                             if (pref instanceof EditTextPreference) {
                                 pref.setSummary(sharedPreferences.getString(key, "The URL used to connect to the global database"));
-                            } else {
-                                //pref.setSummary(sharedPreferences.getString(key, "<None>"));
+                            } else if (pref.getKey().equals("dropbox_details"))
+                            {
+                                pref.setSummary("Name: "+sharedPreferences.getString("dropbox_name","n/a")+"\nEmail: "+sharedPreferences.getString("dropbox_email","n/a"));
                             }
-                            break;
+                            else if (pref.getKey().equals("dropbox_login"))
+                            {
+                                if(sharedPreferences.getBoolean("dropbox_login",false)) {
+                                    pref.setTitle("Log Out");
+                                }
+                                else
+                                {
+                                    pref.setTitle("Login");
+                                }
+                            }
+
+                            //break;
                         }
+
                     }
                 }
             };
@@ -83,6 +96,19 @@ public class Settings extends Activity {
             View view = super.onCreateView(inflater, container, savedInstanceState);
             view.setBackgroundResource(R.drawable.background);
             return view;
+        }
+
+        @Override
+        public void onResume()
+        {
+            super.onResume();
+            SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+            prefs.registerOnSharedPreferenceChangeListener(mListener);
+            for (String prefKey : mPreferenceKeys) {
+                Preference pref = (Preference) getPreferenceManager().findPreference(prefKey);
+                mPreferences.add(pref);
+                mListener.onSharedPreferenceChanged(prefs, prefKey);
+            }
         }
 
     }

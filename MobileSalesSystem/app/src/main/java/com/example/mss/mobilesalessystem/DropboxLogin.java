@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.DropBoxManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -51,27 +52,29 @@ public class DropboxLogin extends Activity {
 
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.drawable.sym_sync);
         connect.setImageBitmap(icon);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if(prefs.getBoolean("dropbox_login",false)) {
+            DropboxClient.logoutClient(context);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("dropbox_login", false);
+            editor.commit();
+        }
+        else
+        {
+            Auth.startOAuth2Authentication(getApplicationContext(), getString(R.string.APP_KEY));
+            getAccessToken();
+            getAccountDetails();
+        }
 
-        connect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String ACCESS_TOKEN = DropboxClient.retrieveAccessToken(context);
-                if (ACCESS_TOKEN != null) {
-                    Toast.makeText(context,"Already logged in",LENGTH_SHORT);
-                    return;
-                }
-                Auth.startOAuth2Authentication(getApplicationContext(), getString(R.string.APP_KEY));
-            }
-        });
-
+        super.onBackPressed();
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
         getAccessToken();
         getAccountDetails();
-    }
+    }*/
 
     public void getAccessToken() {
         String accessToken = Auth.getOAuth2Token(); //generate Access Token
@@ -88,30 +91,42 @@ public class DropboxLogin extends Activity {
     public void getAccountDetails(){
         final String ACCESS_TOKEN = DropboxClient.retrieveAccessToken(context);
         if (ACCESS_TOKEN == null)return;
-        new GetDropboxAccount(DropboxClient.getClient(ACCESS_TOKEN), new GetDropboxAccount.TaskDelegate() {
-            @Override
-            public void onAccountReceived(FullAccount account) {
-                //Print account's info
-                DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
-                email.setText(account.getEmail());
-                username.setText(account.getName().getDisplayName());
-                accountType.setText(account.getAccountType().name());
-                /*DropboxGetFolder folder = new DropboxGetFolder(client, context);
-                try {
-                    test = folder.execute().get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
+        try {
+            FullAccount account = new GetDropboxAccount(DropboxClient.getClient(ACCESS_TOKEN), new GetDropboxAccount.TaskDelegate() {
+                @Override
+                public void onAccountReceived(FullAccount account) {
+                    //Print account's info
+                    DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
+                    email.setText(account.getEmail());
+                    username.setText(account.getName().getDisplayName());
+                    accountType.setText(account.getAccountType().name());
+
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("dropbox_name", account.getName().getDisplayName());
+                    editor.putString("dropbox_email", account.getEmail());
+                    editor.putBoolean("dropbox_login", true);
+                    editor.commit();
+                    /*DropboxGetFolder folder = new DropboxGetFolder(client, context);
+                    try {
+                        test = folder.execute().get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    DropboxDownloadFolder downloadFolder = new DropboxDownloadFolder(client,test,context);
+                    downloadFolder.execute();*/
                 }
-                DropboxDownloadFolder downloadFolder = new DropboxDownloadFolder(client,test,context);
-                downloadFolder.execute();*/
-            }
-            @Override
-            public void onError(Exception error) {
-                Log.d("User", "Error receiving account details.");
-            }
-        },context).execute();
-        //com.dropbox.core.v2.files.FolderMetadata meta = DropboxImageDownloader.
+                @Override
+                public void onError(Exception error) {
+                    Log.d("User", "Error receiving account details.");
+                }
+            },context).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 }

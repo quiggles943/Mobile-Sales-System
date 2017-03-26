@@ -1,4 +1,5 @@
 # README #
+This is an android point of sales(POS) system
 
 ### Features Completed ###
 
@@ -19,4 +20,4 @@
 
 ### Current Issues ###
 
-*Checking of dropbox for valid images takes a long period of time (tested with 104 files, 7 were downloaded. check took 58s!)
+* Checking of dropbox for valid images takes a long period of time (tested with 104 files, 7 were downloaded. check took 58s!)

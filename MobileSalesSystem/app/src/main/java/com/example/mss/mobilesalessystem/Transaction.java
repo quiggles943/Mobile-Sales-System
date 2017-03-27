@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 public class Transaction extends Activity {
     TextView barcodeInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.basictransaction_layout);
-        barcodeInfo = (TextView) findViewById(R.id.textView2);
+        setContentView(R.layout.item_detail_layout);
+        barcodeInfo = (TextView) findViewById(R.id.tv_detail_);
         final String barcode = getIntent().getStringExtra("barcode");
         final String [] barcodeSplit = barcode.split("/");                  //splitting the text read on the /
         final String productName;                                            //making a new barcode string

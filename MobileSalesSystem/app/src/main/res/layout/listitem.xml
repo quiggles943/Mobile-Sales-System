@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="93dp"
     android:background="@drawable/rounded_corner_items"
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
@@ -11,14 +11,13 @@
     android:paddingBottom="5dp"
     android:padding="5dp"
     android:layout_marginLeft="10dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="0dp"
     android:layout_margin="10dp">
 
     <ImageView
         android:src="@drawable/logo"
-        android:layout_width="wrap_content"
+        android:layout_width="115dp"
         android:id="@+id/iv_thumbnail"
-        android:layout_weight="1"
         android:layout_height="72dp"
         android:paddingRight="5dp" />
 
@@ -71,7 +70,7 @@
                 android:layout_gravity="left|center_vertical" />
 
             <TextView
-                android:text="0x00"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_detail_price"

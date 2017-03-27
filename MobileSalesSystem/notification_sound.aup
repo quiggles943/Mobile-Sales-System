@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="notification_sound_data" version="1.3.0" audacityversion="2.1.2" sel0="0.0000000000" sel1="0.6390022676" vpos="0" h="0.0000000000" zoom="2488.2812500000" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags>
+		<tag name="GENRE" value="Other"/>
+	</tags>
+	<wavetrack name="filling-your-inbox" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="0.316228" pan="0.0">
+		<waveclip offset="0.63900227">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="258">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000261.au" len="258" min="0.0" max="0.0" rms="0.0"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="1">
+				<controlpoint t="0.000000000000" val="1.000000000000"/>
+			</envelope>
+		</waveclip>
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="28180">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000624.au" len="28180" min="-0.248037" max="0.199584" rms="0.036774"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="filling-your-inbox" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="0.316228" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="15653">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000160.au" len="15653" min="-0.197237" max="0.214338" rms="0.027841"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="filling-your-inbox" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="0.316228" pan="0.0">
+		<waveclip offset="0.17562951">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="9981">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000fb0.au" len="9981" min="-0.183232" max="0.2059" rms="0.019773"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="7745">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000ae2.au" len="7745" min="0.0" max="0.0" rms="0.0"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

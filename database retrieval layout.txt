@@ -3,3 +3,7 @@ Formatted output:
 
 Layout:
 {"'table_name'":[{'row'},{"'column'":"'data'","'column'":"'data'",etc...}],"'table_name'":[{'row'},{"Format":"A4","FormatDesc":"A4 Print"}]}
+
+
+"product" -> "[{"Format":"A4","ImageID":"JessicaRabitPaul","ProdDesc":"Jessica Rabbit as Paul","Price":"9.99"}
+,{"Format":"A6","ImageID":"JessicaRabbitJosh","ProdDesc":"Jessica Rabbit as Josh","Price":"6.99"}]"

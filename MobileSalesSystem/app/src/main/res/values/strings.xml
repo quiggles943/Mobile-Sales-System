@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">Mobile Sales System</string>
     <string name="website">http://janinevanmoosel.co.uk/product/</string>
-    <string name="serverurl">jdbc:mysql://192.168.0.26:80/jvanm</string>
-        <string-array
-            name="string_format_array">
-            <item>A3</item>
-            <item>A4</item>
-            <item>A5</item>
-            <item>A6</item>
-        </string-array>
+    <string name="appVersionTitle">Bumble Bee 1.0.0</string>
+    <string name="URL_preference_title">Database Server URL</string>
+    <string name="URL_preference_summary">The URL used to connect to the global database</string>
+    <string name="payment_sound_preference_title">Payment Sound</string>
+    <string name="payment_sound_preference_summary">Payment sound used when a transaction is completed</string>
+    <string name="payment_sound_copyright">https://notificationsounds.com/message-tones/filling-your-inbox-251</string>
+    <string name="APP_KEY">meuvjkjxl7djuwv</string>
 </resources>

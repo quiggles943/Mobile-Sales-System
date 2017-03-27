@@ -3,8 +3,10 @@ package com.example.mss.mobilesalessystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -16,6 +18,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Paul on 01/02/2017.
@@ -43,7 +46,7 @@ public class qrScanner extends Activity {
         cameraSource = new CameraSource
                 .Builder(this, barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
-                .setAutoFocusEnabled(false)
+                .setAutoFocusEnabled(true)
                 .build();
 
 
@@ -88,7 +91,7 @@ public class qrScanner extends Activity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume(){      //onResume the barcode scanner restarts
         super.onResume();
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
@@ -107,14 +110,49 @@ public class qrScanner extends Activity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == 1){
+            if(resultCode == Activity.RESULT_OK){
+                ArrayList<orderItem> parcelItems = new ArrayList<>();
+                //Bundle extras = data.getExtras();
+                //boolean framed = extras.getBoolean("framed");
+                //orderItem result = extras.getParcelable("Item");
+                Intent returnIntent = new Intent();     //creates a return intent
+                parcelItems = data.getParcelableArrayListExtra("items");
+                returnIntent.putParcelableArrayListExtra("items",parcelItems);
+
+
+                /*if(framed)
+                {
+                    orderItem frame = extras.getParcelable("Frame");
+                    returnIntent.putBoolean("framed", true);      //adds the true boolean to denote that the item is framed
+                    returnIntent.putExtra("Frame",frame);   //adds the orderItem to the intent
+                }*/
+                setResult(Activity.RESULT_OK,returnIntent);     //sends the intent back to the Cart
+                finish();       //returns to the Cart
+            }
+            if(resultCode == Activity.RESULT_CANCELED){
+                onResume();
+            }
+        }
+    }
+
     public void processBarcode(SparseArray<Barcode> barcodes){
         Log.d("Barcode", barcodes.valueAt(0).displayValue);
         if(barcodes.valueAt(0).displayValue.contains(getString(R.string.website)))
         {
-            barcodeDetector.release();
-            Intent intent = new Intent(context, Transaction.class);
-            intent.putExtra("barcode", barcodes.valueAt(0).displayValue);
-            startActivity(intent);
+            barcodeDetector.release();      //stops the barcode scanner
+            Intent intent = new Intent(context, ItemCheck.class);       //creates new intent
+            intent.putExtra("barcode", barcodes.valueAt(0).displayValue);       //adds the scanned barcode to the intent
+            String permission = "android.permission.VIBRATE";
+            int res = this.checkCallingOrSelfPermission(permission);
+            if(res == PackageManager.PERMISSION_GRANTED) {
+                Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(200);
+            }
+            startActivityForResult(intent, 1);       //starts ItemCheck
         }
 
     }

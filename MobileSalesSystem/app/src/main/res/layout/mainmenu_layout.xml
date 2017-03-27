@@ -51,6 +51,25 @@
                 android:background="@drawable/selector_btn_red_large"
                 android:adjustViewBounds="false"
                 android:layout_marginLeft="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:layout_height="14dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version: "
+                android:textColor="@android:color/white"
+                android:id="@+id/tv_version"
+                android:fontFamily="sans-serif"
+                android:textSize="10sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Application Settings">
+
+        <EditTextPreference
+            android:key="server_url"
+            android:title="@string/URL_preference_title"
+            android:summary="%s"
+            android:dialogTitle="@string/URL_preference_title"
+            android:inputType="textNoSuggestions|textUri"/>
+
+        <CheckBoxPreference
+            android:key="payment_sound"
+            android:title="@string/payment_sound_preference_title"
+            android:summary="@string/payment_sound_preference_summary" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="DropBox Settings">
+    <Preference
+        android:key="dropbox_login"
+        android:title="Login">
+        <intent android:action="com.example.mss.mobilesalessystem.DropboxLogin"/>
+    </Preference>
+    <Preference
+        android:key="dropbox_details"
+        android:selectable="false"
+        android:persistent="false"
+        android:title="Dropbox Details"
+        android:summary="Name: n/a\nEmail: n/a"/>
+    </PreferenceCategory>
+
+    <Preference
+        android:key="pref_static_field_key"
+        android:selectable="false"
+        android:persistent="false"
+        android:title="Application Version"
+        android:summary="@string/appVersionTitle"/>
+
+</PreferenceScreen>

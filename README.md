@@ -50,6 +50,7 @@ the cost to input to a card reader and mark that the transaction was paid for by
 | | |
 | Ease of use by the client| Yes |
 | Fully working stock management| To be checked|
+| Efficient battery usage | To be checked|
 
 | Stretch Goals  | Completed? |
 | ---------------------|---------|
@@ -90,3 +91,6 @@ In order to test this app, all of the main development targets would need to be 
 To facilitate changes to the app while in the testing phase and while being in use it will be necessary to implement a backdoor method of data upload to the app to allow the contents of the device's internal
 database to be re uploaded if the app needed to be changed and re-installed. This is due to the main database being inaccessable due to a lack of a data connection at the event. This backdoor would allow for
 changes to the application to be made while at the event and still being able to use the application for the remainder of the event.
+
+### APK Keystore Password ###
+groupProj

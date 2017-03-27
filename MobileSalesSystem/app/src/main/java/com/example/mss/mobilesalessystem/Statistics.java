@@ -195,19 +195,30 @@ public class Statistics extends Activity {
             public void onAccountReceived(FullAccount account) {
                 //Print account's info
                 ArrayList<String> test = null;
-                DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
-                DropboxGetFolder folder = new DropboxGetFolder(client, context);
-                try {
+                final DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
+                new DropboxGetFolder(client, new DropboxGetFolder.TaskDelegate() {
+                    @Override
+                    public void onDataReceived(ArrayList<String> downloadPaths)
+                    {
+                        DropboxDownloadFolder downloadFolder = new DropboxDownloadFolder(client,downloadPaths,context);
+                        downloadFolder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                    }
+                    @Override
+                    public void onError(Exception error) {
+                        Log.d("User", "Error receiving filePath details.");
+                    }
+
+                }, context).execute();
+                /*try {
                     folder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     test = folder.get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
-                }
+                }*/
 
-                DropboxDownloadFolder downloadFolder = new DropboxDownloadFolder(client,test,context);
-                downloadFolder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+
             }
             @Override
             public void onError(Exception error) {

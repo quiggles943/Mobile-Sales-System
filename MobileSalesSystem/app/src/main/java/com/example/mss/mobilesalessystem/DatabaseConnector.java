@@ -235,7 +235,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
         }
     }
 
-    public void dropboxImageDownload()
+    /*public void dropboxImageDownload()
     {
         final String ACCESS_TOKEN = DropboxClient.retrieveAccessToken(context);
         if (ACCESS_TOKEN == null)
@@ -270,7 +270,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                 Log.d("User", "Error receiving account details.");
             }
         },context).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
+    }*/
 
     protected void onProgressUpdate(Void... values)
     {

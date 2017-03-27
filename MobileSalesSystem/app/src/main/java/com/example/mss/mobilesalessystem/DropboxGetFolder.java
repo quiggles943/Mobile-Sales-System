@@ -32,9 +32,16 @@ public class DropboxGetFolder extends AsyncTask<Void, Void, ArrayList<String>> {
     Context context;
     SQLiteDatabase pDB;
     ProgressDialog ringDialog;
-    DropboxGetFolder(DbxClientV2 dbxClient, Context context){
+    private TaskDelegate delegate;
+    DropboxGetFolder(DbxClientV2 dbxClient, TaskDelegate taskDelegate, Context context){
         this.client = dbxClient;
+        this.delegate = taskDelegate;
         this.context = context;
+    }
+
+    public interface TaskDelegate {
+        void onDataReceived(ArrayList<String> downloadPaths);
+        void onError(Exception error);
     }
 
     @Override
@@ -107,6 +114,7 @@ public class DropboxGetFolder extends AsyncTask<Void, Void, ArrayList<String>> {
     protected void onPostExecute(ArrayList<String> result) {
         ringDialog.dismiss();
         super.onPostExecute(result);
+        delegate.onDataReceived(result);
     }
     @Override
     protected void onProgressUpdate(Void... values)

@@ -100,7 +100,7 @@ public class DropboxLogin extends Activity {
                     editor.putString("dropbox_email", account.getEmail());
                     editor.putBoolean("dropbox_login", true);
                     editor.commit();
-                    try {
+                    /*try {
                         try {
                             client.files().listFolder("/MedImg/");
                         } catch (ListFolderErrorException ex) {
@@ -109,7 +109,7 @@ public class DropboxLogin extends Activity {
                     }catch(DbxException e)
                     {
 
-                    }
+                    }*/
 
 
                     /*DropboxGetFolder folder = new DropboxGetFolder(client, context);

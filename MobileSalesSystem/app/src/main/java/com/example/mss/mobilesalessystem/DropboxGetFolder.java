@@ -91,17 +91,22 @@ public class DropboxGetFolder extends AsyncTask<Void, Void, ArrayList<String>> {
             for(Metadata metadata : result.getEntries())
             {
                 entries.add(metadata.getPathDisplay());
-                result = client.files().listFolderContinue(result.getCursor());
+                //result = client.files().listFolderContinue(result.getCursor());
             }
-            for(String fPath : databaseImgFilepaths)
+            for(String filePath : entries)
             {
-                for(String filePath : entries)
+
+                if(databaseImgFilepaths.contains(filePath.substring(1)))
+                {
+                    downloadPaths.add(filePath);
+                }
+                /*for(String filePath : entries)
                 {
                     if(fPath.equals(filePath.substring(1)))
                     {
                         downloadPaths.add(filePath);
                     }
-                }
+                }*/
             }
 
         } catch (DbxException e) {

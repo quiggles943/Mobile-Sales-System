@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Mobile Sales System</string>
     <string name="website">http://janinevanmoosel.co.uk/product/</string>
-    <string name="appVersionTitle">Aardvark 0.9.7</string>
+    <string name="appVersionTitle">Bumble Bee 1.0.0</string>
     <string name="URL_preference_title">Database Server URL</string>
     <string name="URL_preference_summary">The URL used to connect to the global database</string>
     <string name="payment_sound_preference_title">Payment Sound</string>

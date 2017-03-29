@@ -2,7 +2,6 @@ package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -26,17 +24,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
+import com.example.mss.mobilesalessystem.DropboxClasses.*;
 
-import java.net.ConnectException;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import static android.os.AsyncTask.SERIAL_EXECUTOR;
 

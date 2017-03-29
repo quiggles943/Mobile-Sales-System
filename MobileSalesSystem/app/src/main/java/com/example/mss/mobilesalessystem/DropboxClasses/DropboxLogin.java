@@ -1,4 +1,4 @@
-package com.example.mss.mobilesalessystem;
+package com.example.mss.mobilesalessystem.DropboxClasses;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,13 +11,10 @@ import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.dropbox.core.DbxException;
 import com.dropbox.core.android.Auth;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.FolderMetadata;
-import com.dropbox.core.v2.files.ListFolderErrorException;
-import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.users.FullAccount;
+import com.example.mss.mobilesalessystem.R;
 
 import java.util.concurrent.ExecutionException;
 

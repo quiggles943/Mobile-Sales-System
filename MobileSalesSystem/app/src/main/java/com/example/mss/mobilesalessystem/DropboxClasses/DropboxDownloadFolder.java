@@ -1,4 +1,4 @@
-package com.example.mss.mobilesalessystem;
+package com.example.mss.mobilesalessystem.DropboxClasses;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -27,7 +27,7 @@ public class DropboxDownloadFolder extends AsyncTask<Void, String, Boolean> {
     Context context;
     ProgressDialog mProgressDialog;
     int count;
-    DropboxDownloadFolder(DbxClientV2 dbxClient, ArrayList<String> downloadFilePaths, Context context){
+    public DropboxDownloadFolder(DbxClientV2 dbxClient, ArrayList<String> downloadFilePaths, Context context){
         this.client = dbxClient;
         this.context = context;
         this.downloadFilePaths = downloadFilePaths;

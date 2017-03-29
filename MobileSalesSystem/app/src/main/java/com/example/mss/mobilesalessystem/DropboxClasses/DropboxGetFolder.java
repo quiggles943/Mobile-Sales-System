@@ -1,4 +1,4 @@
-package com.example.mss.mobilesalessystem;
+package com.example.mss.mobilesalessystem.DropboxClasses;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -33,7 +33,7 @@ public class DropboxGetFolder extends AsyncTask<Void, Void, ArrayList<String>> {
     SQLiteDatabase pDB;
     ProgressDialog ringDialog;
     private TaskDelegate delegate;
-    DropboxGetFolder(DbxClientV2 dbxClient, TaskDelegate taskDelegate, Context context){
+    public DropboxGetFolder(DbxClientV2 dbxClient, TaskDelegate taskDelegate, Context context){
         this.client = dbxClient;
         this.delegate = taskDelegate;
         this.context = context;

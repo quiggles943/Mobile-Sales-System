@@ -76,7 +76,7 @@
             android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
         </activity>
         <activity
-            android:name=".DropboxLogin"
+            android:name=".DropboxClasses.DropboxLogin"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >

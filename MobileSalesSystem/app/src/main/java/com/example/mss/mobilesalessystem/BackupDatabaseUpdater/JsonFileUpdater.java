@@ -1,24 +1,23 @@
-package com.example.mss.mobilesalessystem;
+package com.example.mss.mobilesalessystem.BackupDatabaseUpdater;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Looper;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
-
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.users.FullAccount;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,47 +25,39 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * Created by Paul on 13/02/2017.
+ * Created by Paul on 28/03/2017.
  */
-//returned type required
-public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
 
-    //JSONArray jsonArr;
+public class JsonFileUpdater extends AsyncTask<String, Void, Boolean> {
+
     Context context;
-    String[] tables;
-    String tablesJSON, token;
+    String filePath;
     ProgressDialog ringDialog;
     SQLiteDatabase pDB;
     String urlString;
     AlertDialog.Builder alert;
 
-    public DatabaseConnector (Context c, String[] tables, String token)
+    public JsonFileUpdater (Context c, String filePath)
     {
         this.context = c;
-        this.tables = tables;
-        try {
-            JSONArray tablesArray = new JSONArray(tables);
-            tablesJSON = tablesArray.toString();
-        }
-        catch (Exception ex) {
-
-        }
-        this.token = token;
+        this.filePath = filePath;
 
     }
 
@@ -91,60 +82,28 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
         publishProgress();
         try {
             //set the URL and post data
-            if(urlString.equals("") ||urlString == null)
+            File file = new File(filePath);
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            ArrayList<String> lines = new ArrayList<>();
+            while ((line = br.readLine()) != null)
             {
-                return false;
+                lines.add(line);
             }
-            String link = "http://"+urlString+"/database_test_2.php";
-            //String link = "http://quigleyserver.ddns.net/Group/database_test_2.php";
-            String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
-            data += "&" + URLEncoder.encode("tables", "UTF-8") + "=" + URLEncoder.encode(tablesJSON, "UTF-8");
 
-            URL url = new URL(link);
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            HashMap<String,JSONArray> jsonData = new HashMap<>();
+            for(String s: lines)
+            {
+                int found = s.indexOf('[');
+                String key = s.substring(0,found-1);
+                String newS = s.substring(found, s.length());
 
-
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            //write the post data
-            wr.write(data);
-            wr.flush();
-            //gets the response code from the web server
-            int code = conn.getResponseCode();
-            switch(code) {
-                case 200:
-                    //reads the data from the web server
-                    BufferedReader bR = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    ArrayList<String> lines = new ArrayList<>();
-                    String line;
-                    while ((line = bR.readLine()) != null) {
-                        lines.add(line);
-                  }
-
-                    bR.close();
-                    HashMap<String,JSONArray> jsonData = new HashMap<>();
-                    for(String s:lines)
-                    {
-                        int found = s.indexOf('[');
-                        String key = s.substring(0,found-1);
-                        String newS = s.substring(found, s.length());
-
-                        JSONArray json = new JSONArray(newS);
-                        jsonData.put(key,json);
-                    }
-
-                    interpretData(jsonData);
-                    return true;
-                case 401:
-                    Log.e("Authentication error", "The token on the device was not accepted by the server");
-                    return false;
-                case 404:
-                    Log.e("Server error", "The page or directory you have attempted to acces either does not exist, is unavailable, had its name changed or has been moved. ");
-                    return false;
-                case 405:
-                    Log.e("Request error", "The request to the server was not accepted because it was the wrong request format");
-                    return false;
+                JSONArray json = new JSONArray(newS);
+                jsonData.put(key,json);
             }
+
+            //interpretData(jsonData);
         } catch (Exception e) {
             Log.e("ASYNC Error :", e.getMessage().toString());
             return false;
@@ -157,21 +116,11 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
     protected void onPostExecute(Boolean result)
     {
         ringDialog.dismiss();
-        if(result) {
-            Toast.makeText(context, "Local database updated", Toast.LENGTH_SHORT).show();
-        }else{
-            alert = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
-                    .setTitle("Connection Error")
-                    .setMessage("There is no database URL specified")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.ok,null);
-            alert.show();
-        }
         //dropboxImageDownload();
         //pDB.close();
     }
 
-    private void interpretData(HashMap<String, JSONArray> dataToIntepret)
+    /*private void interpretData(HashMap<String, JSONArray> dataToIntepret)
     {
 
         for (Map.Entry<String, JSONArray> data : dataToIntepret.entrySet())
@@ -233,10 +182,6 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                 }
             }
         }
-    }
+    }*/
 
-    protected void onProgressUpdate(Void... values)
-    {
-        ringDialog.show();
-    }
 }

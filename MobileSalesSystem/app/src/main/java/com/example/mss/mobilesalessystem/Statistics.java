@@ -227,16 +227,6 @@ public class Statistics extends Activity {
                     }
 
                 }, context).execute();
-                /*try {
-                    folder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                    test = folder.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }*/
-
-
             }
             @Override
             public void onError(Exception error) {
@@ -316,9 +306,7 @@ public class Statistics extends Activity {
 
             // Show context menu for children
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            //InvoiceItems item = expListDetails.get(invoice).get(childPosition);
-            //menu.setHeaderTitle(item.getItemDescription());
-            //menu.add(0, 0, 1, "View");
+
         }
     }
 
@@ -342,9 +330,7 @@ public class Statistics extends Activity {
             }
 
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            // do someting with child
             InvoiceItems item = expListDetails.get(invoice).get(childPosition);
-            //Toast.makeText(context,"Invoice item Id "+item.getItemID(),Toast.LENGTH_SHORT).show();
         }
 
         return super.onContextItemSelected(selected);

@@ -99,28 +99,6 @@ public class DropboxLogin extends Activity {
                     editor.commit();
                     //super.onBackPressed();
                     DropboxLogin.super.onBackPressed();
-                    /*try {
-                        try {
-                            client.files().listFolder("/MedImg/");
-                        } catch (ListFolderErrorException ex) {
-                            client.files().createFolder("/MedImg", false);
-                        }
-                    }catch(DbxException e)
-                    {
-
-                    }*/
-
-
-                    /*DropboxGetFolder folder = new DropboxGetFolder(client, context);
-                    try {
-                        test = folder.execute().get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    DropboxDownloadFolder downloadFolder = new DropboxDownloadFolder(client,test,context);
-                    downloadFolder.execute();*/
                 }
                 @Override
                 public void onError(Exception error) {

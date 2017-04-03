@@ -118,20 +118,10 @@ public class qrScanner extends Activity {
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
                 ArrayList<orderItem> parcelItems = new ArrayList<>();
-                //Bundle extras = data.getExtras();
-                //boolean framed = extras.getBoolean("framed");
-                //orderItem result = extras.getParcelable("Item");
                 Intent returnIntent = new Intent();     //creates a return intent
                 parcelItems = data.getParcelableArrayListExtra("items");
                 returnIntent.putParcelableArrayListExtra("items",parcelItems);
 
-
-                /*if(framed)
-                {
-                    orderItem frame = extras.getParcelable("Frame");
-                    returnIntent.putBoolean("framed", true);      //adds the true boolean to denote that the item is framed
-                    returnIntent.putExtra("Frame",frame);   //adds the orderItem to the intent
-                }*/
                 setResult(Activity.RESULT_OK,returnIntent);     //sends the intent back to the Cart
                 finish();       //returns to the Cart
             }

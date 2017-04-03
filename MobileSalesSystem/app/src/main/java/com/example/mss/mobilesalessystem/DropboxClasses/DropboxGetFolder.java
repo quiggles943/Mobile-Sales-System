@@ -100,13 +100,6 @@ public class DropboxGetFolder extends AsyncTask<Void, Void, ArrayList<String>> {
                 {
                     downloadPaths.add(filePath);
                 }
-                /*for(String filePath : entries)
-                {
-                    if(fPath.equals(filePath.substring(1)))
-                    {
-                        downloadPaths.add(filePath);
-                    }
-                }*/
             }
 
         } catch (DbxException e) {

@@ -3,10 +3,12 @@ package com.example.mss.mobilesalessystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -149,8 +151,12 @@ public class qrScanner extends Activity {
             String permission = "android.permission.VIBRATE";
             int res = this.checkCallingOrSelfPermission(permission);
             if(res == PackageManager.PERMISSION_GRANTED) {
-                Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(200);
+                final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                final boolean feedback = mSharedPreference.getBoolean("haptic_feedback",false);
+                if(feedback) {
+                    Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(200);
+                }
             }
             startActivityForResult(intent, 1);       //starts ItemCheck
         }

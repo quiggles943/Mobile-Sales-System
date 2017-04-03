@@ -6,6 +6,8 @@
     <string name="URL_preference_summary">The URL used to connect to the global database</string>
     <string name="payment_sound_preference_title">Payment Sound</string>
     <string name="payment_sound_preference_summary">Payment sound used when a transaction is completed</string>
+    <string name="haptic_feedback_preference_title">Haptic Feedback</string>
+    <string name="haptic_feedback_preference_summary">Haptic feedback when a QR code is scanned</string>
     <string name="payment_sound_copyright">https://notificationsounds.com/message-tones/filling-your-inbox-251</string>
     <string name="APP_KEY">meuvjkjxl7djuwv</string>
 </resources>

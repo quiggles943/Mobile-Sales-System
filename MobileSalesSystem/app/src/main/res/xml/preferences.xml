@@ -17,6 +17,11 @@
             android:title="@string/payment_sound_preference_title"
             android:summary="@string/payment_sound_preference_summary" />
 
+        <CheckBoxPreference
+            android:key="haptic_feedback"
+            android:title="@string/haptic_feedback_preference_title"
+            android:summary="@string/haptic_feedback_preference_summary" />
+
     </PreferenceCategory>
 
 

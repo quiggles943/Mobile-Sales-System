@@ -48,6 +48,7 @@ public class DropboxLogin extends Activity {
             editor.putString("dropbox_email", "n/a");
             editor.putBoolean("dropbox_login", false);
             editor.commit();
+            super.onBackPressed();
         }
         else
         {
@@ -56,15 +57,14 @@ public class DropboxLogin extends Activity {
             getAccountDetails();
         }
 
-        super.onBackPressed();
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
         getAccessToken();
         getAccountDetails();
-    }*/
+    }
 
     public void getAccessToken() {
         String accessToken = Auth.getOAuth2Token(); //generate Access Token
@@ -97,6 +97,8 @@ public class DropboxLogin extends Activity {
                     editor.putString("dropbox_email", account.getEmail());
                     editor.putBoolean("dropbox_login", true);
                     editor.commit();
+                    //super.onBackPressed();
+                    DropboxLogin.super.onBackPressed();
                     /*try {
                         try {
                             client.files().listFolder("/MedImg/");

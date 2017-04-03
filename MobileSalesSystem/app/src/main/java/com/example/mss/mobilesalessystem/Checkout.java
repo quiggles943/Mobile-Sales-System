@@ -183,7 +183,7 @@ public class Checkout extends Activity {
 
     public void playSound(){
         final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        final boolean sound = mSharedPreference.getBoolean("payment_sound",true);
+        final boolean sound = mSharedPreference.getBoolean("payment_sound",false);
         if(sound) {
             final MediaPlayer soundPlayer = MediaPlayer.create(this, R.raw.complete_transaction);
             soundPlayer.start();

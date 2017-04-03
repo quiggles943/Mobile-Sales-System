@@ -61,28 +61,16 @@ public class DropboxDownloadFolder extends AsyncTask<Void, String, Boolean> {
             for (String path : downloadFilePaths) {
                 String[] paths = path.split("/");
                 File directory = cw.getDir(paths[1], Context.MODE_PRIVATE);
-                // Create imageDir
-                /*Boolean requiresChanging = false;
-                String newFormat = null;
-                if (paths[2].contains(".jpg")) {
-                    String[] formatChange = paths[2].split("\\.jpg");
-                    newFormat = formatChange[0] + ".png";
-                    requiresChanging = true;
-                }
-                File mypath = null;
-                if (requiresChanging) {
-                    mypath = new File(directory, newFormat);
-                } else {
-                    mypath = new File(directory, paths[2]);
-                }*/
                 File mypath = null;
                 mypath = new File(directory, paths[2]);
-                FileOutputStream fos = null;
-                fos = new FileOutputStream(mypath);
-                DownloadBuilder downloadBuilder = client.files().downloadBuilder(path);
-                //long fileLength = downloadBuilder.download(fos).getSize();
-                Metadata data = downloadBuilder.download(fos);
-                publishProgress(client.files().getMetadata(path).getName());
+                if(!(mypath.exists())) {
+                    FileOutputStream fos = null;
+                    fos = new FileOutputStream(mypath);
+                    DownloadBuilder downloadBuilder = client.files().downloadBuilder(path);
+                    //long fileLength = downloadBuilder.download(fos).getSize();
+                    Metadata data = downloadBuilder.download(fos);
+                    publishProgress(client.files().getMetadata(path).getName());
+                }
                 //data.getPathDisplay();
             }
 

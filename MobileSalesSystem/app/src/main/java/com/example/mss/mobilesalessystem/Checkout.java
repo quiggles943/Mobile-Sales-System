@@ -55,11 +55,11 @@ public class Checkout extends Activity {
         listview.setAdapter(adapter);
         total = subTotal();
         //sets the subtotal price
-        subtotalPriceDisplay.setText("Subtotal: £"+total);
+        subtotalPriceDisplay.setText(String.format("Subtotal £ %.2f",total));
 
         //set up the discount EditText
         discount = (EditText) findViewById(R.id.et_discount);
-        discount.setText(""+total);
+        discount.setText(String.format("£ %.2f",total));
         discount.setSelectAllOnFocus(true);
         //discount.setTextColor(R.color.);
         discount.setImeActionLabel("Apply",KeyEvent.KEYCODE_ENTER);
@@ -68,10 +68,10 @@ public class Checkout extends Activity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 total = Float.parseFloat(discount.getText().toString());
-                discount.setText(""+total);
+                discount.setText(String.format("£ %.2f",total));
                 InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 in.hideSoftInputFromWindow(v.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                subtotalPriceDisplay.setText("Was £" + subTotal() +"    Now £" + total);
+                subtotalPriceDisplay.setText("Was £" + String.format("%.2f", subTotal()) +"    Now £" + String.format("%.2f",total));
                 return true;
             }
         });

@@ -350,7 +350,7 @@ public class Statistics extends Activity {
                 AlertDialog.Builder invoiceRemovedDialog = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog));
                 if(invoiceRemoved)
                 {           invoiceRemovedDialog.setTitle("Invoice Removed")
-                            .setMessage("Invoice: "+removedInvoice.getInvoiceId()+"\nDate: "+currentDate+"\nPrice: £"+removedInvoice.getAmountPaid()+"\nhas been removed")
+                            .setMessage("Invoice: "+removedInvoice.getInvoiceId()+"\nDate: "+currentDate+"\nPrice: "+String.format("£ %.2f",removedInvoice.getAmountPaid())+"\nhas been removed")
                             .setIcon(android.R.drawable.ic_dialog_info)
                             .setPositiveButton(android.R.string.ok, null)
                             .show();

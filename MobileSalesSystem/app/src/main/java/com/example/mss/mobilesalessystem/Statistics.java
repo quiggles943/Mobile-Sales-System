@@ -149,10 +149,35 @@ public class Statistics extends Activity {
         syncToDb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final UploadToServer serverUpdate = new UploadToServer(context);      //creating a new database connector                 //openning up an editor to write to shared preferences
+                ConnectivityManager cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);          //opening a connectivity manager
+                NetworkInfo networkType = cManager.getActiveNetworkInfo();
+                final String token = mSharedPreference.getString("token","");                               //gaining the token
+                final UploadToServer serverUpdate = new UploadToServer(context);      //creating a new database connector      //creating a new database connector                 //openning up an editor to write to shared preferences
 
-                final String token = mSharedPreference.getString("token","");
-                serverUpdate.execute(token);
+                if (networkType == null) {
+                    Toast.makeText(context, "No internet available", Toast.LENGTH_SHORT).show();        //Toast to say there is no internet at all
+                } else if (networkType.getType() == ConnectivityManager.TYPE_WIFI) {
+                    try {
+                        serverUpdate.execute(token);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (networkType.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                            .setTitle("Confirm Database Sync")
+                            .setMessage("You are on mobile data, are you sure you would like to progress?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    try {
+                                        serverUpdate.execute(token);
+                                    }catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).show();
+                }
             }
         });
 

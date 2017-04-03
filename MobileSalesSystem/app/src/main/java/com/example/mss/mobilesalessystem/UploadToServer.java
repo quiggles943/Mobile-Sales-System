@@ -69,6 +69,11 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
             String token = strings[0];
             JSONArray finalSalesArray = getSalesTotals();
             //set the URL and post data
+            if(urlString.equals("") ||urlString == null)
+            {
+                message = "There is no database URL specified";
+                return false;
+            }
 
             String link = "http://"+urlString+"/database_test_3.php";
             //String link = "http://quigleyserver.ddns.net/Group/database_test_3.php";

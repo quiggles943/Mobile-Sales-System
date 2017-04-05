@@ -44,7 +44,7 @@ public class Invoice implements Parcelable {
         this.customer = customer;
         this.paymentMethod = paymentMethod;
         this.amountPaid = amountPaid;
-
+        this.timeStamp = utilDate.getTime();
     }
 
     public Invoice(int id, String date, int customer, String paymentMethod, float amountPaid)
@@ -112,10 +112,15 @@ public class Invoice implements Parcelable {
     public String insertSQLCreator()
     {
         String sql;
-
+        String dateString = null;
+        try {
+            dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(this.date.getTime()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sql = "INSERT INTO invoice (InvoiceID, Date, CustomerID, PaymentMethod, AmountPaid) VALUES(";
         sql += this.invoiceId + ",";
-        sql += "'" + this.date + "', ";
+        sql += "'" + dateString + "', ";
         sql += this.customer + ", ";
         sql += "'" + this.paymentMethod + "', ";
         sql += this.amountPaid + ");";

@@ -69,4 +69,16 @@ public class InvoiceItems  {
     public int getQty() { return this.qty; }
 
     public String getImgFilePath() { return this.imgFilePath; }
+
+    public String insertSQLCreator()
+    {
+        String sql;
+
+        sql = "INSERT INTO invoiceitems (InvoiceID, ProductID, Qty) VALUES(";
+        sql += this.invoiceID + ",";
+        sql += this.itemID + ", ";
+        sql += this.qty + ");";
+
+        return sql;
+    }
 }

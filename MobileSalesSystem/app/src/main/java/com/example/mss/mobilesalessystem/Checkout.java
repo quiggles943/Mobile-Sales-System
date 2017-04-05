@@ -120,35 +120,19 @@ public class Checkout extends Activity {
 
         try {
 
+            Invoice i = new Invoice();
+
             SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);        //oppening database
 
-            String invoiceJustCreated;         //int to hold the invoice that was reviously just created
-            String[] tables = new String[1];
-            tables[0] = "InvoiceID";
-            //Cursor c = pDB.query("invoice",tables,null,null,null,null,"InvoiceID DESC","1");
-            Cursor c = pDB.rawQuery("SELECT InvoiceID FROM invoice ORDER BY InvoiceID DESC LIMIT 1", null);         //get all the invoice ID's by largest to smallest (largest will be most recent)
-
-            if (c.getCount() > 0)       //if there are some results
-            {
-                c.moveToFirst();        //move to first (largest due to ORDER BY)
-                invoiceJustCreated = c.getString(c.getColumnIndex("InvoiceID"));        //the first should be the invoice just created
-            } else {
-                invoiceJustCreated = "1";
-            }
-
-            int invoiceNumber = Integer.parseInt(invoiceJustCreated) + 1;
-
-            String newInvoiceNumber = ""+invoiceNumber;
+            int invoiceNumber = i.getNextID(pDB);         //String to hold the invoice that was reviously just created
 
             Date d = new Date();        //getting the date
 
             String currentDate = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.getTime()).toString();       //getting the date into a format for SQLite
 
-            String sqlCreateInvoice = "INSERT INTO invoice (InvoiceID, Date, CustomerID, PaymentMethod, AmountPaid) VALUES ("+newInvoiceNumber+",'"+ currentDate +"',0,'"+paymentMethod+"', "+total+")";   //making the insertion statement with customer and event ID of 0, need to change eventID
+            i = new Invoice(invoiceNumber, currentDate, 0, paymentMethod , total);       //creating a new invoice
 
-            pDB.execSQL(sqlCreateInvoice);      //executing said SQL statement
-
-            String start = "INSERT INTO invoiceitems VALUES (" + newInvoiceNumber + ",";      //sql starting statement
+            pDB.execSQL(i.insertSQLCreator());      //executing said SQL statement
 
             ArrayList<orderItem> finalList = new ArrayList<>();
 
@@ -171,13 +155,8 @@ public class Checkout extends Activity {
 
             for (orderItem o : finalList)       //for all the orders
             {
-                String sqlInvoiceItems = start;         //resetting sql statement
-
-                sqlInvoiceItems += o.getItemID();         //adding the item ID (ASSUMING THIS IS SAME AS PRODUCT ID IN SCHEMA??)
-
-                sqlInvoiceItems += ","+o.getQty()+");";         //adding on the 1 for quantity (ASSUMING WE ARENT GROUPING MULTIPLE OF SAME PRODUCT AS ONE ORDER ITEM??)
-
-                pDB.execSQL(sqlInvoiceItems);       //running said SQL statement
+                InvoiceItems iI = new InvoiceItems(invoiceNumber, o.getItemID(), o.getItemDescription(), o.getQty(), o.getImgFilePath());
+                pDB.execSQL(iI.insertSQLCreator());
             }
 
             pDB.close();

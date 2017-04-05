@@ -67,7 +67,14 @@ public class Checkout extends Activity {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                total = Float.parseFloat(discount.getText().toString());
+                String newTotal;
+                if (discount.getText().toString().contains("£"))
+                {
+                    newTotal = discount.getText().toString().substring(2);
+                } else {
+                    newTotal = discount.getText().toString();
+                }
+                total = Float.parseFloat(newTotal);
                 discount.setText(String.format("£ %.2f",total));
                 InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 in.hideSoftInputFromWindow(v.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);

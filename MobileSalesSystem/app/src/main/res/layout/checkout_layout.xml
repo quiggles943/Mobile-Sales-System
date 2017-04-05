@@ -62,7 +62,6 @@
 
             <EditText
                 android:layout_height="wrap_content"
-                android:inputType="number"
                 android:ems="10"
                 android:id="@+id/et_discount"
                 android:layout_weight="1"
@@ -73,7 +72,8 @@
                 android:textSize="24sp"
                 android:gravity="right|center_vertical"
                 android:padding="5dp"
-                android:textColor="@color/primary_text_default_material_light" />
+                android:textColor="@color/primary_text_default_material_light"
+                android:inputType="number|numberDecimal" />
 
         </LinearLayout>
 

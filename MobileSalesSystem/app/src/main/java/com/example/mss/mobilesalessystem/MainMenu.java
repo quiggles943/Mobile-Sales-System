@@ -76,7 +76,7 @@ public class MainMenu extends Activity {
                 }
                 else
                 {
-                    new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                    new AlertDialog.Builder(context)
                             .setTitle("No Images Found")
                             .setMessage("There are currently no images in the database")
                             .setIcon(android.R.drawable.ic_dialog_alert)

@@ -137,6 +137,7 @@ public class Statistics extends Activity {
                                         try {
                                             //boolean dataDownloaded = connector.execute(token).get();
                                             connector.executeOnExecutor(SERIAL_EXECUTOR);
+                                            dropboxImageDownload();
                                         }catch (Exception e) {
                                             e.printStackTrace();
                                         }

@@ -13,6 +13,7 @@ public class InvoiceItems  {
     private String format;
     private int qty;
     private String imgFilePath;
+
     public InvoiceItems ()
     {
         //standard constructor

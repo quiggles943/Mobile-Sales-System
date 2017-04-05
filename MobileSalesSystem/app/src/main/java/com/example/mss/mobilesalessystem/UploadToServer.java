@@ -156,7 +156,7 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
     protected void onPostExecute(Boolean result)
     {
         ringDialog.dismiss();
-        AlertDialog.Builder alert = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog))
+        AlertDialog.Builder alert = new AlertDialog.Builder(context)
                                  .setTitle("Global Database Upload")
                                  .setMessage(message);
         if(result) {

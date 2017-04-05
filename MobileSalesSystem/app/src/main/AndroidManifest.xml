@@ -21,7 +21,7 @@
             android:name=".MainMenu"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,55 +31,55 @@
             android:name=".qrScanner"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
         </activity>
         <activity
             android:name=".Transaction"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
         </activity>
         <activity
             android:name=".ItemCheck"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
         </activity>
         <activity
             android:name=".Cart"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
         </activity>
         <activity
             android:name=".Checkout"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
         </activity>
         <activity
             android:name=".Statistics"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
         </activity>
         <activity
             android:name=".Refund"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
         </activity>
         <activity
             android:name=".Settings"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/PreferenceScreen" >
         </activity>
         <activity
             android:name=".DropboxClasses.DropboxLogin"
             android:label="Mobile Sales System"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" >
+            android:theme="@style/ApplicationTheme" >
             <intent-filter>
                 <action android:name="com.example.mss.mobilesalessystem.DropboxLogin"/>
                 <category android:name="android.intent.category.DEFAULT"/>

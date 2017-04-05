@@ -1,3 +1,25 @@
 <resources>
 
+    <style name="ApplicationTheme" parent="android:Theme.Material.NoActionBar.Fullscreen" >
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:colorAccent">@color/application_red</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="android:Theme.Material.Dialog.Alert">
+        <item name="android:colorAccent">#eeeeee</item>
+        <item name="android:indeterminateTint">@color/application_red</item>
+        <item name="android:progressBackgroundTint">@color/application_red</item>
+        <item name="android:progressTint">@color/application_red</item>
+    </style>
+
+    <style name="PreferenceScreen" parent="ApplicationTheme">
+        <item name="android:colorAccent">@color/application_red</item>
+        <item name="colorControlNormal">@color/application_red</item>
+        <item name="colorControlActivated">@color/application_red</item>
+    </style>
+
+
+
+
+
 </resources>

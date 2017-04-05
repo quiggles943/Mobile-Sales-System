@@ -15,7 +15,7 @@
         <CheckBoxPreference
             android:key="payment_sound"
             android:title="@string/payment_sound_preference_title"
-            android:summary="@string/payment_sound_preference_summary" />
+            android:summary="@string/payment_sound_preference_summary"/>
 
         <CheckBoxPreference
             android:key="haptic_feedback"
@@ -26,7 +26,7 @@
 
 
     <PreferenceCategory
-        android:title="DropBox Settings">
+        android:title="Dropbox Settings">
     <Preference
         android:key="dropbox_login"
         android:title="Login">
@@ -40,11 +40,14 @@
         android:summary="Name: n/a\nEmail: n/a"/>
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="Application Information">
     <Preference
         android:key="version_Info"
         android:selectable="true"
         android:persistent="false"
         android:title="Application Version"
         android:summary="@string/appVersionTitle"/>
+    </PreferenceCategory>
 
 </PreferenceScreen>

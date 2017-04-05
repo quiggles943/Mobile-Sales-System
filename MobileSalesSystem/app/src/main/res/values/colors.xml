@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="application_red">#8c424242</color>
+    <color name="application_red">#b71d0d</color>
     <color name="application_title_bar">#64424242</color>
+    <color name="application_deep_red">#690505</color>
 </resources>

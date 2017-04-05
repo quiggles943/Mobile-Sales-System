@@ -128,7 +128,7 @@ public class Statistics extends Activity {
                             e.printStackTrace();
                         }
                     } else if (networkType.getType() == ConnectivityManager.TYPE_MOBILE) {
-                        new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                        new AlertDialog.Builder(context)
                                 .setTitle("Confirm Database Sync")
                                 .setMessage("You are on mobile data, are you sure you would like to progress?")
                                 .setIcon(android.R.drawable.ic_dialog_alert)

@@ -120,17 +120,15 @@ public class Checkout extends Activity {
 
         try {
 
-            Invoice i = new Invoice();
-
             SQLiteDatabase pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);        //oppening database
-
-            int invoiceNumber = i.getNextID(pDB);         //String to hold the invoice that was reviously just created
 
             Date d = new Date();        //getting the date
 
             String currentDate = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.getTime()).toString();       //getting the date into a format for SQLite
 
-            i = new Invoice(invoiceNumber, currentDate, 0, paymentMethod , total);       //creating a new invoice
+            Invoice i = new Invoice(pDB, currentDate, 0, paymentMethod, total);
+
+            int invoiceNumber = i.getInvoiceId();         //String to hold the invoice number
 
             pDB.execSQL(i.insertSQLCreator());      //executing said SQL statement
 

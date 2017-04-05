@@ -26,7 +26,25 @@ public class Invoice implements Parcelable {
 
     public Invoice()
     {
-        //Standard converter
+        //Standard constructor
+    }
+
+    public Invoice (SQLiteDatabase pDB, String date, int customer, String paymentMethod, float amountPaid)
+    {
+        java.util.Date utilDate = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            utilDate = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        this.invoiceId = this.getNextID(pDB);
+        this.date = new Date(utilDate.getTime());
+        this.customer = customer;
+        this.paymentMethod = paymentMethod;
+        this.amountPaid = amountPaid;
+
     }
 
     public Invoice(int id, String date, int customer, String paymentMethod, float amountPaid)

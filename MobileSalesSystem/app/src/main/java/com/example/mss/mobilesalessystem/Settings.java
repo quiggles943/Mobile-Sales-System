@@ -163,17 +163,7 @@ public class Settings extends Activity {
                         Log.d(TAG, "File Uri: " + uri);
                         JsonFileUpdater updater = new JsonFileUpdater(context, uri);
                         updater.execute();
-                        // Get the path
-                        /*String path = null;
-                        try {
-                            path = getPath(context, uri);
-                        } catch (URISyntaxException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d(TAG, "File Path: " + path);*/
-                        // Get the file instance
-                        // File file = new File(path);
-                        // Initiate the upload
+
                     }
                     break;
             }
@@ -186,20 +176,4 @@ public class Settings extends Activity {
 
     private static final int FILE_SELECT_CODE = 0;
 
-    //private void showFileChooser() {
-        //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        //intent.setType("*/*");
-        /*intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        try {
-            startActivityForResult(
-                    Intent.createChooser(intent, "Select a File to Upload"),
-                    FILE_SELECT_CODE);
-        } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(this, "Please install a File Manager.",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-*/
 }

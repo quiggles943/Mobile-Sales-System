@@ -48,6 +48,18 @@
         android:persistent="false"
         android:title="Application Version"
         android:summary="@string/appVersionTitle"/>
+        <PreferenceScreen
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:title="Copyright"
+            android:summary="Copyright information"
+            android:key="copyrightScreen">
+        <Preference
+            android:key="copyright"
+            android:selectable="true"
+            android:persistent="false"
+            android:title="Payment Sound Copyright"
+            android:summary="@string/payment_sound_copyright"/>
+        </PreferenceScreen>
     </PreferenceCategory>
 
 </PreferenceScreen>

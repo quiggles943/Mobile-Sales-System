@@ -91,13 +91,13 @@ public class Statistics extends Activity {
 
         /*  if group item clicked */
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    Toast.makeText(context,"Invoice Order "+invoice.getInvoiceId(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"Invoice Order "+invoice.getInvoiceId(),Toast.LENGTH_SHORT).show();
                 }
 
         /*  if child item clicked */
                 else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     InvoiceItems item = expListDetails.get(invoice).get(childPosition);
-                    Toast.makeText(context,"Invoice item Id "+item.getItemID(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"Invoice item Id "+item.getItemID(),Toast.LENGTH_SHORT).show();
                 }
 
 

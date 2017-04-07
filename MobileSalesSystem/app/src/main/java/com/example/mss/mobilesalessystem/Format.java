@@ -35,16 +35,5 @@ public class Format {
 
     public boolean getFrameable(){ return frameable; }
 
-    public String insertSQLCreator ()
-    {
-        String sql;
-
-        sql = "INSERT INTO format VALUES (";
-        sql += "'" + this.formatId + "',";
-        sql += "'" + this.formatDescription + "');";
-
-        return sql;
-    }
-
 
 }

@@ -2,27 +2,39 @@ package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.mss.mobilesalessystem.BackupDatabaseUpdater.JsonFileUpdater;
+
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Paul on 23/03/2017.
  */
 
 public class Settings extends Activity {
-    Context context;
+    static Context context;
     ListView listView;
     ImageButton checkout,newItem;
     @Override
@@ -44,9 +56,9 @@ public class Settings extends Activity {
 
     }
 
-    public static class SettingsFragment extends PreferenceFragment {
+    public static class SettingsFragment extends PreferenceFragment implements AdapterView.OnItemLongClickListener {
         private ArrayList<Preference> mPreferences = new ArrayList<>();
-        private String[] mPreferenceKeys = new String[] {"server_url", "dropbox_details","dropbox_login"};
+        private String[] mPreferenceKeys = new String[] {"server_url", "dropbox_details","dropbox_login", "version_Info"};
         private SharedPreferences.OnSharedPreferenceChangeListener mListener;
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +106,18 @@ public class Settings extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View view = super.onCreateView(inflater, container, savedInstanceState);
+            if(view != null)
+            {
+                View lv = view.findViewById (android.R.id.list);
+                if (lv instanceof ListView)
+                {
+                    ((ListView)lv).setOnItemLongClickListener(this);
+                }
+                else
+                {
+                    //The view created is not a list view!
+                }
+            }
             view.setBackgroundResource(R.drawable.background);
             return view;
         }
@@ -111,5 +135,45 @@ public class Settings extends Activity {
             }
         }
 
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Preference pref = (Preference) getPreferenceManager().findPreference("version_Info");
+            if (pref.getKey().equals("version_Info"))
+            {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                try {
+                    startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    // Potentially direct the user to the Market with a Dialog
+                    Toast.makeText(context, "Please install a File Manager.",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            return false;
+        }
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            switch (requestCode) {
+                case FILE_SELECT_CODE:
+                    if (resultCode == RESULT_OK) {
+                        // Get the Uri of the selected file
+                        String uri = data.getData().getPath();
+                        Log.d(TAG, "File Uri: " + uri);
+                        JsonFileUpdater updater = new JsonFileUpdater(context, uri);
+                        updater.execute();
+
+                    }
+                    break;
+            }
+            super.onActivityResult(requestCode, resultCode, data);
+
+        }
     }
+
+
+
+    private static final int FILE_SELECT_CODE = 0;
+
 }

@@ -3,10 +3,12 @@ package com.example.mss.mobilesalessystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -116,20 +118,10 @@ public class qrScanner extends Activity {
         if(requestCode == 1){
             if(resultCode == Activity.RESULT_OK){
                 ArrayList<orderItem> parcelItems = new ArrayList<>();
-                //Bundle extras = data.getExtras();
-                //boolean framed = extras.getBoolean("framed");
-                //orderItem result = extras.getParcelable("Item");
                 Intent returnIntent = new Intent();     //creates a return intent
                 parcelItems = data.getParcelableArrayListExtra("items");
                 returnIntent.putParcelableArrayListExtra("items",parcelItems);
 
-
-                /*if(framed)
-                {
-                    orderItem frame = extras.getParcelable("Frame");
-                    returnIntent.putBoolean("framed", true);      //adds the true boolean to denote that the item is framed
-                    returnIntent.putExtra("Frame",frame);   //adds the orderItem to the intent
-                }*/
                 setResult(Activity.RESULT_OK,returnIntent);     //sends the intent back to the Cart
                 finish();       //returns to the Cart
             }
@@ -149,8 +141,12 @@ public class qrScanner extends Activity {
             String permission = "android.permission.VIBRATE";
             int res = this.checkCallingOrSelfPermission(permission);
             if(res == PackageManager.PERMISSION_GRANTED) {
-                Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(200);
+                final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                final boolean feedback = mSharedPreference.getBoolean("haptic_feedback",false);
+                if(feedback) {
+                    Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(200);
+                }
             }
             startActivityForResult(intent, 1);       //starts ItemCheck
         }

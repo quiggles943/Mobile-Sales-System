@@ -235,43 +235,6 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
         }
     }
 
-    /*public void dropboxImageDownload()
-    {
-        final String ACCESS_TOKEN = DropboxClient.retrieveAccessToken(context);
-        if (ACCESS_TOKEN == null)
-        {
-            new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
-                    .setTitle("Connection Error")
-                    .setMessage("There is no Dropbox account connected")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.ok,null).show();
-            return;
-        }
-        new GetDropboxAccount(DropboxClient.getClient(ACCESS_TOKEN), new GetDropboxAccount.TaskDelegate() {
-            @Override
-            public void onAccountReceived(FullAccount account) {
-                //Print account's info
-                ArrayList<String> test = null;
-                DbxClientV2 client = DropboxClient.getClient(ACCESS_TOKEN);
-                DropboxGetFolder folder = new DropboxGetFolder(client, context);
-                try {
-                    test = folder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-                DropboxDownloadFolder downloadFolder = new DropboxDownloadFolder(client,test,context);
-                downloadFolder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-            }
-            @Override
-            public void onError(Exception error) {
-                Log.d("User", "Error receiving account details.");
-            }
-        },context).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }*/
-
     protected void onProgressUpdate(Void... values)
     {
         ringDialog.show();

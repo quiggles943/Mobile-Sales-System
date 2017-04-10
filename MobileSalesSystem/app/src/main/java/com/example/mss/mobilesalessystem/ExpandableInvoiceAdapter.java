@@ -2,6 +2,7 @@ package com.example.mss.mobilesalessystem;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.provider.ContactsContract;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -104,13 +105,24 @@ public class ExpandableInvoiceAdapter extends BaseExpandableListAdapter {
         if(convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //PARENT LISTVIEW LAYOUT NEEDED
-            convertView = layoutInflater.inflate(R.layout.basic_groupview_item, null);
+            convertView = layoutInflater.inflate(R.layout.groupview_listitem, null);
         }
         //TEXT VIEW WITHIN PARENT LISTVIEW
         TextView listTitleTextView = (TextView)convertView.findViewById(R.id.tv_groupView_title);
         TextView listDateTextView = (TextView) convertView.findViewById(R.id.tv_groupView_date);
         TextView listPriceTextView = (TextView) convertView.findViewById(R.id.tv_groupView_price);
-        String currentDate = (String) DateFormat.format("dd MMM  HH:mm:ss", invoice.getDate());
+        ImageView paymentType = (ImageView)convertView.findViewById(R.id.iv_paymenttype);
+        if(invoice.getpaymentMethod().equals("Cash"))
+        {
+            Drawable drawable = context.getResources().getDrawable(R.drawable.sym_cash);
+            paymentType.setImageDrawable(drawable);
+        }
+        else if(invoice.getpaymentMethod().equals("Paypal"))
+        {
+            Drawable drawable = context.getResources().getDrawable(R.drawable.sym_paypal);
+            paymentType.setImageDrawable(drawable);
+        }
+        String currentDate = (String) DateFormat.format("dd MMMM  HH:mm:ss", invoice.getDate());
         listTitleTextView.setText("Order : "+invoice.getInvoiceId());
         listDateTextView.setText(currentDate);
         listPriceTextView.setText(String.format("£ %.2f",invoice.getAmountPaid()));

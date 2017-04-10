@@ -125,10 +125,6 @@ public class ItemCheck extends Activity{
                         frameFormat = new Format(frameId,frameDesc,true);
                         orderItem frame = new orderItem(frameId, frameDesc, frameFormat,framePrice, true,"");
                         parcelItems.add(frame);
-                        //extras.putBoolean("framed", true);      //adds the true boolean to denote that the item is framed
-                        //extras.putParcelable("Frame", frame);   //adds the frame item
-                        //returnIntent.putExtra("framed", 1);       //adds the order item to the Extras
-                        //returnIntent.putExtra("Frame", frame);       //adds the order item to the Extras
                     }
                     returnIntent.putParcelableArrayListExtra("items",parcelItems);
                     setResult(Activity.RESULT_OK, returnIntent);     //sets the result

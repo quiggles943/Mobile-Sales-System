@@ -121,7 +121,7 @@ public class Cart extends Activity{
     @Override
     public void onBackPressed()
     {
-        final AlertDialog alert = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Material_Dialog_Alert))
+        final AlertDialog alert = new AlertDialog.Builder(this)
                 .setTitle("Confirm Exit")
                 .setMessage("Are you sure you want to exit? This will remove your current order.")
                 .setIcon(android.R.drawable.ic_dialog_alert)

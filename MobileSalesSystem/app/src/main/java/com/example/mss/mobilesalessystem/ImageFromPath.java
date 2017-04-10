@@ -31,16 +31,7 @@ public class ImageFromPath {
                 File directory = cw.getDir(filepath[0], Context.MODE_PRIVATE);
                 File mypath;
                 String fileToFind = filepath[1];
-                /*if (fileToFind.contains(" ")) {
-                    String[] splitFile = fileToFind.split(" ");
-                    fileToFind = "";
-                    for (String s : splitFile) {
-                        fileToFind += s.toLowerCase() + "_";
-                    }
-                    fileToFind = fileToFind.substring(0, fileToFind.length() - 1);
-                }*/
 
-                //mypath = new File(directory, fileToFind);
                 mypath = new File(directory, filepath[1]);
 
                 BitmapFactory.Options options = new BitmapFactory.Options();

@@ -2,7 +2,6 @@ package com.example.mss.mobilesalessystem;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -26,17 +24,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
+import com.example.mss.mobilesalessystem.DropboxClasses.*;
 
-import java.net.ConnectException;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import static android.os.AsyncTask.SERIAL_EXECUTOR;
 
@@ -98,13 +91,13 @@ public class Statistics extends Activity {
 
         /*  if group item clicked */
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    Toast.makeText(context,"Invoice Order "+invoice.getInvoiceId(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"Invoice Order "+invoice.getInvoiceId(),Toast.LENGTH_SHORT).show();
                 }
 
         /*  if child item clicked */
                 else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     InvoiceItems item = expListDetails.get(invoice).get(childPosition);
-                    Toast.makeText(context,"Invoice item Id "+item.getItemID(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"Invoice item Id "+item.getItemID(),Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -135,7 +128,7 @@ public class Statistics extends Activity {
                             e.printStackTrace();
                         }
                     } else if (networkType.getType() == ConnectivityManager.TYPE_MOBILE) {
-                        new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                        new AlertDialog.Builder(context)
                                 .setTitle("Confirm Database Sync")
                                 .setMessage("You are on mobile data, are you sure you would like to progress?")
                                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -144,6 +137,7 @@ public class Statistics extends Activity {
                                         try {
                                             //boolean dataDownloaded = connector.execute(token).get();
                                             connector.executeOnExecutor(SERIAL_EXECUTOR);
+                                            dropboxImageDownload();
                                         }catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -156,10 +150,35 @@ public class Statistics extends Activity {
         syncToDb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final UploadToServer serverUpdate = new UploadToServer(context);      //creating a new database connector                 //openning up an editor to write to shared preferences
+                ConnectivityManager cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);          //opening a connectivity manager
+                NetworkInfo networkType = cManager.getActiveNetworkInfo();
+                final String token = mSharedPreference.getString("token","");                               //gaining the token
+                final UploadToServer serverUpdate = new UploadToServer(context);      //creating a new database connector      //creating a new database connector                 //openning up an editor to write to shared preferences
 
-                final String token = mSharedPreference.getString("token","");
-                serverUpdate.execute(token);
+                if (networkType == null) {
+                    Toast.makeText(context, "No internet available", Toast.LENGTH_SHORT).show();        //Toast to say there is no internet at all
+                } else if (networkType.getType() == ConnectivityManager.TYPE_WIFI) {
+                    try {
+                        serverUpdate.execute(token);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (networkType.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                            .setTitle("Confirm Database Sync")
+                            .setMessage("You are on mobile data, are you sure you would like to progress?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    try {
+                                        serverUpdate.execute(token);
+                                    }catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).show();
+                }
             }
         });
 
@@ -209,16 +228,6 @@ public class Statistics extends Activity {
                     }
 
                 }, context).execute();
-                /*try {
-                    folder.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-                    test = folder.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }*/
-
-
             }
             @Override
             public void onError(Exception error) {
@@ -298,9 +307,7 @@ public class Statistics extends Activity {
 
             // Show context menu for children
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            //InvoiceItems item = expListDetails.get(invoice).get(childPosition);
-            //menu.setHeaderTitle(item.getItemDescription());
-            //menu.add(0, 0, 1, "View");
+
         }
     }
 
@@ -324,9 +331,7 @@ public class Statistics extends Activity {
             }
 
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            // do someting with child
             InvoiceItems item = expListDetails.get(invoice).get(childPosition);
-            //Toast.makeText(context,"Invoice item Id "+item.getItemID(),Toast.LENGTH_SHORT).show();
         }
 
         return super.onContextItemSelected(selected);
@@ -357,7 +362,7 @@ public class Statistics extends Activity {
                 AlertDialog.Builder invoiceRemovedDialog = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog));
                 if(invoiceRemoved)
                 {           invoiceRemovedDialog.setTitle("Invoice Removed")
-                            .setMessage("Invoice: "+removedInvoice.getInvoiceId()+"\nDate: "+currentDate+"\nPrice: £"+removedInvoice.getAmountPaid()+"\nhas been removed")
+                            .setMessage("Invoice: "+removedInvoice.getInvoiceId()+"\nDate: "+currentDate+"\nPrice: "+String.format("£ %.2f",removedInvoice.getAmountPaid())+"\nhas been removed")
                             .setIcon(android.R.drawable.ic_dialog_info)
                             .setPositiveButton(android.R.string.ok, null)
                             .show();

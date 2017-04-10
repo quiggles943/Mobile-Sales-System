@@ -58,7 +58,7 @@ public class CustomItemAdapter extends ArrayAdapter<orderItem> {
         mViewHolder.tv_detailPrice.setText("");
         mViewHolder.tv_frame.setText(currentItem.getIsFramed());
         mViewHolder.tv_size.setText(currentItem.getFormat().getFormatDescription());
-        mViewHolder.tv_totalPrice.setText("£" + currentItem.getPrice());
+        mViewHolder.tv_totalPrice.setText(String.format("£ %.2f",currentItem.getPrice()));
         mViewHolder.thumbnail.setImageBitmap(ImageFromPath.imageFromPath(currentItem.getImgFilePath(), context));
         return convertView;
 

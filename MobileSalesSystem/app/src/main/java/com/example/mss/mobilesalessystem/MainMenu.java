@@ -46,9 +46,7 @@ public class MainMenu extends Activity {
 
         ImageButton transactionBtn = (ImageButton) findViewById(R.id.btn_cashpoint);
         ImageButton statsBtn = (ImageButton) findViewById(R.id.btn_statistics);
-        /*if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-        }*/
+
         SharedPreferences sharedP = PreferenceManager.getDefaultSharedPreferences(this);      //oppening up shared preferences
         SharedPreferences.Editor editor = sharedP.edit();                           //openning up an editor to write to shared preferences
 
@@ -76,7 +74,7 @@ public class MainMenu extends Activity {
                 }
                 else
                 {
-                    new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                    new AlertDialog.Builder(context)
                             .setTitle("No Images Found")
                             .setMessage("There are currently no images in the database")
                             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -94,39 +92,5 @@ public class MainMenu extends Activity {
         });
     }
 
-    /*private void initDatabase(){
-        try {
-
-            String [] tableName = new String[5];
-            String [] tableColumns = new String[5];
-
-            tableName[2] = "product";
-            tableColumns[2] = "ProductID INTEGER, ProductDescription text, Format text, ImageID text, Price REAL, Framable INTEGER, PRIMARY KEY (ProductID), FOREIGN KEY (Format) REFERENCES format(FormatID), FOREIGN KEY (ImageID) references image(ImageID)";
-
-            tableName[1] = "image";
-            tableColumns[1] = "ImageID text, ImageDesc text, MedImgFilePath text, QRCode text, PRIMARY KEY (ImageID)";
-
-            tableName[0] = "format";
-            tableColumns[0] = "Format text, FormatDesc text, PRIMARY KEY (Format)";
-
-            tableName[3] = "invoice";
-            tableColumns[3] = "InvoiceID INTEGER, Date DATE, CustomerID INTEGER, ShippingCost REAL, PaymentMethod text, AmountPaid REAL, PRIMARY KEY (InvoiceID)";
-
-            tableName[4] = "invoiceitems";
-            tableColumns[4] = "InvoiceID INTEGER, ProductID INTEGER, Qty INTEGER, PRIMARY KEY (InvoiceID, ProductID), FOREIGN KEY (InvoiceID) REFERENCES invoice(InvoiceID), FOREIGN KEY (ProductID) REFERENCES product(ProductID)";
-
-
-            if(tableName.length == tableColumns.length) {
-                for (int i = 0; i < tableName.length; i++) {
-                    pDB.execSQL("CREATE TABLE IF NOT EXISTS " + tableName[i] + " (" + tableColumns[i] + ");");
-                }
-            }
-
-
-
-        }catch(Exception e){
-            Log.e("Database Creation Error", e.getMessage().toString());
-        }
-    }*/
 
 }

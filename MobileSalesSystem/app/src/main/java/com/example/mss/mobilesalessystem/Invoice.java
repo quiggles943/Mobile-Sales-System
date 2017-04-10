@@ -1,5 +1,7 @@
 package com.example.mss.mobilesalessystem;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateFormat;
@@ -21,6 +23,29 @@ public class Invoice implements Parcelable {
     private String paymentMethod;
     private float amountPaid;
     private long timeStamp;
+
+    public Invoice()
+    {
+        //Standard constructor
+    }
+
+    public Invoice (SQLiteDatabase pDB, String date, int customer, String paymentMethod, float amountPaid)
+    {
+        java.util.Date utilDate = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            utilDate = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        this.invoiceId = this.getNextID(pDB);
+        this.date = new Date(utilDate.getTime());
+        this.customer = customer;
+        this.paymentMethod = paymentMethod;
+        this.amountPaid = amountPaid;
+        this.timeStamp = utilDate.getTime();
+    }
 
     public Invoice(int id, String date, int customer, String paymentMethod, float amountPaid)
     {
@@ -84,12 +109,40 @@ public class Invoice implements Parcelable {
 
     public long getTimeStamp(){ return this.timeStamp;}
 
+    public String insertSQLCreator()
+    {
+        String sql;
+        String dateString = null;
+        try {
+            dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(this.date.getTime()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        sql = "INSERT INTO invoice (InvoiceID, Date, CustomerID, PaymentMethod, AmountPaid) VALUES(";
+        sql += this.invoiceId + ",";
+        sql += "'" + dateString + "', ";
+        sql += this.customer + ", ";
+        sql += "'" + this.paymentMethod + "', ";
+        sql += this.amountPaid + ");";
 
-    private Date convertDate(long time) {
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(time);
-        String date = DateFormat.format("dd-MM-yyyy", cal).toString();
-        return Date.valueOf(date);
-
+        return sql;
     }
+
+    public int getNextID(SQLiteDatabase pDB)
+    {
+        int result = 0;
+
+        Cursor c = pDB.rawQuery("SELECT InvoiceID FROM invoice ORDER BY InvoiceID DESC LIMIT 1", null);         //get all the invoice ID's by largest to smallest (largest will be most recent)
+
+        if (c.getCount() > 0)       //if there are some results
+        {
+            c.moveToFirst();        //move to first (largest due to ORDER BY)
+            result = c.getInt(c.getColumnIndex("InvoiceID"));        //the first should be the invoice just created
+        }
+
+        result ++;
+
+        return result;
+    }
+
 }

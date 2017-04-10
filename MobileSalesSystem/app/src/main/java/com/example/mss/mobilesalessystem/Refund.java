@@ -52,7 +52,7 @@ public class Refund extends Activity {
         refund = (ImageButton) findViewById(R.id.btn_paypal);
         Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.sym_return);
         refund.setImageBitmap(icon);
-        discountText.setText("Total Cost £"+invoice.getAmountPaid());
+        discountText.setText("Total Cost "+String.format("£ %.2f",invoice.getAmountPaid()));
 
         ViewManager parentView = (ViewManager) discount.getParent();
         parentView.removeView(discount);
@@ -104,14 +104,14 @@ public class Refund extends Activity {
         }
         for(InvoiceItems item : items)
         {
-            String sql = "SELECT p.format, p.price, i.MedImgFilePath FROM  product p JOIN image i ON p.imageID = i.imageID WHERE ProductID = " + item.getItemID() + ";";
+            String sql = "SELECT p.format, p.price, i.MedImgFilePath, f.FormatDesc FROM  product p JOIN image i ON p.imageID = i.imageID JOIN format f on p.Format = f.Format WHERE ProductID = " + item.getItemID() + ";";
             Cursor cu = pDB.rawQuery(sql,null);
             if (!(cu.moveToFirst()) || cu.getCount() == 0)
             {
 
             } else {
                 while (!cu.isAfterLast()) {
-                    orderitems.add(new orderItem(item.getItemID(),item.getItemDescription(),new Format(cu.getString(0), false),cu.getFloat(1), false, cu.getString(2)));
+                    orderitems.add(new orderItem(item.getItemID(),item.getItemDescription(),new Format(cu.getString(0),cu.getString(3), false),cu.getFloat(1), false, cu.getString(2)));
                     //item.setFormat(cu.getString(0));
                     //item.setPrice(cu.getFloat(1));
                     cu.moveToNext();

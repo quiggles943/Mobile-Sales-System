@@ -119,6 +119,7 @@ public class UploadToServer extends AsyncTask<String, Void, Boolean> {
                     if(!success && i>0)
                     {
                         message = failedUploads.size()+" invoice(s) were unable to be uploaded";
+                        success = false;
                     }
                     break;
                 case 401:

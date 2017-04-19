@@ -160,11 +160,12 @@ public class Statistics extends Activity {
                 } else if (networkType.getType() == ConnectivityManager.TYPE_WIFI) {
                     try {
                         serverUpdate.execute(token);
+                        clearOrders();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else if (networkType.getType() == ConnectivityManager.TYPE_MOBILE) {
-                    new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog_Alert))
+                    new AlertDialog.Builder(context)
                             .setTitle("Confirm Database Sync")
                             .setMessage("You are on mobile data, are you sure you would like to progress?")
                             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -172,6 +173,7 @@ public class Statistics extends Activity {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     try {
                                         serverUpdate.execute(token);
+                                        clearOrders();
                                     }catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -179,6 +181,7 @@ public class Statistics extends Activity {
                             })
                             .setNegativeButton(android.R.string.no, null).show();
                 }
+
             }
         });
 
@@ -195,6 +198,23 @@ public class Statistics extends Activity {
         registerForContextMenu(listView);
 
 
+    }
+
+    public void clearOrders() {
+        new AlertDialog.Builder(context)
+                .setTitle("Confirm Order Removal")
+                .setMessage("Would you like to clear the orders held on system?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        pDB.execSQL("DELETE FROM invoiceitems");
+                        pDB.execSQL("DELETE FROM invoice");
+                        expListDetails.clear();
+                        expListTitles.clear();
+                        expInvAdap.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null).show();
     }
 
     public void dropboxImageDownload()

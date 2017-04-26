@@ -43,10 +43,8 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * Created by Paul on 13/02/2017.
  */
-//returned type required
 public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
 
-    //JSONArray jsonArr;
     Context context;
     String[] tables;
     String tablesJSON, token;
@@ -73,13 +71,12 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPreExecute()
     {
-        //Toast.makeText(context,"Local database update started",Toast.LENGTH_SHORT).show();
         //Set up the ring dialog
         ringDialog = new ProgressDialog(context);
         ringDialog.setTitle("Downloading Data");
         ringDialog.setMessage("Currently Downloading Database, please wait");
         ringDialog.setCancelable(false);
-        //ringDialog.show();
+
         final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(context);
         urlString = mSharedPreference.getString("server_url","");
 
@@ -96,7 +93,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                 return false;
             }
             String link = "http://"+urlString+"/database_test_2.php";
-            //String link = "http://quigleyserver.ddns.net/Group/database_test_2.php";
+
             String data = URLEncoder.encode("token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8");
             data += "&" + URLEncoder.encode("tables", "UTF-8") + "=" + URLEncoder.encode(tablesJSON, "UTF-8");
 
@@ -118,11 +115,14 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                     ArrayList<String> lines = new ArrayList<>();
                     String line;
                     while ((line = bR.readLine()) != null) {
+                        //adds json for table to list
                         lines.add(line);
                   }
 
                     bR.close();
+                    //creates a hashmap
                     HashMap<String,JSONArray> jsonData = new HashMap<>();
+                    //adds each tables json array to the hashmap
                     for(String s:lines)
                     {
                         int found = s.indexOf('[');
@@ -133,6 +133,7 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                         jsonData.put(key,json);
                     }
 
+                    //interprets the hashmap
                     interpretData(jsonData);
                     return true;
                 case 401:
@@ -167,15 +168,16 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                     .setPositiveButton(android.R.string.ok,null);
             alert.show();
         }
-        //dropboxImageDownload();
-        //pDB.close();
+
     }
 
     private void interpretData(HashMap<String, JSONArray> dataToIntepret)
     {
-
+        //for each json array
         for (Map.Entry<String, JSONArray> data : dataToIntepret.entrySet())
         {
+
+            //create an SQL statement
             String sqlStatement = "INSERT OR REPLACE INTO ";
             sqlStatement += data.getKey();
             sqlStatement += " (";

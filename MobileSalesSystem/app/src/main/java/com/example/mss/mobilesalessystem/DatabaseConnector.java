@@ -182,18 +182,24 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
             sqlStatement += data.getKey();
             sqlStatement += " (";
 
+            //new string SQLstart is the sql statement
             String sqlStart = sqlStatement;
 
+            //making a new JSONArray of the data in the hashmap
             JSONArray jA = data.getValue();
+
+            //for the length of the JSONArray
             for (int i = 0; i < jA.length(); i  ++) {
                 try {
                     JSONObject row;
 
+                    //make row to be the object at the int position
                     row = jA.getJSONObject(i);
 
+                    //Iterating over the keys in the JSON row
                     Iterator<String> iterColumns = row.keys();
-
                     while(iterColumns.hasNext()) {
+                        //making the start of the SQL statement stating the columns to be entered into
                         String key = iterColumns.next();
 
                         sqlStatement += key;
@@ -201,13 +207,14 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                         sqlStatement += ",";
                     }
 
+                    //removing the trailing comma and starting the entry of the data values in the SQL statement
                     sqlStatement = sqlStatement.substring(0, sqlStatement.length()-1);
-
                     sqlStatement += ") VALUES (";
 
+                    //Iterating through the keys in the JSON row
                     Iterator<String> iterValues = row.keys();
-
                     while (iterValues.hasNext()) {
+                        //getting the data value to be added and including it in the SQL statement
                         String key = iterValues.next();
 
                         sqlStatement += "'";
@@ -217,14 +224,18 @@ public class DatabaseConnector extends AsyncTask<String, Void, Boolean> {
                         sqlStatement += "',";
                     }
 
+                    //removing trailing comma and finishing the SQL statement
                     sqlStatement = sqlStatement.substring(0, sqlStatement.length()-1);
                     sqlStatement += ");";
 
-                    //run SQL
+                    //getting the SQL database
                     pDB = context.openOrCreateDatabase("ProductDB", MODE_PRIVATE, null);
 
+                    //executing the query just made
                     pDB.execSQL(sqlStatement);
 
+                    //restarting the SQL statement for the next value in the hashmap
+                    //by setting the statement to the starting one defined above
                     sqlStatement = sqlStart;
 
                 } catch (JSONException e) {

@@ -47,6 +47,8 @@ public class DropboxDownloadFolder extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         publishProgress();
+
+        //getting or creating the MedImg folder
         File mydir = context.getDir("MedImg", Context.MODE_PRIVATE); //Creating an internal dir;
         if (!mydir.exists())
         {
@@ -55,23 +57,30 @@ public class DropboxDownloadFolder extends AsyncTask<Void, String, Boolean> {
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
 
         try {
+            //getting the number of files to download and updating the progress
             count = downloadFilePaths.size();
             mProgressDialog.setMax(count);
             int current = 0;
+
+            //for each path to download
             for (String path : downloadFilePaths) {
+                //splitting the path on a /
                 String[] paths = path.split("/");
                 File directory = cw.getDir(paths[1], Context.MODE_PRIVATE);
+
+                //making a file path for the new file to be downloaded to
                 File mypath = null;
                 mypath = new File(directory, paths[2]);
+
+                //if the image doesn't already exist
                 if(!(mypath.exists())) {
+                    //download the image
                     FileOutputStream fos = null;
                     fos = new FileOutputStream(mypath);
                     DownloadBuilder downloadBuilder = client.files().downloadBuilder(path);
-                    //long fileLength = downloadBuilder.download(fos).getSize();
                     Metadata data = downloadBuilder.download(fos);
                     publishProgress(client.files().getMetadata(path).getName());
                 }
-                //data.getPathDisplay();
             }
 
         }
